@@ -1,0 +1,60 @@
+.tableButton.operations {
+    background-image: url(../../../assets/table/operations.svg);
+    background-size: 14px;
+}
+
+.tableButton.operations:hover {
+    background-image: url(../../../assets/table/operations-s.svg);
+}
+
+.tableButton.list {
+    background-image: url(../../../assets/table/list.svg);
+    background-size: 14px;
+}
+
+.tableButton.list:hover {
+    background-image: url(../../../assets/table/list-s.svg);
+}
+
+.tableButton.refresh {
+    background-image: url(../../../assets/table/refresh.svg);
+}
+
+.tableButton.refresh:hover {
+    background-image: url(../../../assets/table/refresh-s.svg);
+}
+
+.tableButton.search {
+    background-image: url(../../../assets/table/search.svg);
+    background-size: 20px;
+}
+
+.tableButton.search:hover {
+    background-image: url(../../../assets/table/search-s.svg);
+}
+
+.tableButton.hide {
+    background-image: url(../../../assets/table/hide.svg);
+    background-size: 20px;
+}
+
+.tableButton.hide.onHide,
+.tableButton.hide:hover {
+    background-image: url(../../../assets/table/hide-s.svg);
+}
+
+.tableButton.report {
+    background-image: url(../../../assets/table/report.svg);
+}
+
+.tableButton.report:hover {
+    background-image: url(../../../assets/table/report-s.svg);
+}
+
+.tableButton.export {
+    background-image: url(../../../assets/table/export.svg);
+}
+
+.tableButton.export:hover {
+    background-image: url(../../../assets/table/export-s.svg);
+}

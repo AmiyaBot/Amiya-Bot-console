@@ -1,0 +1,40 @@
+.listTable {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 5px;
+    overflow: hidden;
+    position: relative;
+}
+
+.topArea {
+    height: 40px;
+    margin-top: 15px;
+    position: relative;
+}
+
+.tableOperation {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+}
+
+.tableOperation.left {
+    left: 0;
+}
+
+.tableOperation.right {
+    border-radius: 4px;
+    right: 0;
+}
+
+.tableButton {
+    width: 30px;
+    height: 26px;
+    background: center / 16px no-repeat;
+    cursor: pointer;
+    float: left;
+}
+
+.page {
+    margin-top: 5px;
+}

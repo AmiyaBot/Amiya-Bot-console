@@ -1,0 +1,78 @@
+.formBuilder .el-form-item__label {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.formBuilder .el-input-number .el-input__inner {
+    text-align: left;
+}
+
+.formBuilder .el-button {
+    padding: 12px 35px;
+}
+
+.formBuilder .el-button:focus,
+.formBuilder .el-button:hover {
+    color: #5F75ED;
+    border-color: #afa2ff;
+    background-color: #f4f2ff;
+}
+
+.formBuilder .el-button--primary {
+    border-color: #5F75ED;
+    background-color: #5F75ED;
+}
+
+.formBuilder .tree-selector input {
+    cursor: pointer;
+}
+
+.el-button--text,
+.el-radio__input.is-checked + .el-radio__label,
+.el-checkbox__input.is-checked + .el-checkbox__label,
+.el-time-panel__btn.confirm,
+.el-picker-panel__icon-btn:hover,
+.el-date-table td.today span,
+.el-input-number__decrease:hover, .el-input-number__increase:hover {
+    color: #5F75ED !important;
+}
+
+.el-radio__inner:hover,
+.el-checkbox__inner:hover,
+.el-input.is-active .el-input__inner,
+.el-select .el-input.is-focus .el-input__inner,
+.el-input__inner:focus,
+.el-range-editor.is-active,
+.el-range-editor.is-active:hover,
+.el-input-number__decrease:hover:not(.is-disabled) ~ .el-input .el-input__inner:not(.is-disabled),
+.el-input-number__increase:hover:not(.is-disabled) ~ .el-input .el-input__inner:not(.is-disabled) {
+    border-color: #5F75ED;
+}
+
+.el-date-table td.end-date span,
+.el-date-table td.start-date span,
+.el-date-table td.current:not(.disabled) span {
+    background-color: #5F75ED;
+}
+
+.el-checkbox__input.is-checked .el-checkbox__inner,
+.el-checkbox__input.is-indeterminate .el-checkbox__inner,
+.el-radio__input.is-checked .el-radio__inner {
+    border-color: #5F75ED;
+    background-color: #5F75ED;
+}
+
+.el-button.is-active, .el-button.is-plain:active {
+    color: #5F75ED;
+    border-color: #5F75ED;
+}
+
+.el-select-dropdown.is-multiple .el-select-dropdown__item.selected,
+.el-select-dropdown__item.selected {
+    color: #5F75ED;
+}
+
+.el-input.is-disabled .el-input__inner {
+    color: #606266;
+}

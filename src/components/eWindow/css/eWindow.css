@@ -1,0 +1,92 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: 'webfont';
+    src: url(../../../assets/font/webfont.ttf) format('truetype');
+}
+
+.custom-window {
+    border-radius: 20px;
+    overflow: hidden;
+    background: none;
+    position: relative;
+}
+
+.custom-window .el-dialog__header {
+    height: 60px;
+    background: #9382F8;
+    position: relative;
+    cursor: pointer;
+}
+
+.custom-window .el-dialog__header:before {
+    content: '';
+    width: 100px;
+    height: 50px;
+    background: url(../../../assets/arts/windowIconA.png) top 0 left 0 / 80px no-repeat;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+.custom-window .el-dialog__header:after {
+    content: '';
+    width: 100px;
+    height: 50px;
+    background: url(../../../assets/arts/windowIconB.png) bottom 0 right 0 / 80px no-repeat;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 0;
+}
+
+.custom-window .el-dialog__title {
+    width: calc(100% - 320px);
+    height: 100%;
+    line-height: 60px;
+    padding-left: 90px;
+    text-align: left;
+    color: #FFFFFF;
+    font-family: 'webfont' !important;
+    font-size: 30px;
+    font-style: normal;
+    text-shadow: 2px 5px 0 #543fd1;
+    user-select: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.custom-window .el-dialog__headerbtn {
+    top: 16px;
+    z-index: 1;
+}
+
+.custom-window .el-dialog__headerbtn .el-dialog__close {
+    color: #FFFFFF;
+}
+
+.custom-window .el-dialog__body {
+    max-height: 500px;
+    background: #FFFFFF;
+    overflow: auto;
+}
+
+.custom-window.is-fullscreen .el-dialog__body {
+    height: calc(100% - 100px);
+    max-height: none !important;
+}
+
+.custom-window .el-dialog__footer {
+    background: #FFFFFF;
+}
+
+.custom-window .el-button--primary {
+    border-color: #5F75ED;
+    background-color: #5F75ED;
+}
+
+.custom-window .cell .el-button {
+    padding: 4px 6px;
+}

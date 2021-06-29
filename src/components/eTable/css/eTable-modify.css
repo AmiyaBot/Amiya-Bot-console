@@ -1,0 +1,101 @@
+.listTable .el-form-item {
+    margin-bottom: 10px;
+}
+
+.listTable .cell > .el-button {
+    padding: 4px 6px;
+}
+
+.listTable .cell > .el-button.el-button--text {
+    /*background: rgba(95, 73, 230, 0.1);*/
+    /*border: 1px solid transparent;*/
+    text-decoration: underline;
+}
+
+.listTable .cell > .el-button.el-button--text:hover {
+    /*border-color: #5F75ED;*/
+}
+
+.listTable .el-table td, .el-table th {
+    padding: 3px 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    line-height: initial;
+}
+
+.listTable .el-table__fixed, .el-table__fixed-right {
+    height: 100% !important;
+}
+
+.listTable .el-table td > .cell,
+.listTable .el-table th > .cell {
+    width: auto;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+.block .el-checkbox {
+    display: block;
+}
+
+.el-popover__title {
+    font-size: 14px;
+}
+
+.operations button {
+    width: 100%;
+    display: block;
+}
+
+.operations .el-button + .el-button {
+    margin: 5px 0 0 0;
+}
+
+.listTable .tableOperation .el-button {
+    padding: 8px 18px;
+}
+
+.listTable .tableOperation .el-button.el-button--normal:focus,
+.listTable .tableOperation .el-button.el-button--normal:hover {
+    color: #5F75ED;
+    border-color: #afa2ff;
+    background-color: #f4f2ff;
+}
+
+.listTable .tableOperation .el-button--primary {
+    background-color: #5F75ED;
+    border-color: #5F75ED;
+}
+
+.el-pagination.is-background .btn-next,
+.el-pagination.is-background .btn-prev,
+.el-pagination.is-background .el-pager li {
+    background: none;
+    border-radius: 6px;
+    border: 1px solid #CECECE;
+    font-weight: initial;
+}
+
+.el-pagination.is-background .el-pager li:not(.disabled).active {
+    background-color: #5F75ED;
+    border-color: #5F75ED;
+    color: #ffffff !important;
+}
+
+.el-pagination__jump {
+    margin-left: 0;
+}
+
+.el-table th > .cell {
+    font-weight: initial;
+    color: #5F75ED;
+}
+
+.el-pagination.is-background .el-pager li:not(.disabled):hover {
+    color: #5F75ED;
+}
+
+.el-pagination__sizes .el-input .el-input__inner:hover {
+    border-color: #5F75ED;
+}

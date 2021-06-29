@@ -1,0 +1,29 @@
+.table-selector {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.table-selector input,
+.search-table td {
+    cursor: pointer;
+}
+
+.search-table .el-table th > .cell {
+    font-weight: initial;
+    color: #5F75ED;
+}
+
+.search-table .el-table td, .el-table th {
+    padding: 3px 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.search-table .el-table td > .cell,
+.search-table .el-table th > .cell {
+    width: auto;
+    white-space: nowrap;
+    display: inline-block;
+}

@@ -1,6 +1,9 @@
 const mysql = require('mysql')
 
 function Mysql (config) {
+    this.ping = null
+    this.connections = null
+
     const handleDisconnection = () => {
         let connection = mysql.createConnection({
             host: config.host,
@@ -22,8 +25,8 @@ function Mysql (config) {
             }
         })
 
-        clearInterval(ping)
-        ping = setInterval(() => {
+        clearInterval(this.ping)
+        this.ping = setInterval(() => {
             connection.ping(err => {
                 if (err) {
                     console.log('Ping error: ' + JSON.stringify(err))
@@ -33,9 +36,6 @@ function Mysql (config) {
 
         this.connections = connection
     }
-    let ping = null
-
-    this.connections = null
 
     handleDisconnection()
 

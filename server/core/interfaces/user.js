@@ -1,8 +1,9 @@
-const tool = require('../tool')
+const util = require('../util').util
+const sqlBuilder = require('../util').sqlBuilder
 
 function User (mysql, data, callback) {
     this.getActiveUsers = (hour = 24, selfCallback) => {
-        const lastTime = tool.lastTime(hour)
+        const lastTime = util.lastTime(hour)
         const user = `select * from t_message where msg_time >= ${lastTime} and msg_type = 'reply' GROUP BY reply_user`
         const sql = `select count(*) as total from (${user}) as user`
 
@@ -30,8 +31,8 @@ function User (mysql, data, callback) {
         })
     }
     this.getUsersByPages = () => {
-        const where = tool.where(data.search)
-        const list = `select * from t_user ${where} order by sign_in desc, user_feeling desc limit ${tool.pages(data.page, data.pageSize)}`
+        const where = sqlBuilder.where(data.search)
+        const list = `select * from t_user ${where} order by sign_in desc, user_feeling desc limit ${sqlBuilder.pages(data.page, data.pageSize)}`
         const count = `select count(*) as total from t_user ${where}`
         const sql = {
             data: list,

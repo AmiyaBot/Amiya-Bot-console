@@ -411,7 +411,7 @@ export default {
                     switch (item.config.type) {
                         case 3:
                             if (Array.isArray(value)) {
-                                value = value.map()
+                                value = value.map(n => n.toString())
                             } else {
                                 value = value.toString()
                             }

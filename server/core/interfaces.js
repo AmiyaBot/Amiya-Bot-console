@@ -2,7 +2,7 @@
  * 数据接口
  */
 const Mysql = require('./mysql')
-const tool = require('./tool')
+const util = require('./util').util
 
 const interfaces = [
     'message/getTotalMessage',
@@ -27,7 +27,7 @@ module.exports = (express, databaseConfig) => {
                 data = data.toString()
 
                 console.log('Received HTTP request: ' + name)
-                console.log(' -- Date: ' + tool.formatDate())
+                console.log(' -- Date: ' + util.formatDate())
                 console.log(' -- Post: ' + data)
 
                 const postData = JSON.parse(data)

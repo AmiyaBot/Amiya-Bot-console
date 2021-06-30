@@ -1,4 +1,4 @@
-function Tool () {
+function Util () {
     this.lastTime = (hour = 24) => {
         const last = parseInt(
             (new Date().getTime() / 1000 - hour * 3600).toFixed(0)
@@ -31,6 +31,9 @@ function Tool () {
             return time
         }
     }
+}
+
+function SqlBuilder () {
     this.where = (data) => {
         const where = []
         for (let name in data) {
@@ -51,4 +54,7 @@ function Tool () {
     }
 }
 
-module.exports = new Tool()
+module.exports = {
+    util: new Util(),
+    sqlBuilder: new SqlBuilder()
+}

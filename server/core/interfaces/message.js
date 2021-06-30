@@ -1,8 +1,8 @@
-const tool = require('../tool')
+const util = require('../util').util
 
 function Message (mysql, data, callback) {
     this.getTotalMessage = () => {
-        const lastTime = tool.lastTime()
+        const lastTime = util.lastTime()
         const sql = `select msg_type, count(*) as total from t_message where msg_time >= ${lastTime} GROUP BY msg_type`
 
         mysql.query(sql, res => {
@@ -19,7 +19,7 @@ function Message (mysql, data, callback) {
         })
     }
     this.getMessageAnalysis = () => {
-        const lastTime = tool.lastTime(23)
+        const lastTime = util.lastTime(23)
         const sql = `select * from t_message where msg_time >= ${lastTime}`
 
         mysql.query(sql, res => {

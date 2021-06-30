@@ -44,7 +44,7 @@ export default {
                     {name: 'Users', title: 'Users Manager'},
                     {name: 'Gacha', title: 'Gacha Manager'}
                 ],
-                currIndex: 3
+                currIndex: 0
             }
         }
     }

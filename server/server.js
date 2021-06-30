@@ -1,5 +1,5 @@
 const express = require('express')
-const interfaces = require('./core/interfaces')
+const render = require('./core/render')
 
 function openServer (viewPort, httpPort, databaseConfig) {
     const app = express()
@@ -22,7 +22,7 @@ function openServer (viewPort, httpPort, databaseConfig) {
     })
     HttpRequest.listen(httpPort)
 
-    interfaces(HttpRequest, databaseConfig)
+    render(HttpRequest, databaseConfig)
 }
 
 module.exports = openServer

@@ -30,16 +30,6 @@
 
         </eTable>
 
-        <!--        <e-window class="window" ref="userManage"-->
-        <!--                  :title="(form.type == 1 ? '修改' : '新增') + '用户'">-->
-        <!--            <e-form :build-data="form.fields"-->
-        <!--                    :display-filter="form.filter"-->
-        <!--                    :display-all="form.filter.length == 0"-->
-        <!--                    ref="form">-->
-        <!--                <el-button type="primary" @click="submitManage()">提交</el-button>-->
-        <!--            </e-form>-->
-        <!--        </e-window>-->
-
         <eWindow :title="(form.type === 1 ? '修改' : '新增') + '卡池'" ref="window">
             <eForm :build-data="form.fields" ref="form">
                 <el-button type="primary" @click="submitManage()">提交</el-button>

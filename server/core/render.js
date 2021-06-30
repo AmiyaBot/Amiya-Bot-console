@@ -1,6 +1,3 @@
-/**
- * 数据接口
- */
 const Mysql = require('./mysql')
 const util = require('./util').util
 

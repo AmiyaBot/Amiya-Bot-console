@@ -9,6 +9,8 @@ const interfaces = [
     'user/getUserSignData',
     'user/getUsersByPages',
     'function/getFunctionUsed',
+    'operator/getAllOperator',
+    'pool/addNewPool',
     'pool/getPoolsByPages'
 ]
 

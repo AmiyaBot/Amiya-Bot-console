@@ -42,9 +42,10 @@ export default {
                     {name: 'State', title: 'Amiya\'s state'},
                     {name: 'Group', title: ''},
                     {name: 'Users', title: 'Users Manager'},
-                    {name: 'Gacha', title: 'Gacha Manager'}
+                    {name: 'Gacha', title: 'Gacha Manager'},
+                    {name: 'Config', title: 'Bot Configure'}
                 ],
-                currIndex: 0
+                currIndex: 3
             }
         }
     }

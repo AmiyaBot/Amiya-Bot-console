@@ -109,7 +109,8 @@ export const formFields = [
                 0: '普通卡池',
                 1: '限定卡池',
                 2: '联合寻访'
-            }
+            },
+            default: 0
         }
     }
 ]

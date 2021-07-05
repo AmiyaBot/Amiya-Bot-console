@@ -34,7 +34,7 @@
                 </el-input-number>
 
                 <!-- 下拉选择框 -->
-                <el-select v-if="item.config.type == 3" clearable collapse-tags
+                <el-select v-if="item.config.type == 3" clearable
                            v-model="formData[item.field]"
                            :multiple="item.config.multiple"
                            :allow-create="item.config.create"

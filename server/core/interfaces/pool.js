@@ -18,6 +18,16 @@ function Pool (mysql, data, callback) {
             callback(rsp)
         })
     }
+    this.addNewPool = () => {
+        const sql = `insert into t_pool (${Object.keys(data).join(', ')}) values ("${Object.values(data).join('", "')}")`
+        mysql.query(sql, res => {
+            if (res.affectedRows) {
+                callback(res)
+                return
+            }
+            callback(res, 1, '添加失败')
+        })
+    }
 }
 
 module.exports = Pool

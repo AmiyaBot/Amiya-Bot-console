@@ -71,14 +71,59 @@ export default {
                 }
             })
         },
+        getAllOperator: function () {
+            this.lib.requests.post({
+                url: '/operator/getAllOperator',
+                success: res => {
+                    const data = {}
+                    for (let item of res.data) {
+                        const rarity = item['operator_rarity']
+                        const option = item['operator_name']
+
+                        if (rarity in data) {
+                            data[rarity][option] = option
+                        } else {
+                            data[rarity] = {
+                                [option]: option
+                            }
+                        }
+                    }
+                    this.$set(this, 'operators', data)
+                }
+            })
+        },
         addPool: function () {
             this.$refs.window.show()
             this.$nextTick(() => {
-                this.$refs.form.reset()
+                this.$refs.form.setOptions({
+                    'pickup_6': this.operators[6],
+                    'pickup_5': this.operators[5],
+                    'pickup_4': this.operators[4]
+                })
+                this.$refs.form.cleanForm()
             })
         },
         submitManage: function () {
+            const data = this.$refs.form.getValue()
 
+            data['pickup_6'] = data['pickup_6'].join(',')
+            data['pickup_5'] = data['pickup_5'].join(',')
+            data['pickup_4'] = data['pickup_4'].join(',')
+
+            if (data['pool_name'] === '') {
+                this.lib.message.toast('卡池名称不能为空', 'error')
+                return
+            }
+
+            this.lib.requests.post({
+                url: '/pool/addNewPool',
+                data: data,
+                successMessage: true,
+                success: res => {
+                    this.$refs.window.hide()
+                    this.loadPool()
+                }
+            })
         }
     },
     data () {
@@ -91,11 +136,13 @@ export default {
             form: {
                 fields: formFields,
                 type: 0
-            }
+            },
+            operators: {}
         }
     },
     mounted () {
         this.loadPool()
+        this.getAllOperator()
     }
 }
 </script>

@@ -161,6 +161,9 @@ export default {
         getValue: function () {
             return this.$refs.searchForm.$refs.form.formData
         },
+        setOptions: function (field, data) {
+            this.$refs.searchForm.$refs.form.setOptions(field, data)
+        },
         searchList: function () {
             this.currPage = 1
             this.loadList()

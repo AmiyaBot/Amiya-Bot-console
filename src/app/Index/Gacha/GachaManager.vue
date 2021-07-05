@@ -6,7 +6,7 @@
                 :list-loader="loadPool">
 
             <template v-slot:top>
-                <el-button type="success" @click="addPool">新增卡池</el-button>
+                <el-button type="success" @click="customPool(null, 0)">新增卡池</el-button>
             </template>
 
             <template v-slot:custom="{ field, value }">
@@ -24,8 +24,8 @@
             </template>
 
             <template v-slot:row="{ item }">
-                <el-button type="text">修改</el-button>
-                <el-button type="text">删除</el-button>
+                <el-button type="text" @click="customPool(item, 1)">修改</el-button>
+                <el-button type="text" @click="delPool(item)">删除</el-button>
             </template>
 
         </eTable>
@@ -92,7 +92,7 @@ export default {
                 }
             })
         },
-        addPool: function () {
+        windowOpen: function (callback) {
             this.$refs.window.show()
             this.$nextTick(() => {
                 this.$refs.form.setOptions({
@@ -100,11 +100,37 @@ export default {
                     'pickup_5': this.operators[5],
                     'pickup_4': this.operators[4]
                 })
-                this.$refs.form.cleanForm()
+                callback && callback()
+            })
+        },
+        customPool: function (item, type) {
+            this.form.type = type
+            this.windowOpen(() => {
+                if (type) {
+                    this.$refs.form.setValue(item)
+                } else {
+                    this.$refs.form.cleanForm()
+                }
+                this.$refs.form.setDisabled('pool_name', type === 1)
+            })
+        },
+        delPool: function (item) {
+            this.lib.message.confirm(`确定删除卡池【${item['pool_name']}】吗？`, '请确认', () => {
+                this.lib.requests.post({
+                    url: '/pool/delPool',
+                    data: item,
+                    successMessage: true,
+                    success: res => {
+                        if (res.type === 0) {
+                            this.$refs.table.loadList()
+                        }
+                    }
+                })
             })
         },
         submitManage: function () {
             const data = this.$refs.form.getValue()
+            const url = this.form.type === 1 ? '/pool/editPool' : '/pool/addNewPool'
 
             data['pickup_6'] = data['pickup_6'].join(',')
             data['pickup_5'] = data['pickup_5'].join(',')
@@ -116,12 +142,18 @@ export default {
             }
 
             this.lib.requests.post({
-                url: '/pool/addNewPool',
+                url: url,
                 data: data,
                 successMessage: true,
                 success: res => {
-                    this.$refs.window.hide()
-                    this.loadPool()
+                    if (res.type === 0) {
+                        this.$refs.window.hide()
+                        if (this.form.type) {
+                            this.$refs.table.loadList()
+                            return
+                        }
+                        this.loadPool()
+                    }
                 }
             })
         }

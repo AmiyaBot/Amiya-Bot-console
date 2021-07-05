@@ -1,5 +1,5 @@
 <template>
-    <div class="state">
+    <div class="dashboard">
         <div class="information">
             <NumberCard :value="cards.reply" color="5f75ed">
                 <template>
@@ -37,13 +37,13 @@
 </template>
 
 <script>
-import NumberCard from '@/app/Index/State/Elem/NumberCard'
-import UserSignIn from '@/app/Index/State/Charts/UserSignIn'
-import MessageCount from '@/app/Index/State/Charts/MessageCount'
-import FunctionCount from '@/app/Index/State/Charts/FunctionCount'
+import NumberCard from '@/app/Index/Dashboard/Elem/NumberCard'
+import UserSignIn from '@/app/Index/Dashboard/Charts/UserSignIn'
+import MessageCount from '@/app/Index/Dashboard/Charts/MessageCount'
+import FunctionCount from '@/app/Index/Dashboard/Charts/FunctionCount'
 
 export default {
-    name: 'State',
+    name: 'Dashboard',
     components: {
         NumberCard,
         UserSignIn,
@@ -97,4 +97,4 @@ export default {
 }
 </script>
 
-<style scoped src="./Stage.css"></style>
+<style scoped src="./Dashboard.css"></style>

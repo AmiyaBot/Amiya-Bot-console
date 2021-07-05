@@ -1,4 +1,4 @@
-const util = require('../util').util
+const util = require('../support/util').util
 
 function Message (mysql, data, callback) {
     this.getTotalMessage = () => {

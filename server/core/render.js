@@ -1,31 +1,41 @@
-const Mysql = require('./mysql')
-const util = require('./util').util
+const fs = require('fs')
+const path = require('path')
+const util = require('./support/util').util
+const Mysql = require('./support/mysql')
 
-const interfaces = [
-    'message/getTotalMessage',
-    'message/getMessageSpeed',
-    'message/getMessageAnalysis',
-    'user/getActiveUsers',
-    'user/getUserSignData',
-    'user/getUsersByPages',
-    'function/getFunctionUsed',
-    'operator/getAllOperator',
-    'pool/addNewPool',
-    'pool/getPoolsByPages'
-]
+function initIndexes () {
+    const files = fs.readdirSync(path.resolve(__dirname, './interfaces'))
+    const interfaces = []
+
+    for (let file of files) {
+        const _controller = require('./interfaces/' + file)
+        const _name = file.split('.')[0]
+
+        for (let item of Object.keys(new _controller())) {
+            interfaces.push(
+                {
+                    path: [_name, item],
+                    func: _controller
+                }
+            )
+        }
+    }
+    return interfaces
+}
 
 module.exports = (express, databaseConfig) => {
     const mysql = new Mysql(databaseConfig)
+    const interfaces = initIndexes()
 
-    for (let name of interfaces) {
-        const path = name.split('/')
-        const controller = callInterfaces(path[0])
+    for (let item of interfaces) {
+        const path = item.path
+        const Controller = item.func
 
-        express.post('/' + name, (request, responds) => {
+        express.post('/' + path.join('/'), (request, responds) => {
             request.on('data', data => {
                 data = data.toString()
 
-                console.log('Received HTTP request: ' + name)
+                console.log('Received HTTP request: ' + path.join('/'))
                 console.log(' -- Date: ' + util.formatDate())
                 console.log(' -- Post: ' + data)
 
@@ -39,18 +49,14 @@ module.exports = (express, databaseConfig) => {
                 }
 
                 try {
-                    // eslint-disable-next-line new-cap
-                    const init = new controller(mysql, postData, callback)
+                    const init = new Controller(mysql, postData, callback)
+                    const funcName = path[1]
 
-                    init[path[1]]()
+                    init[funcName]()
                 } catch (e) {
                     console.log(e)
                 }
             })
         })
     }
-}
-
-function callInterfaces (name) {
-    return require('./interfaces/' + name)
 }

@@ -55,9 +55,9 @@ export default class CommonMessage {
         MessageBox
             .confirm(text, title,
                 {
+                    type: type,
                     confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: type
+                    cancelButtonText: '取消'
                 }
             )
             .then(confirm || null)
@@ -66,7 +66,8 @@ export default class CommonMessage {
 
     prompt (text,
         title = '提示',
-        done) {
+        done,
+        inputType = 'text') {
         const confirm = (data) => {
             done && done(data.value)
         }
@@ -75,7 +76,8 @@ export default class CommonMessage {
             .prompt(text, title,
                 {
                     confirmButtonText: '确定',
-                    cancelButtonText: '取消'
+                    cancelButtonText: '取消',
+                    inputType
                 }
             )
             .then(confirm)

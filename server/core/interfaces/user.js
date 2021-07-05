@@ -1,5 +1,5 @@
-const util = require('../util').util
-const sqlBuilder = require('../util').sqlBuilder
+const util = require('../support/util').util
+const sqlBuilder = require('../support/util').sqlBuilder
 
 function User (mysql, data, callback) {
     this.getActiveUsers = (hour = 24, selfCallback) => {
@@ -45,6 +45,31 @@ function User (mysql, data, callback) {
                 count: data.count[0]['total']
             }
             callback(rsp)
+        })
+    }
+    this.setBlackUser = () => {
+        const sql = `update t_user set black = ${data['black']} where user_id = "${data['user_id']}"`
+        mysql.query(sql, res => {
+            if (res.affectedRows) {
+                callback(res, 0, '修改成功')
+                return
+            }
+            callback(res, 1, '修改失败')
+        })
+    }
+    this.sendCoupon = () => {
+        let sql = `update t_user set coupon = coupon + ${data['value']}`
+
+        if (data['users'].length) {
+            sql += ` where user_id in ("${data['users'].join('", "')}")`
+        }
+
+        mysql.query(sql, res => {
+            if (res.affectedRows) {
+                callback(res, 0, '发放成功')
+                return
+            }
+            callback(res, 1, '发放失败')
         })
     }
 }

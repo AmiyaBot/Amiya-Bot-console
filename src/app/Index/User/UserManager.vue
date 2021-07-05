@@ -1,9 +1,17 @@
 <template>
     <div class="UserManager">
-        <eTable :fields="table.fields"
+        <eTable :fields="table.fields" ref="table"
                 :data="table.data"
                 :total-page="table.total"
                 :list-loader="loadUsers">
+
+            <template v-slot:top>
+                <el-button type="success" @click="sendCoupon(null)">全体发放凭证</el-button>
+            </template>
+
+            <template v-slot:operations="{ items }">
+                <el-button type="success" size="small" @click="sendCoupon(items)">发放凭证</el-button>
+            </template>
 
             <template v-slot:custom="{ field, value }">
                 <div v-if="field.field === 'sign_in'">
@@ -17,8 +25,8 @@
             </template>
 
             <template v-slot:row="{ item }">
-                <el-button type="text" v-if="item.black === 0">加入黑名单</el-button>
-                <el-button type="text" v-if="item.black === 1">解除黑名单</el-button>
+                <el-button type="text" v-if="item.black === 0" @click="setBlackUser(item, 1)">加入黑名单</el-button>
+                <el-button type="text" v-if="item.black === 1" @click="setBlackUser(item, 0)">解除黑名单</el-button>
             </template>
 
         </eTable>
@@ -48,6 +56,48 @@ export default {
                     this.$set(this.table, 'total', res.data.count)
                 }
             })
+        },
+        setBlackUser: function (item, status) {
+            this.lib.requests.post({
+                url: '/user/setBlackUser',
+                data: {
+                    user_id: item['user_id'],
+                    black: status
+                },
+                successMessage: true,
+                success: res => {
+                    if (res.type === 0) {
+                        this.$refs.table.loadList()
+                    }
+                }
+            })
+        },
+        sendCoupon: function (items) {
+            let users = []
+            if (Array.isArray(items)) {
+                if (items.length) {
+                    users = items.map(n => n['user_id'])
+                } else {
+                    this.lib.message.alert('请至少选择一个用户')
+                    return
+                }
+            }
+
+            this.lib.message.prompt('输入发放数量', '发放凭证', value => {
+                this.lib.requests.post({
+                    url: '/user/sendCoupon',
+                    data: {
+                        users,
+                        value
+                    },
+                    successMessage: true,
+                    success: res => {
+                        if (res.type === 0) {
+                            this.$refs.table.loadList()
+                        }
+                    }
+                })
+            }, 'number')
         }
     },
     data () {

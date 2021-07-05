@@ -45,7 +45,12 @@ export default class Requests {
                         const status = response.status
 
                         if (status === 200) {
-                            successMessage && this.message.toast(data.message)
+                            const msg = data.msg
+
+                            if (successMessage && msg) {
+                                successMessage && this.message.toast(msg, data.type === 0 ? this.message.success : this.message.warning)
+                            }
+
                             success && success(data)
                         }
                     }

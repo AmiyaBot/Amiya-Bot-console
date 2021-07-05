@@ -13,7 +13,7 @@
         </div>
         <div class="main-body">
             <SubPage :title="nav.list[nav.currIndex].title">
-                <State v-if="nav.currIndex === 0"></State>
+                <Dashboard v-if="nav.currIndex === 0"></Dashboard>
                 <UserManager v-if="nav.currIndex === 2"></UserManager>
                 <GachaManager v-if="nav.currIndex === 3"></GachaManager>
             </SubPage>
@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import SubPage from '@/app/Index/State/Elem/SubPage'
-import State from '@/app/Index/State/State'
+import SubPage from '@/app/Index/Dashboard/Elem/SubPage'
+import Dashboard from '@/app/Index/Dashboard/Dashboard'
 import UserManager from '@/app/Index/User/UserManager'
 import GachaManager from '@/app/Index/Gacha/GachaManager'
 
@@ -31,7 +31,7 @@ export default {
     name: 'IndexPage',
     components: {
         SubPage,
-        State,
+        Dashboard,
         UserManager,
         GachaManager
     },
@@ -39,13 +39,13 @@ export default {
         return {
             nav: {
                 list: [
-                    {name: 'State', title: 'Amiya\'s state'},
-                    {name: 'Group', title: ''},
+                    {name: 'Dashboard', title: 'Amiya Dashboard'},
+                    {name: 'Group', title: 'Group Manager'},
                     {name: 'Users', title: 'Users Manager'},
                     {name: 'Gacha', title: 'Gacha Manager'},
                     {name: 'Config', title: 'Bot Configure'}
                 ],
-                currIndex: 3
+                currIndex: 0
             }
         }
     }

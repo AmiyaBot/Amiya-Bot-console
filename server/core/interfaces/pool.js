@@ -1,4 +1,4 @@
-const sqlBuilder = require('../util').sqlBuilder
+const sqlBuilder = require('../support/util').sqlBuilder
 
 function Pool (mysql, data, callback) {
     this.getPoolsByPages = () => {
@@ -19,13 +19,45 @@ function Pool (mysql, data, callback) {
         })
     }
     this.addNewPool = () => {
-        const sql = `insert into t_pool (${Object.keys(data).join(', ')}) values ("${Object.values(data).join('", "')}")`
-        mysql.query(sql, res => {
-            if (res.affectedRows) {
-                callback(res)
+        const check = `select * from t_pool where pool_name = "${data['pool_name']}"`
+        mysql.query(check, res => {
+            if (res.length) {
+                callback(res, 1, '已存在同名卡池')
                 return
             }
-            callback(res, 1, '添加失败')
+
+            const sql = `insert into t_pool (${Object.keys(data).join(', ')}) values ("${Object.values(data).join('", "')}")`
+            mysql.query(sql, res => {
+                if (res.affectedRows) {
+                    callback(res, 0, '成功添加卡池：' + data['pool_name'])
+                    return
+                }
+                callback(res, 1, '添加失败')
+            })
+        })
+    }
+    this.editPool = () => {
+        const set = []
+        for (let field in data) {
+            set.push(`${field} = "${data[field]}"`)
+        }
+        const sql = `update t_pool set ${set.join(', ')} where pool_name = "${data['pool_name']}"`
+        mysql.query(sql, res => {
+            if (res.affectedRows) {
+                callback(res, 0, '修改成功')
+                return
+            }
+            callback(res, 1, '修改失败')
+        })
+    }
+    this.delPool = () => {
+        const sql = `delete from t_pool where pool_name = "${data['pool_name']}"`
+        mysql.query(sql, res => {
+            if (res.affectedRows) {
+                callback(res, 0, '删除成功')
+                return
+            }
+            callback(res, 1, '删除失败')
         })
     }
 }

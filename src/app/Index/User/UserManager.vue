@@ -58,18 +58,21 @@ export default {
             })
         },
         setBlackUser: function (item, status) {
-            this.lib.requests.post({
-                url: '/user/setBlackUser',
-                data: {
-                    user_id: item['user_id'],
-                    black: status
-                },
-                successMessage: true,
-                success: res => {
-                    if (res.type === 0) {
-                        this.$refs.table.loadList()
+            const text = status ? `是否添加用户${item['user_id']}至黑名单` : `是否解除用户${item['user_id']}的黑名单`
+            this.lib.message.confirm(text, '注意', () => {
+                this.lib.requests.post({
+                    url: '/user/setBlackUser',
+                    data: {
+                        user_id: item['user_id'],
+                        black: status
+                    },
+                    successMessage: true,
+                    success: res => {
+                        if (res.type === 0) {
+                            this.$refs.table.loadList()
+                        }
                     }
-                }
+                })
             })
         },
         sendCoupon: function (items) {

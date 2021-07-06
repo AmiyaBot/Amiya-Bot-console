@@ -114,3 +114,5 @@ export const formFields = [
         }
     }
 ]
+
+export const configTableFields = []

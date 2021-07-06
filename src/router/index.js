@@ -1,26 +1,33 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/app/Login'
-import IndexPage from '@/app/Index/IndexPage'
+import Dashboard from '@/app/Index/Dashboard/Dashboard'
+import UserManager from '@/app/Index/User/UserManager'
+import GachaManager from '@/app/Index/Gacha/GachaManager'
 
 Vue.use(Router)
 
 export default new Router({
     routes: [
         {
-            path: '/login',
+            path: '/',
             name: 'Login',
             component: Login
         },
         {
-            path: '/',
-            name: 'IndexPage',
-            component: IndexPage
+            path: '/index',
+            name: 'Dashboard',
+            component: Dashboard
         },
         {
-            path: '/index',
-            name: 'IndexPage',
-            component: IndexPage
+            path: '/user',
+            name: 'UserManager',
+            component: UserManager
+        },
+        {
+            path: '/gacha',
+            name: 'GachaManager',
+            component: GachaManager
         }
     ]
 })

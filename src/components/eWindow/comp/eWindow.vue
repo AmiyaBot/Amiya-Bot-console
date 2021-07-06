@@ -47,7 +47,7 @@ export default {
         },
         enableDrag: {
             type: Boolean,
-            default: true
+            default: false
         },
         shadeClose: {
             type: Boolean,

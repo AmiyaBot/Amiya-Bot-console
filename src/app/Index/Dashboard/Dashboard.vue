@@ -1,34 +1,34 @@
 <template>
     <div class="dashboard">
         <div class="information">
-            <NumberCard :value="cards.reply" color="5f75ed">
+            <number-card :value="cards.reply" color="5f75ed">
                 <template>
-                    <span>Reply</span>
-                    <span>Within 24 hours</span>
+                    <span>24小时内</span>
+                    <span>总回复次数</span>
                 </template>
-            </NumberCard>
-            <NumberCard :value="cards.activeUsers" color="ff7ea8">
+            </number-card>
+            <number-card :value="cards.activeUsers" color="ff7ea8">
                 <template>
-                    <span>Active users</span>
-                    <span>Within 24 hours</span>
+                    <span>24小时内</span>
+                    <span>活跃用户总数</span>
                 </template>
-            </NumberCard>
-            <NumberCard :value="cards.speed + '/min'" color="56d47d">
+            </number-card>
+            <number-card :value="cards.speed + '/min'" color="56d47d">
                 <template>
-                    <span>Reel time</span>
-                    <span>Receiving speed</span>
+                    <span>实时</span>
+                    <span>消息接收速度</span>
                 </template>
-            </NumberCard>
+            </number-card>
         </div>
         <div class="charts">
             <div class="left-side">
-                <MessageCount></MessageCount>
+                <message-count></message-count>
                 <div class="seat seat-left-row2"></div>
             </div>
             <div class="right-side">
-                <FunctionCount></FunctionCount>
+                <function-count></function-count>
                 <div class="seat seat-right-row1-right"></div>
-                <UserSignIn></UserSignIn>
+                <user-sign-in></user-sign-in>
                 <div class="seat seat-right-row2-right"></div>
                 <div class="seat seat-right-row3-bottom"></div>
             </div>

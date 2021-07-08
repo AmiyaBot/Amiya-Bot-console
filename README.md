@@ -13,13 +13,11 @@
 
 - 下载 Amiya-Bot-console 一键包
 - 解压后在文件夹控制台执行 `npm install` 下载依赖
-- 在 `start.js` 配置你的 Amiya-Bot 的数据库配置，以及端口设置
+- 在 `start.js` 配置你的 Amiya-Bot 的数据库配置
 
 ```js
 const openServer = require('./server/server')
 openServer(
-    8060, // 网页的访问端口
-    8010, // 服务请求端口（不是开发版请不要修改）
     // 数据库配置
     {
         host: '127.0.0.1',
@@ -32,7 +30,7 @@ openServer(
 ```
 
 - 完成后执行 `node start.js` 启动服务
-- 访问 `http://127.0.0.1:8060`
+- 访问 `http://127.0.0.1:8000`
 
 ### 常见问题
 

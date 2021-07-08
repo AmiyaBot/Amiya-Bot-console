@@ -33,7 +33,7 @@ export default {
             const path = this.$route.path
             for (let item of this.nav.list) {
                 if (item.path === path) {
-                    return item.title
+                    return item.title.toUpperCase()
                 }
             }
             return 'None'
@@ -43,37 +43,30 @@ export default {
         return {
             nav: {
                 list: [
-                    {path: '/index', name: 'Dashboard', title: 'Amiya Dashboard'},
-                    {path: '/group', name: 'Group', title: 'Group Manager'},
-                    {path: '/user', name: 'Users', title: 'Users Manager'},
-                    {path: '/gacha', name: 'Gacha', title: 'Gacha Manager'},
-                    {path: '/config', name: 'Config', title: 'Bot Configure'}
+                    {path: '/index', name: 'Dashboard', title: 'Dashboard'},
+                    {path: '/group', name: 'Group', title: '群组管理'},
+                    {path: '/user', name: 'Users', title: '用户管理'},
+                    {path: '/gacha', name: 'Gacha', title: '抽卡相关管理'},
+                    {path: '/config', name: 'Config', title: 'Bot 设置'}
                 ]
             }
+        }
+    },
+    mounted () {
+        window.login = () => {
+            this.lib.requests.post({
+                url: '/login',
+                data: {
+                    userId: '826197021',
+                    password: '123456'
+                }
+            })
         }
     }
 }
 </script>
 
-<style>
-* {
-    box-sizing: border-box;
-}
-
-html, body {
-    margin: 0;
-}
-
-#app {
-    width: 100vw;
-    height: 100vh;
-    font-size: 14px;
-    overflow: hidden;
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-</style>
+<style src="./App.css"></style>
 <style scoped>
 .main-header {
     width: 100%;
@@ -125,7 +118,7 @@ html, body {
 .main-body {
     width: 100%;
     height: calc(100% - 50px);
-    padding: 20px 50px;
+    padding: 20px 30px;
     background: #f3f4fa;
 }
 </style>

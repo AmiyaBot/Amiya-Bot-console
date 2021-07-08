@@ -21,7 +21,7 @@ export default {
         load: function () {
             const option = {
                 title: {
-                    text: 'Functions used'
+                    text: '函数使用总量'
                 },
                 legend: {
                     type: 'scroll',

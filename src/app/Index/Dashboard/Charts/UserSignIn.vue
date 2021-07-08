@@ -45,18 +45,18 @@ export default {
                         color: '#333',
                         fontWeight: 'bold'
                     },
-                    data: ['Signed users']
+                    data: ['签到用户']
                 },
                 color: ['#56d47d', '#d7d7d7'],
                 series: [
                     {
-                        name: 'Signed',
+                        name: '已签到',
                         type: 'bar',
                         stack: 'count',
                         data: []
                     },
                     {
-                        name: 'Not',
+                        name: '未签到',
                         type: 'bar',
                         stack: 'count',
                         label: {

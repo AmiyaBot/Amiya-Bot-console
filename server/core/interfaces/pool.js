@@ -2,18 +2,18 @@ const sqlBuilder = require('../support/util').sqlBuilder
 
 function Pool (mysql, data, callback) {
     this.getPoolsByPages = () => {
-        const where = sqlBuilder.where(data.search)
-        const list = `select * from t_pool ${where} order by pool_id desc limit ${sqlBuilder.pages(data.page, data.pageSize)}`
-        const count = `select count(*) as total from t_pool ${where}`
-        const sql = {
-            data: list,
-            count: count
-        }
+        const sql = sqlBuilder.queryPages(
+            't_pool',
+            data.search,
+            data.page,
+            data.pageSize,
+            'order by pool_id desc'
+        )
 
-        mysql.queryOneStage(sql, data => {
+        mysql.queryOneStage(sql, res => {
             const rsp = {
-                data: data.data,
-                count: data.count[0]['total']
+                data: res.data,
+                count: res.count[0]['total']
             }
             callback(rsp)
         })
@@ -26,8 +26,7 @@ function Pool (mysql, data, callback) {
                 return
             }
 
-            const sql = `insert into t_pool (${Object.keys(data).join(', ')}) values ("${Object.values(data).join('", "')}")`
-            mysql.query(sql, res => {
+            mysql.query(sqlBuilder.insert('t_pool', data), res => {
                 if (res.affectedRows) {
                     callback(res, 0, '成功添加卡池：' + data['pool_name'])
                     return
@@ -37,12 +36,7 @@ function Pool (mysql, data, callback) {
         })
     }
     this.editPool = () => {
-        const set = []
-        for (let field in data) {
-            set.push(`${field} = "${data[field]}"`)
-        }
-        const sql = `update t_pool set ${set.join(', ')} where pool_name = "${data['pool_name']}"`
-        mysql.query(sql, res => {
+        mysql.query(sqlBuilder.update('t_pool', data, {pool_name: data['pool_name']}), res => {
             if (res.affectedRows) {
                 callback(res, 0, '修改成功')
                 return
@@ -51,8 +45,51 @@ function Pool (mysql, data, callback) {
         })
     }
     this.delPool = () => {
-        const sql = `delete from t_pool where pool_name = "${data['pool_name']}"`
-        mysql.query(sql, res => {
+        mysql.query(sqlBuilder.delete('t_pool', {pool_name: data['pool_name']}), res => {
+            if (res.affectedRows) {
+                callback(res, 0, '删除成功')
+                return
+            }
+            callback(res, 1, '删除失败')
+        })
+    }
+    this.getConfigByPages = () => {
+        const sql = sqlBuilder.queryPages(
+            't_operator_gacha_config',
+            data.search,
+            data.page,
+            data.pageSize,
+            'order by id desc'
+        )
+
+        mysql.queryOneStage(sql, res => {
+            const rsp = {
+                data: res.data,
+                count: res.count[0]['total']
+            }
+            callback(rsp)
+        })
+    }
+    this.addNewConfig = () => {
+        mysql.query(sqlBuilder.insert('t_operator_gacha_config', data), res => {
+            if (res.affectedRows) {
+                callback(res, 0, '添加成功')
+                return
+            }
+            callback(res, 1, '添加失败')
+        })
+    }
+    this.editConfig = () => {
+        mysql.query(sqlBuilder.update('t_operator_gacha_config', data, {id: data['id']}), res => {
+            if (res.affectedRows) {
+                callback(res, 0, '修改成功')
+                return
+            }
+            callback(res, 1, '修改失败')
+        })
+    }
+    this.delConfig = () => {
+        mysql.query(sqlBuilder.delete('t_operator_gacha_config', {id: data['id']}), res => {
             if (res.affectedRows) {
                 callback(res, 0, '删除成功')
                 return

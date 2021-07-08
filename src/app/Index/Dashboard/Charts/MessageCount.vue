@@ -21,7 +21,7 @@ export default {
         load: function () {
             const option = {
                 title: {
-                    text: 'Messages analysis'
+                    text: '消息数量分析'
                 },
                 tooltip: {
                     trigger: 'axis',
@@ -30,7 +30,7 @@ export default {
                     }
                 },
                 legend: {
-                    data: ['Chat', 'Call', 'Reply']
+                    data: ['群聊', '主动呼叫', '回复']
                 },
                 axisPointer: {
                     link: {xAxisIndex: 'all'}
@@ -80,7 +80,7 @@ export default {
                 color: ['#5f75ed', '#ffba31', '#56d47d'],
                 series: [
                     {
-                        name: 'Chat',
+                        name: '群聊',
                         type: 'line',
                         areaStyle: {
                             opacity: 0.8,
@@ -102,7 +102,7 @@ export default {
                         smooth: true
                     },
                     {
-                        name: 'Call',
+                        name: '主动呼叫',
                         type: 'bar',
                         barMaxWidth: 10,
                         stack: 'count',
@@ -112,7 +112,7 @@ export default {
                         smooth: true
                     },
                     {
-                        name: 'Reply',
+                        name: '回复',
                         type: 'bar',
                         barMaxWidth: 10,
                         stack: 'count',

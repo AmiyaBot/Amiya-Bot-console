@@ -1,4 +1,22 @@
-export const tableFields = [
+export const poolType = {
+    0: '普通卡池',
+    1: '限定卡池',
+    2: '联合寻访'
+}
+
+export const operatorType = {
+    0: '可抽取-限定干员',
+    1: '可抽取-联动干员',
+    2: '不可抽取-非常规途径',
+    3: '不可抽取-销售',
+    4: '不可抽取-公开招募',
+    5: '不可抽取-活动奖励',
+    6: '不可抽取-联动奖励',
+    7: '不可抽取-危机合约奖励',
+    8: '不可抽取-roguelike限定'
+}
+
+export const poolTableFields = [
     {
         title: '卡池名称',
         field: 'pool_name',
@@ -45,17 +63,13 @@ export const tableFields = [
         custom: true,
         search: {
             type: 3,
-            data: {
-                0: '普通卡池',
-                1: '限定卡池',
-                2: '联合寻访'
-            },
+            data: poolType,
             checked: true
         }
     }
 ]
 
-export const formFields = [
+export const poolFormFields = [
     {
         title: '卡池名称',
         field: 'pool_name',
@@ -105,14 +119,48 @@ export const formFields = [
         field: 'limit_pool',
         config: {
             type: 3,
-            data: {
-                0: '普通卡池',
-                1: '限定卡池',
-                2: '联合寻访'
-            },
+            data: poolType,
             default: 0
         }
     }
 ]
 
-export const configTableFields = []
+export const configTableFields = [
+    {
+        title: '非常规获得的干员',
+        field: 'operator_name',
+        search: {
+            type: 1,
+            checked: true
+        }
+    },
+    {
+        title: '属性',
+        field: 'operator_type',
+        custom: true,
+        search: {
+            type: 3,
+            data: operatorType,
+            checked: true
+        }
+    }
+]
+
+export const configFormFields = [
+    {
+        title: '非常规获得的干员',
+        field: 'operator_name',
+        config: {
+            type: 1
+        }
+    },
+    {
+        title: '属性',
+        field: 'operator_type',
+        config: {
+            type: 3,
+            data: operatorType,
+            default: 0
+        }
+    }
+]

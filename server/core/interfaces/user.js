@@ -31,18 +31,18 @@ function User (mysql, data, callback) {
         })
     }
     this.getUsersByPages = () => {
-        const where = sqlBuilder.where(data.search)
-        const list = `select * from t_user ${where} order by sign_in desc, user_feeling desc limit ${sqlBuilder.pages(data.page, data.pageSize)}`
-        const count = `select count(*) as total from t_user ${where}`
-        const sql = {
-            data: list,
-            count: count
-        }
+        const sql = sqlBuilder.queryPages(
+            't_user',
+            data.search,
+            data.page,
+            data.pageSize,
+            'order by sign_in desc, user_feeling desc'
+        )
 
-        mysql.queryOneStage(sql, data => {
+        mysql.queryOneStage(sql, res => {
             const rsp = {
-                data: data.data,
-                count: data.count[0]['total']
+                data: res.data,
+                count: res.count[0]['total']
             }
             callback(rsp)
         })

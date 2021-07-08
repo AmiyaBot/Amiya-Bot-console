@@ -1,9 +1,9 @@
 <template>
-    <div class="UserManager">
-        <eTable :fields="table.fields" ref="table"
-                :data="table.data"
-                :total-page="table.total"
-                :list-loader="loadUsers">
+    <div class="shadow-box">
+        <e-table :fields="table.fields" ref="table"
+                 :data="table.data"
+                 :total-page="table.total"
+                 :list-loader="loadUsers">
 
             <template v-slot:top>
                 <el-button type="success" @click="sendCoupon(null)">全体发放凭证</el-button>
@@ -29,7 +29,7 @@
                 <el-button type="text" v-if="item.black === 1" @click="setBlackUser(item, 0)">解除黑名单</el-button>
             </template>
 
-        </eTable>
+        </e-table>
     </div>
 </template>
 
@@ -119,15 +119,6 @@ export default {
 </script>
 
 <style scoped>
-.UserManager {
-    width: 100%;
-    height: 100%;
-    padding: 15px;
-    background-color: #fff;
-    box-shadow: 0 0 10px 0 #d8d8d8;
-    border-radius: 12px;
-}
-
 .tag {
     font-size: 13px;
     color: #fff;

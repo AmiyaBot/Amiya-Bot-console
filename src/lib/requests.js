@@ -46,6 +46,12 @@ export default class Requests {
 
                         if (status === 200) {
                             const msg = data.msg
+                            const type = data.type
+
+                            if (type === -1) {
+                                location.href = '/'
+                                return
+                            }
 
                             if (successMessage && msg) {
                                 successMessage && this.message.toast(msg, data.type === 0 ? this.message.success : this.message.warning)

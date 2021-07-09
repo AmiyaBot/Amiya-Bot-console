@@ -1,5 +1,5 @@
-function Function (mysql, data, callback) {
-    this.getFunctionUsed = () => {
+function Function (mysql) {
+    this.getFunctionUsed = (data, callback) => {
         const sql = `select * from t_function`
 
         mysql.query(sql, res => {

@@ -1,7 +1,7 @@
-const sqlBuilder = require('../support/util').sqlBuilder
+const sqlBuilder = require('../support/sqlBuilder')
 
-function Pool (mysql, data, callback) {
-    this.getPoolsByPages = () => {
+function Pool (mysql) {
+    this.getPoolsByPages = (data, callback) => {
         const sql = sqlBuilder.queryPages(
             't_pool',
             data.search,
@@ -18,7 +18,7 @@ function Pool (mysql, data, callback) {
             callback(rsp)
         })
     }
-    this.addNewPool = () => {
+    this.addNewPool = (data, callback) => {
         const check = `select * from t_pool where pool_name = "${data['pool_name']}"`
         mysql.query(check, res => {
             if (res.length) {
@@ -35,7 +35,7 @@ function Pool (mysql, data, callback) {
             })
         })
     }
-    this.editPool = () => {
+    this.editPool = (data, callback) => {
         mysql.query(sqlBuilder.update('t_pool', data, {pool_name: data['pool_name']}), res => {
             if (res.affectedRows) {
                 callback(res, 0, '修改成功')
@@ -44,7 +44,7 @@ function Pool (mysql, data, callback) {
             callback(res, 1, '修改失败')
         })
     }
-    this.delPool = () => {
+    this.delPool = (data, callback) => {
         mysql.query(sqlBuilder.delete('t_pool', {pool_name: data['pool_name']}), res => {
             if (res.affectedRows) {
                 callback(res, 0, '删除成功')
@@ -53,7 +53,7 @@ function Pool (mysql, data, callback) {
             callback(res, 1, '删除失败')
         })
     }
-    this.getConfigByPages = () => {
+    this.getConfigByPages = (data, callback) => {
         const sql = sqlBuilder.queryPages(
             't_operator_gacha_config',
             data.search,
@@ -70,7 +70,7 @@ function Pool (mysql, data, callback) {
             callback(rsp)
         })
     }
-    this.addNewConfig = () => {
+    this.addNewConfig = (data, callback) => {
         mysql.query(sqlBuilder.insert('t_operator_gacha_config', data), res => {
             if (res.affectedRows) {
                 callback(res, 0, '添加成功')
@@ -79,7 +79,7 @@ function Pool (mysql, data, callback) {
             callback(res, 1, '添加失败')
         })
     }
-    this.editConfig = () => {
+    this.editConfig = (data, callback) => {
         mysql.query(sqlBuilder.update('t_operator_gacha_config', data, {id: data['id']}), res => {
             if (res.affectedRows) {
                 callback(res, 0, '修改成功')
@@ -88,7 +88,7 @@ function Pool (mysql, data, callback) {
             callback(res, 1, '修改失败')
         })
     }
-    this.delConfig = () => {
+    this.delConfig = (data, callback) => {
         mysql.query(sqlBuilder.delete('t_operator_gacha_config', {id: data['id']}), res => {
             if (res.affectedRows) {
                 callback(res, 0, '删除成功')

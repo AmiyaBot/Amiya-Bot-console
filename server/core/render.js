@@ -1,7 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const util = require('./support/util').util
-const Mysql = require('./support/mysql')
+const handler = require('./support/handler')
 
 function initIndexes () {
     const files = fs.readdirSync(path.resolve(__dirname, './interfaces'))
@@ -14,8 +13,10 @@ function initIndexes () {
         for (let item of Object.keys(new _controller())) {
             interfaces.push(
                 {
-                    path: [_name, item],
-                    func: _controller
+                    path: [_name, item].join('/'),
+                    controllerName: _name,
+                    functionName: item,
+                    controller: _controller
                 }
             )
         }
@@ -23,40 +24,22 @@ function initIndexes () {
     return interfaces
 }
 
-module.exports = (express, databaseConfig) => {
-    const mysql = new Mysql(databaseConfig)
+module.exports = (app, mysql) => {
     const interfaces = initIndexes()
+    const controllers = {}
 
     for (let item of interfaces) {
-        const path = item.path
-        const Controller = item.func
+        const Controller = item.controller
+        const hasInit = item.controllerName in controllers
 
-        express.post('/' + path.join('/'), (request, responds) => {
-            request.on('data', data => {
-                data = data.toString()
+        if (!hasInit) {
+            controllers[item.controllerName] = new Controller(mysql)
+        }
 
-                console.log('Received HTTP request: ' + path.join('/'))
-                console.log(' -- Date: ' + util.formatDate())
-                console.log(' -- Post: ' + data)
+        const target = controllers[item.controllerName]
 
-                const postData = JSON.parse(data)
-                const callback = (res, type, msg) => {
-                    responds.send({
-                        type: (!type && type !== 0) ? 0 : type,
-                        data: res === undefined ? null : res,
-                        msg: msg || ''
-                    })
-                }
-
-                try {
-                    const init = new Controller(mysql, postData, callback)
-                    const funcName = path[1]
-
-                    init[funcName]()
-                } catch (e) {
-                    console.log(e)
-                }
-            })
+        app.post('/' + item.path, (req, res) => {
+            handler({mysql, req, res}, target[item.functionName])
         })
     }
 }

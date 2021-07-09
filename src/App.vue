@@ -62,6 +62,11 @@ export default {
                 }
             })
         }
+        window.logout = () => {
+            this.lib.requests.post({
+                url: '/logout'
+            })
+        }
     }
 }
 </script>

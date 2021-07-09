@@ -1,7 +1,7 @@
-const util = require('../support/util').util
+const util = require('../support/util')
 
-function Message (mysql, data, callback) {
-    this.getTotalMessage = () => {
+function Message (mysql) {
+    this.getTotalMessage = (data, callback) => {
         const lastTime = util.lastTime()
         const sql = `select msg_type, count(*) as total from t_message where msg_time >= ${lastTime} GROUP BY msg_type`
 
@@ -9,7 +9,7 @@ function Message (mysql, data, callback) {
             callback(res)
         })
     }
-    this.getMessageSpeed = () => {
+    this.getMessageSpeed = (data, callback) => {
         const start = new Date().getTime() / 1000 - 120
         const end = new Date().getTime() / 1000 - 60
         const sql = `select count(*) as total from t_message where msg_time >= ${start} and msg_time < ${end} and msg_type = 'talk'`
@@ -18,7 +18,7 @@ function Message (mysql, data, callback) {
             callback(res[0]['total'])
         })
     }
-    this.getMessageAnalysis = () => {
+    this.getMessageAnalysis = (data, callback) => {
         const lastTime = util.lastTime(23)
         const sql = `select * from t_message where msg_time >= ${lastTime}`
 

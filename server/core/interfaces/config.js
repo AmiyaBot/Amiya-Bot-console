@@ -1,5 +1,5 @@
-function Config (mysql, data, callback) {
-    this.getConfig = () => {
+function Config (mysql) {
+    this.getConfig = (data, callback) => {
         const sql = `select * from t_function`
 
         mysql.query(sql, res => {

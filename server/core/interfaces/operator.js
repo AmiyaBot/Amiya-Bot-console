@@ -1,5 +1,5 @@
-function Operator (mysql, data, callback) {
-    this.getAllOperator = () => {
+function Operator (mysql) {
+    this.getAllOperator = (data, callback) => {
         const sql = 'select * from t_operator'
 
         mysql.query(sql, res => {

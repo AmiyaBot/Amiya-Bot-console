@@ -1,21 +1,23 @@
-const util = require('../support/util').util
-const sqlBuilder = require('../support/util').sqlBuilder
+const util = require('../support/util')
+const sqlBuilder = require('../support/sqlBuilder')
 
-function User (mysql, data, callback) {
-    this.getActiveUsers = (hour = 24, selfCallback) => {
-        const lastTime = util.lastTime(hour)
-        const user = `select * from t_message where msg_time >= ${lastTime} and msg_type = 'reply' GROUP BY reply_user`
-        const sql = `select count(*) as total from (${user}) as user`
+function getActiveUsersCount (mysql, hour = 24, callback) {
+    const lastTime = util.lastTime(hour)
+    const user = `select * from t_message where msg_time >= ${lastTime} and msg_type = 'reply' GROUP BY reply_user`
+    const sql = `select count(*) as total from (${user}) as user`
 
-        mysql.query(sql, res => {
-            if (selfCallback) {
-                selfCallback(res[0]['total'])
-                return
-            }
+    mysql.query(sql, res => {
+        callback(res[0]['total'])
+    })
+}
+
+function User (mysql) {
+    this.getActiveUsers = (data, callback) => {
+        getActiveUsersCount(mysql, 24, res => {
             callback(res[0]['total'])
         })
     }
-    this.getUserSignData = () => {
+    this.getUserSignData = (data, callback) => {
         const sql = `select count(*) as total from t_user where sign_in = 1`
 
         let hours = new Date().getHours() - 4
@@ -23,14 +25,14 @@ function User (mysql, data, callback) {
             hours = 24 + hours
         }
 
-        this.getActiveUsers(hours, count => {
+        getActiveUsersCount(mysql, hours, count => {
             mysql.query(sql, res => {
                 const rsp = [count, res[0]['total']]
                 callback(rsp)
             })
         })
     }
-    this.getUsersByPages = () => {
+    this.getUsersByPages = (data, callback) => {
         const sql = sqlBuilder.queryPages(
             't_user',
             data.search,
@@ -47,7 +49,7 @@ function User (mysql, data, callback) {
             callback(rsp)
         })
     }
-    this.setBlackUser = () => {
+    this.setBlackUser = (data, callback) => {
         const sql = `update t_user set black = ${data['black']} where user_id = "${data['user_id']}"`
         mysql.query(sql, res => {
             if (res.affectedRows) {
@@ -57,7 +59,7 @@ function User (mysql, data, callback) {
             callback(res, 1, '修改失败')
         })
     }
-    this.sendCoupon = () => {
+    this.sendCoupon = (data, callback) => {
         let sql = `update t_user set coupon = coupon + ${data['value']}`
 
         if (data['users'].length) {

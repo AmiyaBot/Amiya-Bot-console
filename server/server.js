@@ -1,37 +1,28 @@
 const express = require('express')
 const session = require('express-session')
-const FileStore = require('session-file-store')(session)
 const render = require('./core/render')
+const Mysql = require('./core/support/mysql')
+const auth = require('./core/auth')
 
-function openServer (databaseConfig, port = 8000) {
+function openServer (database, port = 8000) {
     const app = express()
+    const mysql = new Mysql(database)
 
     console.log('\x1B[36m%s\x1b[0m', 'Server starting on http://127.0.0.1:' + port)
     console.log('\n')
 
     app.use(express.static('dist')).listen(port)
     app.use(session({
-        secret: 'amiyaServer',
-        store: new FileStore(),
+        secret: 'amiya_server',
         saveUninitialized: false,
         resave: false,
         cookie: {
-            maxAge: 10000
+            maxAge: 3600000
         }
     }))
 
-    app.all('*', (req, res, next) => {
-        res.header('Access-Control-Allow-Origin', '*')
-        res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With')
-        res.header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
-        if (req.method === 'OPTIONS') {
-            res.sendStatus(200)
-        } else {
-            next()
-        }
-    })
-
-    render(app, databaseConfig)
+    auth(app, mysql)
+    render(app, mysql)
 }
 
 module.exports = openServer

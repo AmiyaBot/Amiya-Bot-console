@@ -14,7 +14,7 @@ function getActiveUsersCount (mysql, hour = 24, callback) {
 function User (mysql) {
     this.getActiveUsers = (data, callback) => {
         getActiveUsersCount(mysql, 24, res => {
-            callback(res[0]['total'])
+            callback(res)
         })
     }
     this.getUserSignData = (data, callback) => {

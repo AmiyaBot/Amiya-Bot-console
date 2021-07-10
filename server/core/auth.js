@@ -30,12 +30,19 @@ function auth (app, mysql) {
         handler(
             {mysql, req, res},
             (data, done) => {
-                req.session.regenerate(err => {
-                    if (err) {
-                        return done('', 1, '登录失败')
+                const sql = `select * from t_user_admin where user_id = "${data.userId}" and password = "${data.password}"`
+                mysql.query(sql, res => {
+                    if (res.length) {
+                        req.session.regenerate(err => {
+                            if (err) {
+                                return done('', 1, '登录失败')
+                            }
+                            req.session.user_id = data.userId
+                            done('', 0, '登录成功')
+                        })
+                    } else {
+                        done('', 1, '用户ID或密码错误')
                     }
-                    req.session.user_id = data.userId
-                    done('', 0, '登录成功')
                 })
             }
         )

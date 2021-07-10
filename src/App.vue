@@ -51,22 +51,6 @@ export default {
                 ]
             }
         }
-    },
-    mounted () {
-        window.login = () => {
-            this.lib.requests.post({
-                url: '/login',
-                data: {
-                    userId: '826197021',
-                    password: '123456'
-                }
-            })
-        }
-        window.logout = () => {
-            this.lib.requests.post({
-                url: '/logout'
-            })
-        }
     }
 }
 </script>

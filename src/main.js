@@ -20,7 +20,7 @@ function lib (config) {
 Vue.use(elementUI)
 Vue.config.productionTip = false
 Vue.prototype.lib = lib({
-    host: location.hostname + ':8000'
+    host: location.host
 })
 
 /* eslint-disable no-new */

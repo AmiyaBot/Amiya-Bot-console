@@ -20,7 +20,7 @@ function lib (config) {
 Vue.use(elementUI)
 Vue.config.productionTip = false
 Vue.prototype.lib = lib({
-    host: 'localhost:8000'
+    host: location.host
 })
 
 router.beforeEach((to, from, next) => {

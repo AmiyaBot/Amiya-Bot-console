@@ -8,12 +8,18 @@
                          @click="$router.push(item.path)">
                         <span>{{ item.name }}</span>
                     </div>
+                    <div @click="logout">
+                        <span>Logout</span>
+                    </div>
                 </div>
             </div>
             <div class="main-body">
                 <SubPage :title="getTitle()">
                     <router-view></router-view>
                 </SubPage>
+            </div>
+            <div class="icp">
+                <a href="https://beian.miit.gov.cn" target="_blank">{{ icp }}</a>
             </div>
         </template>
         <router-view v-else></router-view>
@@ -37,19 +43,30 @@ export default {
                 }
             }
             return 'None'
+        },
+        logout: function () {
+            this.lib.message.confirm('确定退出登录吗？', '退出登录', () => {
+                this.lib.requests.post({
+                    url: '/logout',
+                    success: res => {
+                        location.href = '/'
+                    }
+                })
+            })
         }
     },
     data () {
         return {
             nav: {
                 list: [
-                    {path: '/index', name: 'Dashboard', title: 'Dashboard'},
+                    {path: '/index', name: 'Dashboard', title: '概况看板'},
                     {path: '/group', name: 'Group', title: '群组管理'},
                     {path: '/user', name: 'Users', title: '用户管理'},
-                    {path: '/gacha', name: 'Gacha', title: '抽卡相关管理'},
+                    {path: '/gacha', name: 'Gacha', title: '抽卡管理'},
                     {path: '/config', name: 'Config', title: 'Bot 设置'}
                 ]
-            }
+            },
+            icp: window.icp
         }
     }
 }
@@ -87,6 +104,10 @@ export default {
     display: flex;
 }
 
+.main-header > .nav span {
+    user-select: none;
+}
+
 .main-header > .nav > div {
     padding: 0 10px;
     color: #fff;
@@ -107,7 +128,18 @@ export default {
 .main-body {
     width: 100%;
     height: calc(100% - 50px);
-    padding: 20px 30px;
+    padding: 20px 30px 30px;
     background: #f3f4fa;
+}
+
+.icp {
+    width: 100%;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+}
+
+.icp a {
+    color: #555;
 }
 </style>

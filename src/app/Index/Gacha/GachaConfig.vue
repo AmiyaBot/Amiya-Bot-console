@@ -44,15 +44,15 @@ export default {
     methods: {
         loadConfig: function (page = 1, pageSize = 10, search = {}) {
             this.lib.requests.post({
-                url: '/pool/getConfigByPages',
+                url: '/operator/getOperatorGachaConfig',
                 data: {
                     page,
                     pageSize,
                     search
                 },
                 success: res => {
-                    this.$set(this.table, 'data', res.data.data)
-                    this.$set(this.table, 'total', res.data.count)
+                    this.$set(this.table, 'data', res.data)
+                    this.$set(this.table, 'total', res.count)
                 }
             })
         },
@@ -75,20 +75,18 @@ export default {
         delConfig: function (item) {
             this.lib.message.confirm('确定删除该干员配置吗？', '请确认', () => {
                 this.lib.requests.post({
-                    url: '/pool/delConfig',
+                    url: '/operator/delConfig',
                     data: item,
                     successMessage: true,
                     success: res => {
-                        if (res.type === 0) {
-                            this.$refs.table.loadList()
-                        }
+                        this.$refs.table.loadList()
                     }
                 })
             })
         },
         submitManage: function () {
             const data = this.$refs.form.getValue()
-            const url = this.form.type === 1 ? '/pool/editConfig' : '/pool/addNewConfig'
+            const url = this.form.type === 1 ? '/operator/editConfig' : '/operator/addNewConfig'
 
             if (data['operator_name'] === '') {
                 this.lib.message.toast('干员名称不能为空', 'error')
@@ -100,14 +98,12 @@ export default {
                 data: data,
                 successMessage: true,
                 success: res => {
-                    if (res.type === 0) {
-                        this.$refs.window.hide()
-                        if (this.form.type) {
-                            this.$refs.table.loadList()
-                            return
-                        }
-                        this.loadConfig()
+                    this.$refs.window.hide()
+                    if (this.form.type) {
+                        this.$refs.table.loadList()
+                        return
                     }
+                    this.loadConfig()
                 }
             })
         }
@@ -123,8 +119,7 @@ export default {
                 fields: configFormFields,
                 type: 0
             },
-            operatorType: operatorType,
-            operators: {}
+            operatorType: operatorType
         }
     },
     mounted () {

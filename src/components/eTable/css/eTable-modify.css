@@ -72,13 +72,13 @@
 .el-pagination.is-background .btn-prev,
 .el-pagination.is-background .el-pager li {
     background: none;
-    border-radius: 6px;
+    border-radius: 6px !important;
     border: 1px solid #CECECE;
     font-weight: initial;
 }
 
 .el-pagination.is-background .el-pager li:not(.disabled).active {
-    background-color: #5F75ED;
+    background-color: #5F75ED !important;
     border-color: #5F75ED;
     color: #ffffff !important;
 }

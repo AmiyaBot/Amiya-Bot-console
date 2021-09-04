@@ -58,9 +58,13 @@ export default {
         calcSearchAreaHeight: function () {
             setTimeout(() => {
                 let elem = $('.' + this.uid() + ' ' + (this.searchOn ? '.form' : '.searchData'))
+                let height = elem.height()
+
+                this.$emit('height', height)
+
                 $('.' + this.uid() + '.searchForm').css(
                     {
-                        height: elem.height(),
+                        height: height,
                         padding: this.searchFormDisplay.length ? '5px 0 10px' : '0'
                     }
                 )

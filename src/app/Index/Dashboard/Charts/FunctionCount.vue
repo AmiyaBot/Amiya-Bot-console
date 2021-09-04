@@ -58,7 +58,7 @@ export default {
             for (let item of data) {
                 option.series.data.push({
                     name: item['function_id'],
-                    value: item['function_use_num']
+                    value: item['use_num']
                 })
             }
 
@@ -70,9 +70,9 @@ export default {
         },
         getFunctionUsed: function () {
             this.lib.requests.post({
-                url: '/function/getFunctionUsed',
+                url: '/dashboard/getFunctionUsed',
                 success: res => {
-                    this.$set(this, 'data', res.data)
+                    this.$set(this, 'data', res)
                 }
             })
         }

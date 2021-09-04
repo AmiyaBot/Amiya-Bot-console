@@ -16,10 +16,6 @@ export default {
         type: Number,
         default: 10
     },
-    maxHeight: {
-        type: Number,
-        default: 600
-    },
     data: {
         type: Array,
         default: []

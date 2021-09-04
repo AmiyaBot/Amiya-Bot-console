@@ -61,13 +61,13 @@ export default {
                     search
                 },
                 success: res => {
-                    for (let item of res.data.data) {
-                        for (let name of ['pickup_6', 'pickup_5', 'pickup_4', 'pickup_s']) {
+                    for (let item of res.data) {
+                        for (let name of ['pickup_6', 'pickup_5', 'pickup_4']) {
                             item[name] = item[name] ? item[name].split(',') : []
                         }
                     }
-                    this.$set(this.table, 'data', res.data.data)
-                    this.$set(this.table, 'total', res.data.count)
+                    this.$set(this.table, 'data', res.data)
+                    this.$set(this.table, 'total', res.count)
                 }
             })
         },
@@ -76,9 +76,9 @@ export default {
                 url: '/operator/getAllOperator',
                 success: res => {
                     const data = {}
-                    for (let item of res.data) {
-                        const rarity = item['operator_rarity']
-                        const option = item['operator_name']
+                    for (let item of res) {
+                        const rarity = item['rarity']
+                        const option = item['name']
 
                         if (rarity in data) {
                             data[rarity][option] = option
@@ -121,9 +121,7 @@ export default {
                     data: item,
                     successMessage: true,
                     success: res => {
-                        if (res.type === 0) {
-                            this.$refs.table.loadList()
-                        }
+                        this.$refs.table.loadList()
                     }
                 })
             })
@@ -146,14 +144,12 @@ export default {
                 data: data,
                 successMessage: true,
                 success: res => {
-                    if (res.type === 0) {
-                        this.$refs.window.hide()
-                        if (this.form.type) {
-                            this.$refs.table.loadList()
-                            return
-                        }
-                        this.loadPool()
+                    this.$refs.window.hide()
+                    if (this.form.type) {
+                        this.$refs.table.loadList()
+                        return
                     }
+                    this.loadPool()
                 }
             })
         }

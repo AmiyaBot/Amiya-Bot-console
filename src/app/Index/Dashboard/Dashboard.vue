@@ -53,29 +53,25 @@ export default {
     methods: {
         getTotalMessage: function () {
             this.lib.requests.post({
-                url: '/message/getTotalMessage',
+                url: '/dashboard/getTotalMessage',
                 success: res => {
-                    for (let item of res.data) {
-                        if (item['msg_type'] === 'reply') {
-                            this.cards.reply = item['total']
-                        }
-                    }
+                    this.cards.reply = res
                 }
             })
         },
         getMessageSpeed: function () {
             this.lib.requests.post({
-                url: '/message/getMessageSpeed',
+                url: '/dashboard/getMessageSpeed',
                 success: res => {
-                    this.cards.speed = res.data
+                    this.cards.speed = res
                 }
             })
         },
         getActiveUsers: function () {
             this.lib.requests.post({
-                url: '/user/getActiveUsers',
+                url: '/dashboard/getActiveUsers',
                 success: res => {
-                    this.cards.activeUsers = res.data
+                    this.cards.activeUsers = res
                 }
             })
         }

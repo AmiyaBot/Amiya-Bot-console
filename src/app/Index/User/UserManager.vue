@@ -52,8 +52,8 @@ export default {
                     search
                 },
                 success: res => {
-                    this.$set(this.table, 'data', res.data.data)
-                    this.$set(this.table, 'total', res.data.count)
+                    this.$set(this.table, 'data', res.data)
+                    this.$set(this.table, 'total', res.count)
                 }
             })
         },
@@ -68,9 +68,7 @@ export default {
                     },
                     successMessage: true,
                     success: res => {
-                        if (res.type === 0) {
-                            this.$refs.table.loadList()
-                        }
+                        this.$refs.table.loadList()
                     }
                 })
             })
@@ -95,9 +93,7 @@ export default {
                     },
                     successMessage: true,
                     success: res => {
-                        if (res.type === 0) {
-                            this.$refs.table.loadList()
-                        }
+                        this.$refs.table.loadList()
                     }
                 })
             }, 'number')

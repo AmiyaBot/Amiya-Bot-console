@@ -34,8 +34,8 @@ export const tableFields = [
         search: {
             type: 3,
             data: {
-                '0': '未签到',
-                '1': '已签到'
+                0: '未签到',
+                1: '已签到'
             },
             checked: true
         }
@@ -52,8 +52,8 @@ export const tableFields = [
         search: {
             type: 3,
             data: {
-                '0': '正常',
-                '1': '黑名单'
+                0: '正常',
+                1: '黑名单'
             },
             checked: true
         }

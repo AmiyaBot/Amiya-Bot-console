@@ -141,9 +141,9 @@ export default {
         },
         getMessageAnalysis: function () {
             this.lib.requests.post({
-                url: '/message/getMessageAnalysis',
+                url: '/dashboard/getMessageAnalysis',
                 success: res => {
-                    this.$set(this, 'data', res.data)
+                    this.$set(this, 'data', res)
                 }
             })
         }

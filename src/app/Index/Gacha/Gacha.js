@@ -148,6 +148,14 @@ export const configTableFields = [
 
 export const configFormFields = [
     {
+        title: 'ID',
+        field: 'conf_id',
+        config: {
+            type: 1,
+            disabled: true
+        }
+    },
+    {
         title: '非常规获得的干员',
         field: 'operator_name',
         config: {

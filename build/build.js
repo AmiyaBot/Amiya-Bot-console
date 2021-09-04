@@ -17,6 +17,7 @@ spinner.start()
 
 function createVersionFile (stats) {
     const files = Object.keys(stats.compilation.assets)
+    files.unshift(new Date().getTime().toString())
     fs.writeFileSync('.version', files.join('\n'), {flag: 'w+'})
 }
 

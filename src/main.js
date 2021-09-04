@@ -20,7 +20,15 @@ function lib (config) {
 Vue.use(elementUI)
 Vue.config.productionTip = false
 Vue.prototype.lib = lib({
-    host: location.host
+    host: 'localhost:8000'
+})
+
+router.beforeEach((to, from, next) => {
+    for (let item of window.axiosRequestsList) {
+        item.cancel()
+    }
+    window.axiosRequestsList = []
+    next()
 })
 
 /* eslint-disable no-new */

@@ -15,6 +15,7 @@
                     <el-input size="small" v-model="form.userId"
                               @focus="currStatus = 2"
                               @blur="currStatus = 1"
+                              @change="login"
                               placeholder="请输入用户ID"
                               prefix-icon="el-icon-user"></el-input>
                 </div>
@@ -23,6 +24,7 @@
                     <el-input size="small" type="password" v-model="form.password"
                               @focus="currStatus = 3"
                               @blur="currStatus = 1"
+                              @change="login"
                               placeholder="请输入密码"
                               prefix-icon="el-icon-key"></el-input>
                 </div>
@@ -30,6 +32,9 @@
                     <el-button type="primary" @click="login">Link Start !</el-button>
                 </div>
             </div>
+        </div>
+        <div class="icp">
+            <a href="https://beian.miit.gov.cn" target="_blank">{{ icp }}</a>
         </div>
     </div>
 </template>
@@ -39,18 +44,19 @@ export default {
     name: 'Login',
     methods: {
         login: function () {
-            this.lib.requests.post({
-                url: '/login',
-                data: this.form,
-                successMessage: true,
-                success: res => {
-                    if (res.type === 0) {
+            if (this.form.userId && this.form.password) {
+                this.lib.requests.post({
+                    url: '/login',
+                    data: this.form,
+                    successMessage: true,
+                    success: res => {
                         this.$router.push('/index')
-                    } else {
+                    },
+                    error: () => {
                         this.currStatus = 4
                     }
-                }
-            })
+                })
+            }
         },
         toBotGitHub: function () {
             window.open('https://github.com/vivien8261/Amiya-Bot')
@@ -71,7 +77,8 @@ export default {
                 3: 'password',
                 4: 'error'
             },
-            currStatus: 1
+            currStatus: 1,
+            icp: window.icp
         }
     }
 }

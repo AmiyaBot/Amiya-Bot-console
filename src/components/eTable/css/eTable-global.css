@@ -42,19 +42,3 @@
 .tableButton.hide:hover {
     background-image: url(../../../assets/table/hide-s.svg);
 }
-
-.tableButton.report {
-    background-image: url(../../../assets/table/report.svg);
-}
-
-.tableButton.report:hover {
-    background-image: url(../../../assets/table/report-s.svg);
-}
-
-.tableButton.export {
-    background-image: url(../../../assets/table/export.svg);
-}
-
-.tableButton.export:hover {
-    background-image: url(../../../assets/table/export-s.svg);
-}

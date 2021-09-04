@@ -78,9 +78,9 @@ export default {
         },
         getUserSignData: function () {
             this.lib.requests.post({
-                url: '/user/getUserSignData',
+                url: '/dashboard/getUserSignRate',
                 success: res => {
-                    this.$set(this, 'data', res.data)
+                    this.$set(this, 'data', res)
                 }
             })
         }

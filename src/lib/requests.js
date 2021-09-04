@@ -2,6 +2,10 @@ import axios from 'axios'
 import CommonMessage from '@/lib/message'
 import {Loading} from 'element-ui'
 
+window.axiosRequestsList = []
+
+axios.defaults.withCredentials = true
+
 export default class Requests {
     constructor (config) {
         this.host = config.host
@@ -28,6 +32,9 @@ export default class Requests {
                 headers: {
                     'Content-Type': 'application/json'
                 },
+                cancelToken: new axios.CancelToken(cancel => {
+                    window.axiosRequestsList.push({cancel})
+                }),
                 [params]: payload
             }
 
@@ -45,30 +52,31 @@ export default class Requests {
                         const status = response.status
 
                         if (status === 200) {
-                            const msg = data.msg
-                            const type = data.type
-
-                            if (type === -1) {
-                                location.href = '/'
-                                return
+                            const code = data.code
+                            const message = data.message
+                            switch (code) {
+                                case 200:
+                                    if (successMessage && message) {
+                                        successMessage && this.message.toast(message, this.message.success)
+                                    }
+                                    success && success(data.data)
+                                    break
+                                case 400:
+                                    this.message.alert(message, 'Access 错误', () => {
+                                        location.href = '/'
+                                    })
+                                    break
+                                case 0:
+                                    this.message.notify(message, '提示', this.message.warning)
+                                    error && error()
+                                    break
                             }
-
-                            if (successMessage && msg) {
-                                successMessage && this.message.toast(msg, data.type === 0 ? this.message.success : this.message.warning)
-                            }
-
-                            success && success(data)
                         }
                     }
                 )
                 .catch(
                     err => {
-                        this.message.notify(
-                            err.toString(),
-                            '请求发生错误',
-                            this.message.error
-                        )
-                        error && error(err)
+                        this.message.notify(err.toString(), '请求发生错误', this.message.error)
                     }
                 )
                 .finally(

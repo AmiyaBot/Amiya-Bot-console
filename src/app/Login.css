@@ -102,3 +102,14 @@
     right: 5px;
     cursor: pointer;
 }
+
+.icp {
+    width: 100%;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+}
+
+.icp a {
+    color: #fff;
+}

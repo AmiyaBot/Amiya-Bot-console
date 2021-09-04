@@ -2,7 +2,7 @@
     <div class="sub-page">
         <div class="sub-page-title">{{ title }}</div>
         <div class="sub-page-content">
-            <slot></slot>
+            <slot>在做了在做了（下次一定）……>.<</slot>
         </div>
     </div>
 </template>

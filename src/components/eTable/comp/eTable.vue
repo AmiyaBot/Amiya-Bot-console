@@ -1,8 +1,9 @@
 <template>
-    <div class="listTable" :class="uid()">
+    <div class="listTable" :class="uid()" ref="listTable">
         <searchFormBuilder :search-form="searchForm"
                            :search-form-display="searchFormDisplay"
                            :search-on="searchOn"
+                           @height="calcTableHeight"
                            ref="searchForm">
         </searchFormBuilder>
         <div class="topArea" v-show="operationMode">
@@ -45,7 +46,6 @@
                     <div class="tableButton search" slot="reference"></div>
                 </el-popover>
                 <div class="tableButton hide" :class="{ onHide: !searchOn }" @click="searchOn = !searchOn"></div>
-                <div class="tableButton report"></div>
                 <el-popover popper-class="export" trigger="click" title="导出表单" v-if="exportPageUrl || exportAllUrl">
                     <exportContent :export-page-url="exportPageUrl"
                                    :export-all-url="exportAllUrl"
@@ -53,13 +53,12 @@
                                    :curr-page-size="currPageSize"
                                    :get-value="getValue">
                     </exportContent>
-                    <div class="tableButton export" slot="reference"></div>
                 </el-popover>
             </div>
         </div>
         <el-table ref="table" border lazy v-loading="loading"
                   :data="data"
-                  :max-height="maxHeight"
+                  :max-height="tableHeight"
                   :row-key="dataId"
                   :load="loadChildren"
                   :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
@@ -182,6 +181,10 @@ export default {
                 this.resetWidth()
             })
         },
+        calcTableHeight: function (searchHeight) {
+            let height = this.$refs.listTable.clientHeight
+            this.tableHeight = height - searchHeight - 92
+        },
         resetWidth: function () {
             if (!this.autoReset) {
                 return
@@ -246,6 +249,7 @@ export default {
             searchForm: [],
             searchFormDisplay: [],
             searchOn: null,
+            tableHeight: 500,
             currPage: 1,
             currPageSize: 0,
             loading: false

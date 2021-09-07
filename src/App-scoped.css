@@ -1,0 +1,80 @@
+
+.main-header {
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    color: #fff;
+    background: #5F75ED;
+    display: flex;
+}
+
+.main-header > .title {
+    font-size: 20px;
+    padding: 0 20px;
+    position: relative;
+}
+
+.main-header > .title:after {
+    content: '';
+    height: 20px;
+    border-right: 1px solid #fff;
+    position: absolute;
+    top: calc(50% - 10px);
+    right: 0;
+    opacity: 0.5;
+}
+
+.main-header > .nav {
+    padding: 0 10px;
+    display: flex;
+}
+
+.main-header > .nav span {
+    user-select: none;
+}
+
+.main-header > .nav > div {
+    padding: 0 10px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+    transition: all 300ms linear;
+    cursor: pointer;
+}
+
+.main-header > .nav > div.curr {
+    color: rgb(255, 186, 49);
+}
+
+.main-header > .nav > div:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.main-body {
+    width: 100%;
+    height: calc(100% - 50px);
+    padding: 20px 30px 30px;
+    background: #f3f4fa;
+}
+
+.user-menu {
+    position: absolute;
+    right: 20px;
+}
+
+.user {
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.icp {
+    width: 100%;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+}
+
+.icp a {
+    color: #555;
+}

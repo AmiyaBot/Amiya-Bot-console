@@ -4,6 +4,7 @@ import Login from '@/app/Login'
 import Dashboard from '@/app/Index/Dashboard/Dashboard'
 import UserManager from '@/app/Index/User/UserManager'
 import GachaManager from '@/app/Index/Gacha/GachaManager'
+import AdminManager from '@/app/Index/Admin/AdminManager'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
             path: '/gacha',
             name: 'GachaManager',
             component: GachaManager
+        },
+        {
+            path: '/trace',
+            name: 'AdminManager',
+            component: AdminManager
         }
     ]
 })

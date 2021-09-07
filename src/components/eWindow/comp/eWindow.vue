@@ -10,7 +10,7 @@
                :close-on-click-modal="shadeClose"
                :custom-class="['custom-window', uid()].join(' ')">
         <template v-if="type === 'form'">
-            <el-form label-width="80px" size="small" style="overflow: hidden;">
+            <el-form label-width="120px" size="small" style="overflow: hidden;">
                 <slot></slot>
             </el-form>
             <div slot="footer">

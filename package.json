@@ -14,10 +14,7 @@
         "axios": "^0.21.1",
         "echarts": "^5.1.2",
         "element-ui": "^2.15.2",
-        "express": "^4.17.1",
-        "express-session": "^1.17.2",
         "jquery": "^3.6.0",
-        "mysql": "^2.18.1",
         "vue": "^2.5.2",
         "vue-router": "^3.0.1",
         "xlsx": "^0.17.0"

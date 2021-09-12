@@ -31,10 +31,54 @@
         </e-table>
 
         <e-window :title="(form.type === 1 ? '修改' : '新增') + '卡池'" ref="window">
-            <eForm :build-data="form.fields" ref="form">
+            <eForm :build-data="form.fields" :onchange="formChange" ref="form">
                 <el-button type="primary" @click="submitManage()">提交</el-button>
+                <el-badge :value="spForm.spList.length" :hidden="!spForm.spList.length" class="item">
+                    <el-button @click="() => $refs.spOperator.show()">设置自定义干员</el-button>
+                </el-badge>
             </eForm>
+
+            <e-window title="设置自定义干员" ref="spOperator">
+                <el-alert title="为什么要设置自定义干员？" :closable="false">
+                    <div class="alert">
+                        自定义干员为不存在列表内的干员，因此不具备干员ID（char_id），即使在对应星级的UP干员内设置，仍无法在抽卡时为其匹配
+                        <span>星级</span>、<span>职业</span> 以及 <span>立绘</span> 等信息。
+                    </div>
+                </el-alert>
+                <br>
+                <e-table :fields="spForm.spTable"
+                         :data="spForm.spList"
+                         :operation-mode="false"
+                         :pagination="false"
+                         :selection="false">
+                    <template v-slot:custom="{ field, value, index, item }">
+                        <div v-if="field.field === 'rarity'">
+                            <el-select v-model="spForm.spList[index].rarity" placeholder="请选择星级" size="mini">
+                                <el-option v-for="item in [1, 2, 3, 4, 5, 6]"
+                                           :key="item"
+                                           :label="item + '星'"
+                                           :value="item">
+                                </el-option>
+                            </el-select>
+                        </div>
+                        <div v-if="field.field === 'classes'">
+                            <el-select v-model="spForm.spList[index].classes" placeholder="请选择职业" size="mini">
+                                <el-option v-for="(item, value) in classes"
+                                           :key="value"
+                                           :label="item"
+                                           :value="value">
+                                </el-option>
+                            </el-select>
+                        </div>
+                        <div v-if="field.field === 'image'">
+                            <el-button type="text" @click="upload(index, item)">点击上传</el-button>
+                            <el-button type="text" @click="showImage(item)" v-if="value">预览</el-button>
+                        </div>
+                    </template>
+                </e-table>
+            </e-window>
         </e-window>
+        <e-upload ref="upload" :on-upload="onUpload"></e-upload>
     </div>
 </template>
 
@@ -42,11 +86,13 @@
 import eForm from '@/components/eForm/comp/eForm'
 import eTable from '@/components/eTable/comp/eTable'
 import eWindow from '@/components/eWindow/comp/eWindow'
-import {poolTableFields, poolFormFields} from '@/app/Index/Gacha/Gacha'
+import eUpload from '@/components/eUpload/comp/eUpload'
+import {poolTableFields, poolFormFields, poolSpTableFields, classes} from '@/app/Index/Gacha/Gacha'
 
 export default {
     name: 'GachaPool',
     components: {
+        eUpload,
         eWindow,
         eTable,
         eForm
@@ -76,6 +122,7 @@ export default {
                 url: '/operator/getAllOperator',
                 success: res => {
                     const data = {}
+                    const list = []
                     for (let item of res) {
                         const rarity = item['rarity']
                         const option = item['name']
@@ -87,8 +134,11 @@ export default {
                                 [option]: option
                             }
                         }
+
+                        list.push(option)
                     }
                     this.$set(this, 'operators', data)
+                    this.$set(this, 'operatorsList', list)
                 }
             })
         },
@@ -112,6 +162,7 @@ export default {
                     this.$refs.form.cleanForm()
                 }
                 this.$refs.form.setDisabled('pool_name', type === 1)
+                this.$set(this.spForm, 'spList', item['spList'] || [])
             })
         },
         delPool: function (item) {
@@ -139,6 +190,8 @@ export default {
                 return
             }
 
+            data['spList'] = this.spForm.spList
+
             this.lib.requests.post({
                 url: url,
                 data: data,
@@ -152,6 +205,43 @@ export default {
                     this.loadPool()
                 }
             })
+        },
+        formChange: function (data) {
+            let names = []
+            for (let field of ['pickup_6', 'pickup_5', 'pickup_4']) {
+                for (let item of data[field]) {
+                    names.push(item)
+                }
+            }
+
+            let intersection = names.filter(v => !this.operatorsList.includes(v))
+            let spList = this.spForm.spList.filter(v => {
+                let index = intersection.indexOf(v.operator_name)
+                if (index >= 0) {
+                    intersection.splice(index, 1)
+                    return v
+                }
+            })
+
+            for (let item of intersection) {
+                spList.push({
+                    operator_name: item,
+                    rarity: '',
+                    classes: '',
+                    image: ''
+                })
+            }
+
+            this.$set(this.spForm, 'spList', spList)
+        },
+        upload: function (index, item) {
+            this.$refs.upload.upload(index, item.operator_name + '.png')
+        },
+        onUpload: function (index, path) {
+            this.spForm.spList[index].image = path
+        },
+        showImage: function (item) {
+            window.open(`http://${window.serverHost}/images/${item.operator_name}.png`)
         }
     },
     data () {
@@ -165,7 +255,13 @@ export default {
                 fields: poolFormFields,
                 type: 0
             },
-            operators: {}
+            spForm: {
+                spTable: poolSpTableFields,
+                spList: []
+            },
+            classes: classes,
+            operators: {},
+            operatorsList: []
         }
     },
     mounted () {
@@ -192,5 +288,9 @@ export default {
 .tag.tag2 {
     color: #fff;
     background: #7350ff;
+}
+
+.alert > span {
+    color: #7350ff;
 }
 </style>

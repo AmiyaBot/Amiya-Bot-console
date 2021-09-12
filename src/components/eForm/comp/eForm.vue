@@ -7,12 +7,15 @@
                      :build-data="buildData"
                      :display-filter="displayFilter"
                      :display-all="displayAll"
-                     :before-submit="beforeSubmit"></formBuilder>
+                     :before-submit="beforeSubmit"
+                     :onchange="onchange"></formBuilder>
         <el-form class="formBuilder">
             <slot name="item"></slot>
             <el-form-item :label="' '"
                           :label-width="labelWidth">
-                <slot></slot>
+                <div>
+                    <slot></slot>
+                </div>
             </el-form-item>
         </el-form>
     </div>

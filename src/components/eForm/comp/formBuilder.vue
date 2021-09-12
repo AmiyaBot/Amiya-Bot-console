@@ -201,9 +201,6 @@ export default {
                 input: {}
             }
 
-            /**
-             * 这个组件终究成了屎山。
-             */
             for (let index in this.buildData) {
                 const item = this.buildData[index]
 
@@ -388,6 +385,7 @@ export default {
                     )
                 )
             }
+            this.changeEvent()
         },
         setValue: function (field, value) {
             if (field.constructor === Object) {
@@ -436,6 +434,7 @@ export default {
                     break
                 }
             }
+            this.changeEvent()
         },
         setOptions: function (field, data, review = true) {
             this.$set(this.optionsData, field, data)
@@ -529,6 +528,10 @@ export default {
                         this.formData[item.field] = ''
                 }
             }
+            this.changeEvent()
+        },
+        changeEvent: function () {
+            this.onchange(JSON.parse(JSON.stringify(this.formData)))
         }
     },
     data () {

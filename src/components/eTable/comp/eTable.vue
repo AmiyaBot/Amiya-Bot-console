@@ -79,6 +79,7 @@
                     <slot name="custom"
                           :field="item"
                           :item="scope.row"
+                          :index="scope.$index"
                           :value="scope.row[item.field]"
                           v-if="item.custom"></slot>
                     <span v-else>{{ scope.row[item.field] }}</span>
@@ -183,7 +184,10 @@ export default {
         },
         calcTableHeight: function (searchHeight) {
             let height = this.$refs.listTable.clientHeight
-            this.tableHeight = height - searchHeight - 92
+            let offset = height - searchHeight - 92
+            if (offset > 100 && this.operationMode) {
+                this.tableHeight = offset
+            }
         },
         resetWidth: function () {
             if (!this.autoReset) {

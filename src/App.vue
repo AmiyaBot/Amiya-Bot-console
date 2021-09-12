@@ -11,7 +11,13 @@
                 </div>
                 <div class="user-menu">
                     <el-dropdown @command="handleCommand">
-                        <span class="user">登录菜单<i class="el-icon-arrow-down el-icon--right"></i></span>
+                        <span class="user">BOT菜单<i class="el-icon-arrow-down el-icon--right"></i></span>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item command="restart">重启BOT</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                    <el-dropdown @command="handleCommand">
+                        <span class="user">个人菜单<i class="el-icon-arrow-down el-icon--right"></i></span>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item command="editPassword">修改密码</el-dropdown-item>
                             <el-dropdown-item command="logout">退出登录</el-dropdown-item>
@@ -70,6 +76,9 @@ export default {
                     break
                 case 'logout':
                     this.logout()
+                    break
+                case 'restart':
+                    this.lib.requests.post({url: '/restart'})
                     break
             }
         },

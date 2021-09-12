@@ -7,7 +7,7 @@
 }
 
 .custom-window .el-dialog__header {
-    height: 60px;
+    height: 50px;
     background: #9382F8;
     position: relative;
 }
@@ -15,14 +15,13 @@
 .custom-window .el-dialog__title {
     width: calc(100% - 320px);
     height: 100%;
-    line-height: 60px;
+    line-height: 50px;
     padding-left: 65px;
     text-align: left;
     color: #FFFFFF;
-    font-size: 25px;
+    font-size: 20px;
     font-weight: bold;
-    font-style: italic;
-    text-shadow: 2px 5px 0 #543fd1;
+    text-shadow: 2px 2px 0 #543fd1;
     background: url(../../../assets/rabbit-white.png) center left 22px / 30px no-repeat;
     user-select: none;
     position: absolute;
@@ -32,7 +31,7 @@
 
 .custom-window .el-dialog__headerbtn {
     font-size: 24px;
-    top: 15px;
+    top: 12px;
     z-index: 1;
 }
 

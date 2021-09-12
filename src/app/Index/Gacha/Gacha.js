@@ -69,6 +69,28 @@ export const poolTableFields = [
     }
 ]
 
+export const poolSpTableFields = [
+    {
+        title: '干员名',
+        field: 'operator_name'
+    },
+    {
+        title: '星级',
+        field: 'rarity',
+        custom: true
+    },
+    {
+        title: '职业',
+        field: 'classes',
+        custom: true
+    },
+    {
+        title: '立绘',
+        field: 'image',
+        custom: true
+    }
+]
+
 export const poolFormFields = [
     {
         title: '卡池名称',
@@ -172,3 +194,14 @@ export const configFormFields = [
         }
     }
 ]
+
+export const classes = {
+    PIONEER: '先锋',
+    WARRIOR: '近卫',
+    TANK: '重装',
+    SNIPER: '狙击',
+    CASTER: '术师',
+    SUPPORT: '辅助',
+    MEDIC: '医疗',
+    SPECIAL: '特种'
+}

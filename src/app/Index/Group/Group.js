@@ -36,18 +36,68 @@ export const tableFields = [
         title: '启用状态',
         field: 'active',
         custom: true,
-        search: false
+        search: {
+            type: 3,
+            data: {
+                0: '否',
+                1: '是'
+            },
+            checked: true
+        }
     },
     {
         title: '允许推送公告',
         field: 'send_notice',
         custom: true,
-        search: false
+        search: {
+            type: 3,
+            data: {
+                0: '否',
+                1: '是'
+            },
+            checked: true
+        }
     },
     {
         title: '允许推送微博',
         field: 'send_weibo',
         custom: true,
+        search: {
+            type: 3,
+            data: {
+                0: '否',
+                1: '是'
+            },
+            checked: true
+        }
+    }
+]
+
+export const noticeTableFields = [
+    {
+        title: '公告ID',
+        field: 'notice_id',
+        search: false
+    },
+    {
+        title: '公告内容',
+        field: 'content',
+        search: {
+            type: 1,
+            checked: true
+        }
+    },
+    {
+        title: '推送人',
+        field: 'send_user',
+        search: {
+            type: 1,
+            checked: true
+        }
+    },
+    {
+        title: '推送时间',
+        field: 'send_time',
         search: false
     }
 ]

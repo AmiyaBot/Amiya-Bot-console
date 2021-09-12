@@ -29,8 +29,9 @@
 
 <script>
 import tableSelectorProps from '@/components/eForm/js/tableSelectorProps'
-import {calcMinWidth} from '@/components/eTable/js/builtin'
 import $ from 'jquery'
+
+// import {calcMinWidth} from '@/components/eTable/js/builtin'
 
 export default {
     name: 'tableSelector',
@@ -59,7 +60,7 @@ export default {
         dataList: {
             handler: function (data) {
                 this.$nextTick(() => {
-                    this.$set(this, 'colWidth', calcMinWidth(this.$refs.table.$el))
+                    // this.$set(this, 'colWidth', calcMinWidth(this.$refs.table.$el))
                     this.$emit('dataChange', data)
                 })
             },

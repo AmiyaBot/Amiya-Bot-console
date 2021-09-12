@@ -26,5 +26,9 @@ export default {
     beforeSubmit: {
         type: Function,
         default: () => null
+    },
+    onchange: {
+        type: Function,
+        default: () => null
     }
 }

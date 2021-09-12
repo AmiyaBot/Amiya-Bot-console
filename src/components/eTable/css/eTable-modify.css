@@ -17,7 +17,7 @@
 }
 
 .listTable .el-table td, .el-table th {
-    padding: 3px 0;
+    padding: 3px 0 !important;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;

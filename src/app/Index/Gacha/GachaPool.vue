@@ -163,6 +163,9 @@ export default {
                 }
                 this.$refs.form.setDisabled('pool_name', type === 1)
                 this.$set(this.spForm, 'spList', item['spList'] || [])
+                this.$nextTick(() => {
+                    this.formChange(this.$refs.form.getValue())
+                })
             })
         },
         delPool: function (item) {

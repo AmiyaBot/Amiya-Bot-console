@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import eventBus from '@/components/eTable/js/eventBus'
+import eventBus from '@/components/eWindow/js/eventBus'
 import $ from 'jquery'
 
 export default {

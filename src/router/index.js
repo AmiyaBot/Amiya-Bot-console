@@ -6,6 +6,8 @@ import UserManager from '@/app/Index/User/UserManager'
 import GachaManager from '@/app/Index/Gacha/GachaManager'
 import GroupManager from '@/app/Index/Group/GroupManager'
 import AdminManager from '@/app/Index/Admin/AdminManager'
+import FunctionSetting from '@/app/Index/Setting/FunctionSetting'
+import SourceManager from '@/app/Index/Source/SourceManager'
 
 Vue.use(Router)
 
@@ -37,9 +39,19 @@ export default new Router({
             component: GachaManager
         },
         {
-            path: '/trace',
+            path: '/admin',
             name: 'AdminManager',
             component: AdminManager
+        },
+        {
+            path: '/function',
+            name: 'FunctionSetting',
+            component: FunctionSetting
+        },
+        {
+            path: '/source',
+            name: 'SourceManager',
+            component: SourceManager
         }
     ]
 })

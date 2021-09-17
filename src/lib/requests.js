@@ -45,7 +45,7 @@ export default class Requests {
 
             const loading = Loading.service({
                 lock: true,
-                text: '请求中...',
+                text: '正在请求服务器...',
                 spinner: 'el-icon-loading',
                 background: 'rgba(255, 255, 255, 0.3)'
             })

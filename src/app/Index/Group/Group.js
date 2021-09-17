@@ -2,6 +2,7 @@ export const tableFields = [
     {
         title: '群号',
         field: 'group_id',
+        sortable: true,
         search: {
             type: 1,
             checked: true
@@ -10,6 +11,7 @@ export const tableFields = [
     {
         title: '群名称',
         field: 'group_name',
+        sortable: true,
         search: {
             type: 1,
             checked: true
@@ -30,6 +32,7 @@ export const tableFields = [
     {
         title: '30天内使用数量',
         field: 'message_num',
+        sortable: true,
         search: false
     },
     {

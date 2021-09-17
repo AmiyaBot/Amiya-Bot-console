@@ -49,6 +49,7 @@
                 <e-table :fields="spForm.spTable"
                          :data="spForm.spList"
                          :operation-mode="false"
+                         :auto-reset="false"
                          :pagination="false"
                          :selection="false">
                     <template v-slot:custom="{ field, value, index, item }">
@@ -108,7 +109,7 @@ export default {
                 },
                 success: res => {
                     for (let item of res.data) {
-                        for (let name of ['pickup_6', 'pickup_5', 'pickup_4']) {
+                        for (let name of ['pickup_6', 'pickup_5', 'pickup_4', 'pickup_s']) {
                             item[name] = item[name] ? item[name].split(',') : []
                         }
                     }
@@ -117,7 +118,7 @@ export default {
                 }
             })
         },
-        getAllOperator: function () {
+        getAllOperator: function (callback) {
             this.lib.requests.post({
                 url: '/operator/getAllOperator',
                 success: res => {
@@ -139,10 +140,13 @@ export default {
                     }
                     this.$set(this, 'operators', data)
                     this.$set(this, 'operatorsList', list)
+
+                    callback && callback()
                 }
             })
         },
-        windowOpen: function (callback) {
+        customPool: function (item, type) {
+            this.form.type = type
             this.$refs.window.show()
             this.$nextTick(() => {
                 this.$refs.form.setOptions({
@@ -150,18 +154,14 @@ export default {
                     'pickup_5': this.operators[5],
                     'pickup_4': this.operators[4]
                 })
-                callback && callback()
-            })
-        },
-        customPool: function (item, type) {
-            this.form.type = type
-            this.windowOpen(() => {
+
                 if (type) {
                     this.$refs.form.setValue(item)
                 } else {
                     this.$refs.form.cleanForm()
                 }
                 this.$refs.form.setDisabled('pool_name', type === 1)
+
                 this.$set(this.spForm, 'spList', item['spList'] || [])
                 this.$nextTick(() => {
                     this.formChange(this.$refs.form.getValue())
@@ -268,8 +268,7 @@ export default {
         }
     },
     mounted () {
-        this.loadPool()
-        this.getAllOperator()
+        this.getAllOperator(this.loadPool)
     }
 }
 </script>

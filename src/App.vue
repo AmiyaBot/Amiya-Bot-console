@@ -11,13 +11,13 @@
                 </div>
                 <div class="user-menu">
                     <el-dropdown @command="handleCommand">
-                        <span class="user">BOT菜单<i class="el-icon-arrow-down el-icon--right"></i></span>
+                        <span class="user">BOT选项<i class="el-icon-arrow-down el-icon--right"></i></span>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item command="restart">重启BOT</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
                     <el-dropdown @command="handleCommand">
-                        <span class="user">个人菜单<i class="el-icon-arrow-down el-icon--right"></i></span>
+                        <span class="user">个人选项<i class="el-icon-arrow-down el-icon--right"></i></span>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item command="editPassword">修改密码</el-dropdown-item>
                             <el-dropdown-item command="logout">退出登录</el-dropdown-item>
@@ -78,7 +78,9 @@ export default {
                     this.logout()
                     break
                 case 'restart':
-                    this.lib.requests.post({url: '/restart'})
+                    this.lib.message.confirm('确定重启', '注意', () => {
+                        this.lib.requests.post({url: '/restart'})
+                    })
                     break
             }
         },
@@ -112,11 +114,12 @@ export default {
             nav: {
                 list: [
                     {path: '/index', name: '概况看板', title: '概况看板'},
-                    {path: '/group', name: '群组', title: '群组管理'},
-                    {path: '/user', name: '用户', title: '用户管理'},
-                    {path: '/gacha', name: '抽卡', title: '抽卡管理'},
-                    {path: '/trace', name: '管理员', title: '管理员管理'},
-                    {path: '/config', name: '设置', title: 'Bot 设置'}
+                    {path: '/group', name: '群组管理', title: '群组管理'},
+                    {path: '/user', name: '用户管理', title: '用户管理'},
+                    {path: '/gacha', name: '抽卡管理', title: '抽卡管理'},
+                    {path: '/admin', name: '权限管理', title: '权限管理'},
+                    {path: '/function', name: '功能设置', title: '功能设置'},
+                    {path: '/source', name: '资源管理', title: '资源管理'}
                 ]
             },
             form: {
@@ -130,5 +133,5 @@ export default {
 }
 </script>
 
-<style src="./App.css"></style>
+<style src="./App-global.css"></style>
 <style src="./App-scoped.css" scoped></style>

@@ -20,10 +20,6 @@ export default {
         type: Array,
         default: []
     },
-    sortable: {
-        type: Boolean,
-        default: false
-    },
     expandAll: {
         type: Boolean,
         default: false

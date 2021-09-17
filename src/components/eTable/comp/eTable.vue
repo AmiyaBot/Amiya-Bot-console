@@ -63,16 +63,18 @@
                   :load="loadChildren"
                   :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
                   :default-expand-all="expandAll"
+                  @sort-change="sortableHandler"
                   @selection-change="selectionChange">
 
             <el-table-column fixed="left" type="selection" class-name="mark_selection"
                              v-if="selection"></el-table-column>
 
             <el-table-column v-for="(item, index) in fields" v-if="display.indexOf(item.title) >= 0"
-                             :class-name="'mark_' + item.field"
-                             :width="colWidth[item.field]"
+                             :prop="item.field"
                              :label="item.title"
-                             :sortable="sortable"
+                             :width="colWidth[item.field]"
+                             :sortable="!!item.sortable ? 'custom' : false"
+                             :class-name="'mark_' + item.field"
                              :key="index">
 
                 <template slot-scope="scope">
@@ -168,12 +170,15 @@ export default {
             this.currPage = 1
             this.loadList()
         },
-        loadList: function () {
+        loadList: function (options = {}) {
             const search = this.getValue()
+
+            Object.assign(options, JSON.parse(JSON.stringify(search)))
+
             this.listLoader(
                 this.currPage,
                 this.currPageSize,
-                JSON.parse(JSON.stringify(search))
+                options
             )
         },
         loadChildren: function (item, node, resolve) {
@@ -211,6 +216,13 @@ export default {
         },
         selectionChange: function (items) {
             this.$set(this, 'selectedItems', items)
+        },
+        sortableHandler: function (sort) {
+            const field = sort.prop
+            const order = sort.order
+            this.loadList({
+                _sort: {field, order}
+            })
         },
         initSearchForm: function () {
             let searchForm = []

@@ -31,6 +31,17 @@ export default {
     components: {
         formBuilder
     },
+    computed: {
+        needInit () {
+            const {buildData, displayFilter, displayAll} = this
+            return {buildData, displayFilter, displayAll}
+        }
+    },
+    watch: {
+        needInit: function () {
+            this.$refs.form.init()
+        }
+    },
     methods: {
         getValue: function (field) {
             const data = JSON.parse(JSON.stringify(this.$refs.form.formData))
@@ -87,10 +98,7 @@ export default {
         }
     },
     mounted () {
-        this.$forceUpdate()
-    },
-    updated () {
-        this.$refs.form.init()
+        this.reset()
     }
 }
 </script>

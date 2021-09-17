@@ -56,15 +56,10 @@ export default {
                 }
             })
         },
-        windowOpen: function (callback) {
-            this.$refs.window.show()
-            this.$nextTick(() => {
-                callback && callback()
-            })
-        },
         customConfig: function (item, type) {
             this.form.type = type
-            this.windowOpen(() => {
+            this.$refs.window.show()
+            this.$nextTick(() => {
                 if (type) {
                     this.$refs.form.setValue(item)
                 } else {
@@ -129,21 +124,5 @@ export default {
 </script>
 
 <style scoped>
-.tag {
-    font-size: 13px;
-    padding: 3px 5px;
-    margin-right: 5px;
-    border-radius: 4px;
-    background: #f1f1f1;
-}
 
-.tag.tag1 {
-    color: #fff;
-    background: #ff6328;
-}
-
-.tag.tag2 {
-    color: #fff;
-    background: #7350ff;
-}
 </style>

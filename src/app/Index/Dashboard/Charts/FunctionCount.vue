@@ -6,6 +6,7 @@
 
 <script>
 import * as echarts from 'echarts'
+import {functions} from '@/define'
 
 export default {
     name: 'FunctionCount',
@@ -21,12 +22,13 @@ export default {
         load: function () {
             const option = {
                 title: {
-                    text: '函数使用总量'
+                    text: '功能使用总量',
+                    subtext: '不含普通互动'
                 },
                 legend: {
                     type: 'scroll',
                     orient: 'vertical',
-                    top: 40,
+                    top: 60,
                     left: 0,
                     bottom: 20
                 },
@@ -57,7 +59,7 @@ export default {
 
             for (let item of data) {
                 option.series.data.push({
-                    name: item['function_id'],
+                    name: functions[item['function_id']] || '未知',
                     value: item['use_num']
                 })
             }

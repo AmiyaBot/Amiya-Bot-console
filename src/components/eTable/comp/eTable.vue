@@ -199,12 +199,15 @@ export default {
                 return
             }
             this.loading = true
-            this.$nextTick(() => {
-                this.$set(this, 'colWidth', calcMinWidth(this.$refs.table.$el))
-                this.$nextTick(() => {
-                    this.loading = false
-                })
-            })
+            setTimeout(
+                () => {
+                    this.$set(this, 'colWidth', calcMinWidth(this.$refs.table.$el))
+                    this.$nextTick(() => {
+                        this.loading = false
+                    })
+                },
+                300
+            )
         },
         pageChange: function (page) {
             this.currPage = page

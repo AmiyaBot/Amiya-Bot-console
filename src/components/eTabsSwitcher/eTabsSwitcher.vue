@@ -27,11 +27,12 @@ export default {
     },
     watch: {
         tabIndex: function (index) {
+            index = parseInt(index)
             setTimeout(() => {
-                if (this.openedIndexes.indexOf(parseInt(index)) < 0) {
-                    this.openedIndexes.push(parseInt(index))
+                if (this.openedIndexes.indexOf(index) < 0) {
+                    this.openedIndexes.push(index)
                 }
-            }, 500)
+            }, index === 0 ? 0 : 500)
         }
     },
     methods: {

@@ -1,35 +1,25 @@
 <template>
     <div class="admin-manager">
-        <div>
-            <el-tabs v-model="side">
-                <el-tab-pane label="管理员列表" name="left"></el-tab-pane>
-                <el-tab-pane label="管理员行为记录" name="right"></el-tab-pane>
-            </el-tabs>
-        </div>
-        <div class="container" :class="side">
-            <div class="block">
-                <AdminList></AdminList>
-            </div>
-            <div class="block">
-                <AdminTraceLog></AdminTraceLog>
-            </div>
-        </div>
+        <e-tabs-switcher :list="tabs"></e-tabs-switcher>
     </div>
 </template>
 
 <script>
+import eTabsSwitcher from '@/components/eTabsSwitcher/eTabsSwitcher'
 import AdminList from '@/app/Index/Admin/AdminList'
 import AdminTraceLog from '@/app/Index/Admin/AdminTraceLog'
 
 export default {
     name: 'AdminManager',
     components: {
-        AdminList,
-        AdminTraceLog
+        eTabsSwitcher
     },
     data () {
         return {
-            side: 'left'
+            tabs: [
+                {name: '管理员列表', comp: AdminList},
+                {name: '管理员行为记录', comp: AdminTraceLog}
+            ]
         }
     }
 }

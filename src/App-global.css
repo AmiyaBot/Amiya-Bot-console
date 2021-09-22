@@ -21,12 +21,13 @@ html, body {
     height: 100%;
     padding: 15px;
     background-color: #fff;
-    /*box-shadow: 0 0 10px 0 #d8d8d8;*/
     border-radius: 12px;
 }
 
 .el-dropdown {
     margin: 0 10px;
+    cursor: pointer;
+    user-select: none;
 }
 
 .el-descriptions--mini.is-bordered .el-descriptions-item__cell {

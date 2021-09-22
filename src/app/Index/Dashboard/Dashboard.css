@@ -1,6 +1,7 @@
 .dashboard {
     width: 100%;
     height: 100%;
+    padding: 10px;
 }
 
 .information {
@@ -16,6 +17,8 @@
 .charts {
     width: 100%;
     height: calc(100% - 80px);
+    min-width: 1300px;
+    min-height: 425px;
     display: flex;
 }
 
@@ -43,28 +46,4 @@
 
 .right-side > div {
     margin-right: 20px;
-}
-
-.seat {
-    /*background: url(../../../assets/icon/disable.svg) center / 40px no-repeat;*/
-}
-
-.seat-left-row2 {
-    width: 100%;
-    height: calc(100% - 440px);
-}
-
-.seat-right-row1-right {
-    width: calc(100% - 540px);
-    height: 300px;
-}
-
-.seat-right-row2-right {
-    width: calc(100% - 640px);
-    height: 100px;
-}
-
-.seat-right-row3-bottom {
-    width: 100%;
-    height: calc(100% - 460px);
 }

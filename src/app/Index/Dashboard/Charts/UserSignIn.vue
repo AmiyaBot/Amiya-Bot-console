@@ -103,7 +103,7 @@ export default {
 
 <style scoped>
 .user-sign-in {
-    width: 600px;
+    width: 500px;
     height: 100px;
     padding: 20px;
 }

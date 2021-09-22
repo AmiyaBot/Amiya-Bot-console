@@ -1,14 +1,14 @@
 export const functions = {
     normal: '普通互动',
     userInfo: '查看个人信息',
-    checkOperator: '干员模块',
-    checkEnemy: '敌方单位模块',
-    checkMaterial: '物品模块',
+    checkOperator: '干员资料',
+    checkEnemy: '敌方单位资料',
+    checkMaterial: '物品资料',
     recruit: '公招查询',
     gacha: '模拟抽卡',
     jadeCalculator: '合成玉计算',
     intellectAlarm: '理智恢复提醒',
-    functionQuery: '菜单',
+    functionQuery: '查看菜单',
     weibo: '微博'
 }
 

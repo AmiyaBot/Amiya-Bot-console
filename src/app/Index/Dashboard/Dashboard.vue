@@ -27,10 +27,7 @@
             </div>
             <div class="right-side">
                 <function-count></function-count>
-                <div class="seat seat-right-row1-right"></div>
                 <user-sign-in></user-sign-in>
-                <div class="seat seat-right-row2-right"></div>
-                <div class="seat seat-right-row3-bottom"></div>
             </div>
         </div>
     </div>

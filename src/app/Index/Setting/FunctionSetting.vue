@@ -118,7 +118,7 @@ export default {
 </style>
 <style>
 .functionSetting .el-form-item--small {
-    margin: 0;
+    margin: 0 !important;
 }
 
 .functionSetting .el-card__body {

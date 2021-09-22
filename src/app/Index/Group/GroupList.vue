@@ -1,5 +1,5 @@
 <template>
-    <div class="shadow-box">
+    <div>
         <e-table :fields="table.fields" ref="table"
                  :data="table.data"
                  :total-page="table.total"

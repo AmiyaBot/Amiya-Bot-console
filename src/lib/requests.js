@@ -62,7 +62,7 @@ export default class Requests {
                             switch (code) {
                                 case 200:
                                     if (successMessage && message) {
-                                        successMessage && this.message.toast(message, this.message.success)
+                                        successMessage && this.message.notify(message, '提示', this.message.success)
                                     }
                                     success && success(data.data)
                                     break

@@ -164,7 +164,7 @@ export default {
 <style scoped>
 .message-count {
     width: 100%;
-    height: 400px;
+    height: 420px;
     padding: 20px;
 }
 

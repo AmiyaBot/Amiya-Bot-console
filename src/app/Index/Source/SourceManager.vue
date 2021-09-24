@@ -38,10 +38,7 @@
                     <div v-html="data['avatars']"></div>
                 </el-descriptions-item>
                 <el-descriptions-item label="干员半身照">
-                    <div v-html="data['photo']"></div>
-                </el-descriptions-item>
-                <el-descriptions-item label="干员皮肤">
-                    <div v-html="data['picture']"></div>
+                    <div v-html="data['portraits']"></div>
                 </el-descriptions-item>
                 <el-descriptions-item label="技能图标">
                     <div v-html="data['skills']"></div>

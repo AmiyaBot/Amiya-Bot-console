@@ -19,7 +19,10 @@
                     <span class="tag" v-for="(item, index) in value" :key="index">{{ item }}</span>
                 </div>
                 <div v-if="field.field === 'pickup_s'">
-                    <span class="tag" v-for="(item, index) in value" :key="index">{{ item.replace('|', ' X ') }}</span>
+                    <span class="tag" :key="index"
+                          v-for="(item, index) in pickupSList(value)">
+                        {{ item }}
+                    </span>
                 </div>
             </template>
 
@@ -109,7 +112,7 @@ export default {
                 },
                 success: res => {
                     for (let item of res.data) {
-                        for (let name of ['pickup_6', 'pickup_5', 'pickup_4', 'pickup_s']) {
+                        for (let name of ['pickup_6', 'pickup_5', 'pickup_4']) {
                             item[name] = item[name] ? item[name].split(',') : []
                         }
                     }
@@ -117,6 +120,12 @@ export default {
                     this.$set(this.table, 'total', res.count)
                 }
             })
+        },
+        pickupSList: function (value) {
+            if (value) {
+                return value.split(',').map(n => n.replace('|', ' X '))
+            }
+            return []
         },
         getAllOperator: function (callback) {
             this.lib.requests.post({

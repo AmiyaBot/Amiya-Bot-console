@@ -175,6 +175,10 @@ export default {
 
             Object.assign(options, JSON.parse(JSON.stringify(search)))
 
+            if (this.sort) {
+                options._sort = this.sort
+            }
+
             this.listLoader(
                 this.currPage,
                 this.currPageSize,
@@ -223,9 +227,9 @@ export default {
         sortableHandler: function (sort) {
             const field = sort.prop
             const order = sort.order
-            this.loadList({
-                _sort: {field, order}
-            })
+
+            this.$set(this, 'sort', {field, order})
+            this.loadList()
         },
         initSearchForm: function () {
             let searchForm = []
@@ -271,7 +275,8 @@ export default {
             tableHeight: 500,
             currPage: 1,
             currPageSize: 0,
-            loading: false
+            loading: false,
+            sort: null
         }
     },
     mounted () {

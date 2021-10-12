@@ -1,9 +1,10 @@
 # Amiya-Bot-console
 
 <div>
-    <img alt="VUE" src="https://img.shields.io/badge/vue-2.X-%234FC08D?logo=vue.js&logoColor=white">
-    <img alt="SQLite" src="https://img.shields.io/badge/echarts-5.X-%23AA344D?logo=Apache%20ECharts&logoColor=white">
+    <img alt="vue" src="https://img.shields.io/badge/vue-2.X-%234FC08D?logo=vue.js&logoColor=white">
+    <img alt="echarts" src="https://img.shields.io/badge/echarts-5.X-%23AA344D?logo=Apache%20ECharts&logoColor=white">
 </div>
+<br>
 
 > [Amiya-Bot](https://github.com/vivien8261/Amiya-Bot) 项目的系统控制台
 

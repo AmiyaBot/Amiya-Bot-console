@@ -114,11 +114,13 @@ export default {
     margin-right: 10px;
 }
 
-.button-group {
+.setting-body {
+    height: 100%;
+    padding: 0 20px;
 }
 
-.setting-body {
-    padding: 0 20px;
+.form {
+    height: calc(100% - 28px - 49px);
 }
 
 .mark {
@@ -140,6 +142,14 @@ export default {
 
 .functionSetting .el-card__body {
     width: 100%;
+    height: 100%;
+}
+
+.functionSetting .el-tabs__content {
+    height: 100%;
+}
+
+.functionSetting .el-tabs__content > div {
     height: 100%;
 }
 </style>

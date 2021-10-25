@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="height: 100%">
         <e-table :fields="table.fields" ref="table"
                  :data="table.data"
                  :total-page="table.total"

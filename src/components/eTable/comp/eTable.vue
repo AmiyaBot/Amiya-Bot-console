@@ -33,7 +33,7 @@
                     </el-form>
                     <div class="tableButton list" slot="reference"></div>
                 </el-popover>
-                <div class="tableButton refresh" @click="loadList"></div>
+                <div class="tableButton refresh" @click="loadList({})"></div>
                 <el-popover popper-class="search" trigger="click" title="搜索项筛选">
                     <el-form class="block">
                         <el-checkbox-group v-model="searchFormDisplay">

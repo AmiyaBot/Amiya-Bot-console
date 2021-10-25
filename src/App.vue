@@ -135,7 +135,7 @@ export default {
                     {path: '/user', name: '用户管理'},
                     {path: '/gacha', name: '卡池管理'},
                     {path: '/admin', name: '权限管理'},
-                    {path: '/function', name: '功能设置'},
+                    {path: '/function', name: '功能选项'},
                     {path: '/source', name: '资源管理'}
                 ]
             },

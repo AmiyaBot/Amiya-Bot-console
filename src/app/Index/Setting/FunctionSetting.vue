@@ -1,52 +1,54 @@
 <template>
     <div class="functionSetting">
         <el-card class="box-card">
-            <div class="button-group">
-                <el-button type="success" @click="saveSetting">保存</el-button>
-                <el-button @click="loadSetting">重置</el-button>
-            </div>
-            <div class="setting-content">
-                <el-tabs tab-position="left">
-                    <el-tab-pane v-for="(title, id) in functions" :key="id">
-                        <div slot="label">
-                            {{ title }}
-                            <span class="mark" :class="data.globalState[id] ? 'green' : 'red'"></span>
-                        </div>
-                        <el-card>
-                            <div slot="header">
-                                <i class="el-icon-share"></i>
+            <el-tabs style="height: 100%" tab-position="left">
+                <el-tab-pane v-for="(title, id) in functions" :key="id">
+                    <div slot="label" @click="selectSetting(id)">
+                        {{ title }}
+                        <span class="mark" :class="data.globalState[id] ? 'green' : 'red'"></span>
+                    </div>
+                    <div class="setting-body">
+                        <div class="setting-head">
+                            <div class="setting-title">
+                                <i class="el-icon-s-tools"></i>
                                 <span>{{ title }}设置</span>
+                                <el-tooltip content="全局开关" placement="top">
+                                    <el-switch v-model="data.globalState[id]"></el-switch>
+                                </el-tooltip>
                             </div>
-                            <el-form class="form" size="small" label-width="120px" label-position="left">
-                                <el-divider content-position="left">全局选项</el-divider>
-                                <el-form-item label="启用">
-                                    <el-switch v-model="data.globalState[id]"
-                                               active-color="#13ce66"
-                                               inactive-color="#ff4949">
-                                    </el-switch>
-                                </el-form-item>
-                                <el-divider content-position="left">子选项</el-divider>
-                                <SubSettingJade :data="data" v-if="id === 'jadeCalculator'"></SubSettingJade>
-                                <SubSettingWeibo :data="data" v-if="id === 'weibo'"></SubSettingWeibo>
-                            </el-form>
-                        </el-card>
-                    </el-tab-pane>
-                </el-tabs>
-            </div>
+                            <div class="button-group">
+                                <el-button size="mini" type="success" @click="saveSetting">保存</el-button>
+                                <el-button size="mini" @click="loadSetting">重置</el-button>
+                            </div>
+                        </div>
+                        <el-divider content-position="right">@Amiya-Bot Functions System</el-divider>
+                        <el-form class="form" size="small" label-width="120px" label-position="left">
+
+                            <SubSettingJade :data="data" v-if="currId === 'jadeCalculator'"></SubSettingJade>
+                            <SubSettingWeibo :data="data" v-else-if="currId === 'weibo'"></SubSettingWeibo>
+                            <SubSettingReplace :data="data" v-else-if="currId === 'replaceText'"></SubSettingReplace>
+
+                            <el-empty v-else description="暂无需要设置的选项"></el-empty>
+                        </el-form>
+                    </div>
+                </el-tab-pane>
+            </el-tabs>
         </el-card>
     </div>
 </template>
 
 <script>
-import SubSettingJade from '@/app/Index/Setting/SubSettingJade'
-import SubSettingWeibo from '@/app/Index/Setting/SubSettingWeibo'
+import SubSettingJade from '@/app/Index/Setting/subSetting/SubSettingJade'
+import SubSettingWeibo from '@/app/Index/Setting/subSetting/SubSettingWeibo'
+import SubSettingReplace from '@/app/Index/Setting/subSetting/SubSettingReplace'
 import {functions, functionsSetting} from '@/define'
 
 export default {
     name: 'FunctionSetting',
     components: {
         SubSettingJade,
-        SubSettingWeibo
+        SubSettingWeibo,
+        SubSettingReplace
     },
     methods: {
         loadSetting: function () {
@@ -70,12 +72,16 @@ export default {
                     this.loadSetting()
                 }
             })
+        },
+        selectSetting: function (id) {
+            this.currId = id
         }
     },
     data () {
         return {
             functions: functions,
-            data: functionsSetting
+            data: functionsSetting,
+            currId: null
         }
     },
     mounted () {
@@ -91,13 +97,28 @@ export default {
     height: 100%;
 }
 
-.button-group {
-    margin-bottom: 20px;
+.setting-head {
+    display: flex;
+    justify-content: space-between;
 }
 
-.setting-content {
-    height: calc(100% - 60px);
-    overflow: auto;
+.setting-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #5067e3;
+    display: flex;
+    align-items: center;
+}
+
+.setting-title > * {
+    margin-right: 10px;
+}
+
+.button-group {
+}
+
+.setting-body {
+    padding: 0 20px;
 }
 
 .mark {
@@ -110,10 +131,6 @@ export default {
 
 .mark.red {
     background-color: #ff4949;
-}
-
-.form {
-    width: 500px;
 }
 </style>
 <style>

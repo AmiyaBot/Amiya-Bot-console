@@ -9,7 +9,8 @@ export const functions = {
     jadeCalculator: '合成玉计算',
     intellectAlarm: '理智恢复提醒',
     functionQuery: '查看菜单',
-    weibo: '微博'
+    weibo: '微博',
+    replaceText: '词语替换'
 }
 
 export const functionsSetting = {

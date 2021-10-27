@@ -38,6 +38,7 @@ export default {
     methods: {
         translate: function () {
             return {
+                width: `calc(${100 * this.list.length}% + 60px)`,
                 transform: `translateX(-${this.tabIndex * (100 / this.list.length)}%)`
             }
         }
@@ -58,7 +59,6 @@ export default {
 }
 
 .container {
-    width: calc(200% + 60px);
     height: 100%;
     transition: all 500ms ease-in-out;
     display: flex;

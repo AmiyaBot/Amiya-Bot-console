@@ -78,12 +78,14 @@
                              :key="index">
 
                 <template slot-scope="scope">
-                    <slot name="custom"
-                          :field="item"
-                          :item="scope.row"
-                          :index="scope.$index"
-                          :value="scope.row[item.field]"
-                          v-if="item.custom"></slot>
+                    <template v-if="item.custom">
+                        <slot v-if="typeof item.custom !== 'function'" name="custom"
+                              :field="item"
+                              :item="scope.row"
+                              :index="scope.$index"
+                              :value="scope.row[item.field]"></slot>
+                        <span v-else>{{ item.custom(scope.row[item.field]) }}</span>
+                    </template>
                     <span v-else>{{ scope.row[item.field] }}</span>
                 </template>
 

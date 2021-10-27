@@ -17,7 +17,14 @@
             </template>
 
             <template v-slot:row="{ item }">
-                <el-button type="text">删除</el-button>
+                <el-popover placement="top-start" trigger="click">
+                    <el-button slot="reference" type="text">删除</el-button>
+                    <div class="delete-button">
+                        <el-button type="text" @click="deleteReplace(item)">删除本行规则</el-button>
+                        <el-button type="text" @click="deleteReplace(item,'group_all')">删除该群同原字符规则</el-button>
+                        <el-button type="text" @click="deleteReplace(item, 'all')">删除所有同原字符规则</el-button>
+                    </div>
+                </el-popover>
             </template>
 
         </e-table>
@@ -60,6 +67,23 @@ export default {
                     this.$refs.table.loadList()
                 }
             })
+        },
+        deleteReplace: function (item, extra = '') {
+            const data = JSON.parse(JSON.stringify(item))
+
+            if (extra) {
+                data[extra] = true
+            }
+
+            this.lib.message.confirm(`确定删除规则【${item.origin}】-> 【${item.target}】？`, '注意', () => {
+                this.lib.requests.post({
+                    url: '/setting/deleteReplaceText',
+                    data: data,
+                    success: res => {
+                        this.$refs.table.loadList()
+                    }
+                })
+            })
         }
     },
     data () {
@@ -100,6 +124,9 @@ export default {
                     {
                         title: '提交时间',
                         field: 'in_time',
+                        custom: value => {
+                            return this.lib.common.formatDate(value)
+                        },
                         search: false
                     },
                     {
@@ -139,5 +166,19 @@ export default {
 </script>
 
 <style scoped>
+.delete-button {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
 
+.delete-button > button {
+    padding: 2px 0;
+    margin: 0;
+    color: #ff3f3f !important;
+}
+
+.delete-button > button:hover {
+    text-decoration: underline;
+}
 </style>

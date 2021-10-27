@@ -2,18 +2,12 @@
     margin-bottom: 10px !important;
 }
 
-.listTable .cell > .el-button {
+.listTable .cell .el-button {
     padding: 4px 6px;
 }
 
 .listTable .cell > .el-button.el-button--text {
-    /*background: rgba(95, 73, 230, 0.1);*/
-    /*border: 1px solid transparent;*/
     text-decoration: underline;
-}
-
-.listTable .cell > .el-button.el-button--text:hover {
-    /*border-color: #5F75ED;*/
 }
 
 .listTable .el-table td, .el-table th {

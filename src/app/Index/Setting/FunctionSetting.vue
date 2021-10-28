@@ -11,7 +11,7 @@
                         <div class="setting-head">
                             <div class="setting-title">
                                 <i class="el-icon-s-tools"></i>
-                                <span>{{ title }}设置</span>
+                                <span>{{ title }}</span>
                                 <el-tooltip content="全局开关" placement="top">
                                     <el-switch v-model="data.globalState[id]"></el-switch>
                                 </el-tooltip>
@@ -22,14 +22,12 @@
                             </div>
                         </div>
                         <el-divider content-position="right">@Amiya-Bot Functions System</el-divider>
-                        <el-form class="form" size="small" label-width="120px" label-position="left">
-
-                            <SubSettingJade :data="data" v-if="currId === 'jadeCalculator'"></SubSettingJade>
-                            <SubSettingWeibo :data="data" v-else-if="currId === 'weibo'"></SubSettingWeibo>
-                            <SubSettingReplace :data="data" v-else-if="currId === 'replaceText'"></SubSettingReplace>
-
+                        <div class="form">
+                            <template v-if="currId in settingComps">
+                                <component :is="settingComps[currId]" :data="data" @save="saveSetting"></component>
+                            </template>
                             <el-empty v-else description="暂无需要设置的选项"></el-empty>
-                        </el-form>
+                        </div>
                     </div>
                 </el-tab-pane>
             </el-tabs>
@@ -45,11 +43,6 @@ import {functions, functionsSetting} from '@/define'
 
 export default {
     name: 'FunctionSetting',
-    components: {
-        SubSettingJade,
-        SubSettingWeibo,
-        SubSettingReplace
-    },
     methods: {
         loadSetting: function () {
             this.lib.requests.post({
@@ -81,7 +74,12 @@ export default {
         return {
             functions: functions,
             data: functionsSetting,
-            currId: null
+            currId: null,
+            settingComps: {
+                weibo: SubSettingWeibo,
+                jadeCalculator: SubSettingJade,
+                replaceText: SubSettingReplace
+            }
         }
     },
     mounted () {

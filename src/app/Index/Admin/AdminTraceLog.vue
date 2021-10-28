@@ -4,6 +4,11 @@
                  :data="table.data"
                  :total-page="table.total"
                  :list-loader="loadAdminTrace">
+
+            <template v-slot:top>
+                <el-button type="warning" @click="deleteAdminTrace">清空</el-button>
+            </template>
+
         </e-table>
     </div>
 </template>
@@ -36,6 +41,13 @@ export default {
                     this.$set(this.table, 'data', res.data)
                     this.$set(this.table, 'total', res.count)
                 }
+            })
+        },
+        deleteAdminTrace: function () {
+            this.lib.requests.post({
+                url: '/admin/deleteAdminTrace',
+                successMessage: true,
+                success: res => this.loadAdminTrace()
             })
         }
     },

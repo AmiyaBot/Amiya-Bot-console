@@ -6,6 +6,8 @@
                  :list-loader="loadSetting">
 
             <template v-slot:top>
+                <el-button @click="exportData">导出所有数据</el-button>
+                <el-button @click="() => $refs.upload.upload()">导入数据</el-button>
                 <el-button type="success" @click="() => $refs.ws.show()">白名单设置</el-button>
                 <el-button type="warning" @click="() => $refs.bs.show()">黑名单设置</el-button>
             </template>
@@ -70,19 +72,24 @@
                 </el-option>
             </el-select>
         </e-window>
+
+        <e-upload url="/setting/importReplaceText" accept=".xlsx" :on-upload="() => $refs.table.loadList()"
+                  ref="upload"></e-upload>
     </div>
 </template>
 
 <script>
 import eTable from '@/components/eTable/comp/eTable'
-import EWindow from '@/components/eWindow/comp/eWindow'
+import eWindow from '@/components/eWindow/comp/eWindow'
+import eUpload from '@/components/eUpload/comp/eUpload'
 
 export default {
     name: 'SubSettingReplace',
     props: ['data'],
     components: {
-        EWindow,
-        eTable
+        eTable,
+        eWindow,
+        eUpload
     },
     methods: {
         loadSetting: function (page = 1, pageSize = 10, search = {}) {
@@ -128,6 +135,9 @@ export default {
                     }
                 })
             })
+        },
+        exportData: function () {
+            location.href = 'http://' + window.serverHost + '/setting/exportReplaceText'
         }
     },
     data () {

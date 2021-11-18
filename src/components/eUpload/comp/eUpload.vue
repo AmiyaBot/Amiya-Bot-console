@@ -8,6 +8,7 @@
 export default {
     name: 'eUpload',
     props: {
+        url: String,
         accept: {
             type: String,
             default: () => '.png,.jpg'
@@ -33,9 +34,11 @@ export default {
     mounted () {
         this.$refs.file.addEventListener('change', e => {
             const files = e.target.files
+            const filename = this.filename
+
             if (files.length) {
                 const file = files[0]
-                this.lib.requests.upload(file, this.filename, res => {
+                this.lib.requests.upload(this.url, file, filename || file.name, res => {
                     this.onUpload(this.mark, res.filename)
                 })
             }

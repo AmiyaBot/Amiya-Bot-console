@@ -10,7 +10,7 @@
     text-decoration: underline;
 }
 
-.listTable .el-table td, .el-table th {
+.listTable .el-table .el-table__cell {
     padding: 3px 0 !important;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -26,6 +26,10 @@
 .listTable .el-table th > .cell {
     width: auto;
     white-space: nowrap;
+}
+
+.listTable .el-table td > .cell span,
+.listTable .el-table th > .cell span {
     display: inline-block;
 }
 

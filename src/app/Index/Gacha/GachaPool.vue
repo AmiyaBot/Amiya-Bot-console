@@ -82,7 +82,7 @@
                 </e-table>
             </e-window>
         </e-window>
-        <e-upload ref="upload" :on-upload="onUpload"></e-upload>
+        <e-upload ref="upload" url="/upload/image" :on-upload="onUpload"></e-upload>
     </div>
 </template>
 

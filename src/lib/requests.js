@@ -106,10 +106,10 @@ export default class Requests {
         this.httpRequests('post', options)
     }
 
-    upload (file, filename, callback) {
+    upload (url, file, filename, callback) {
         const form = new FormData()
         const options = {
-            url: '/upload',
+            url: url,
             headers: {
                 'Content-Type': 'multipart/form-data'
             },

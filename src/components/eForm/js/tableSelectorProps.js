@@ -2,7 +2,7 @@ export default {
     tableData: Array,
     tableField: Array,
     search: Function,
-    inputValue: String,
+    inputValue: String | Number,
     bind: Object,
     field: String,
     virtual: Object,

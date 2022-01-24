@@ -67,56 +67,60 @@
                 </el-popover>
             </div>
         </div>
-        <el-table ref="table" border lazy v-loading="loading"
-                  :data="data"
-                  :max-height="tableHeight"
-                  :row-key="dataId"
-                  :load="loadChildren"
-                  :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
-                  :default-expand-all="expandAll"
-                  :row-class-name="rowClassName"
-                  :row-style="rowStyle"
-                  @row-click="rowClick"
-                  @selection-change="selectionChange">
+        <slot name="tableContent">
+            <el-table ref="table" border lazy v-loading="loading"
+                      :data="data"
+                      :max-height="tableHeight"
+                      :row-key="dataId"
+                      :load="loadChildren"
+                      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+                      :default-expand-all="expandAll"
+                      :row-class-name="rowClassName"
+                      :row-style="rowStyle"
+                      @row-click="rowClick"
+                      @sort-change="sortableHandler"
+                      @selection-change="selectionChange">
 
-            <el-table-column fixed="left" type="selection" class-name="mark_selection"
-                             v-if="selection"></el-table-column>
+                <el-table-column fixed="left" type="selection" class-name="mark_selection"
+                                 v-if="selection"></el-table-column>
 
-            <el-table-column type="expand" v-if="$scopedSlots.expand">
-                <template slot-scope="props">
-                    <slot name="expand" :item="props.row"></slot>
-                </template>
-            </el-table-column>
-
-            <el-table-column v-for="(item, index) in fields"
-                             v-if="display.indexOf(item.title) >= 0 && item.show !== false"
-                             :class-name="'mark_' + item.field"
-                             :width="widths[item.field] || colWidth[item.field]"
-                             :label="item.title"
-                             :sortable="sortable"
-                             :key="index">
-
-                <template slot-scope="scope">
-                    <template v-if="item.custom">
-                        <slot v-if="typeof item.custom !== 'function'" name="custom"
-                              :field="item"
-                              :item="scope.row"
-                              :index="scope.$index"
-                              :value="scope.row[item.field]"></slot>
-                        <span v-else>{{ item.custom(scope.row[item.field]) }}</span>
+                <el-table-column type="expand" v-if="$scopedSlots.expand">
+                    <template slot-scope="props">
+                        <slot name="expand" :item="props.row"></slot>
                     </template>
-                    <span v-else>{{ scope.row[item.field] }}</span>
-                </template>
+                </el-table-column>
 
-            </el-table-column>
+                <el-table-column v-for="(item, index) in fields"
+                                 v-if="display.indexOf(item.title) >= 0 && item.show !== false"
+                                 :class-name="'mark_' + item.field"
+                                 :width="widths[item.field] || colWidth[item.field]"
+                                 :label="item.title"
+                                 :prop="item.field"
+                                 :sortable="!!item.sortable ? 'custom' : false"
+                                 :key="index">
 
-            <el-table-column fixed="right" label="操作" class-name="mark_operation" v-if="$scopedSlots.row"
-                             :width="widths['operation'] || colWidth['operation']">
-                <template slot-scope="scope">
-                    <slot name="row" :item="scope.row" :index="scope.$index"></slot>
-                </template>
-            </el-table-column>
-        </el-table>
+                    <template slot-scope="scope">
+                        <template v-if="item.custom">
+                            <slot v-if="typeof item.custom !== 'function'" name="custom"
+                                  :field="item"
+                                  :item="scope.row"
+                                  :index="scope.$index"
+                                  :value="scope.row[item.field]"></slot>
+                            <span v-else>{{ item.custom(scope.row[item.field]) }}</span>
+                        </template>
+                        <span v-else>{{ scope.row[item.field] }}</span>
+                    </template>
+
+                </el-table-column>
+
+                <el-table-column fixed="right" label="操作" class-name="mark_operation" v-if="$scopedSlots.row"
+                                 :width="widths['operation'] || colWidth['operation']">
+                    <template slot-scope="scope">
+                        <slot name="row" :item="scope.row" :index="scope.$index"></slot>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </slot>
         <div class="footer">
             <el-pagination class="page" layout="total, prev, pager, next, sizes, jumper" v-if="pagination"
                            background
@@ -136,9 +140,9 @@
 </template>
 
 <script>
-import searchFormBuilder from '@/components/eTable/comp/searchFormBuilder'
-import exportContent from '@/components/eTable/comp/exportContent'
-import eTableProps from '@/components/eTable/js/eTableProps'
+import searchFormBuilder from './searchFormBuilder'
+import exportContent from './exportContent'
+import eTableProps from '../js/eTableProps'
 import $ from 'jquery'
 
 import {calcMinWidth} from '../js/builtin'
@@ -227,6 +231,11 @@ export default {
         },
         loadList: function (reset = false) {
             const search = this.getValue()
+
+            if (this.sort && this.sort.order) {
+                search[this.remoteSortColumnField] = this.sort.field
+                search[this.remoteSortOrderField] = this.sort.order === 'ascending' ? 'asc' : 'desc'
+            }
 
             if (reset) {
                 this.currPage = 1
@@ -339,6 +348,13 @@ export default {
             this.$refs.searchForm.cleanForm()
             this.loadList(true)
         },
+        sortableHandler: function (sort) {
+            const field = sort.prop
+            const order = sort.order
+
+            this.$set(this, 'sort', {field, order})
+            this.loadList()
+        },
         jumpByIndex: function (index) {
             const tr = $('.' + this.uid() + ' .el-table__body-wrapper .el-table__row')[index]
             if (tr) {
@@ -359,6 +375,7 @@ export default {
             colWidth: {},
             selectedItems: {},
             selectedIndex: {},
+            sort: {},
             searchForm: [],
             searchFormDisplay: [],
             searchOn: null,

@@ -151,7 +151,9 @@ export default {
             this.status.onHover = false
         },
         loadData: function () {
-            this.$set(this, 'dataList', this.tableData || [])
+            if (this.tableData) {
+                this.$set(this, 'dataList', this.tableData || [])
+            }
         }
     },
     data () {

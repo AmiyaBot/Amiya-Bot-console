@@ -9,7 +9,7 @@
                      :display-all="displayAll"
                      :label-position="labelPosition"
                      :before-submit="beforeSubmit"></formBuilder>
-        <el-form class="formBuilder" :label-position="labelPosition">
+        <el-form class="formBuilder" label-position="left">
             <slot name="item"></slot>
             <el-form-item :label="' '"
                           :label-width="labelWidth">

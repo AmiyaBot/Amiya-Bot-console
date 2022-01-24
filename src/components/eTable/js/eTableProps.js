@@ -4,6 +4,14 @@ export default {
     totalPage: Number,
     exportPageUrl: String,
     exportAllUrl: String,
+    remoteSortColumnField: {
+        type: String,
+        default: 'orderByColumn'
+    },
+    remoteSortOrderField: {
+        type: String,
+        default: 'isAsc'
+    },
     data: {
         type: Array,
         default: () => []
@@ -33,10 +41,6 @@ export default {
         default: () => {
             return {}
         }
-    },
-    sortable: {
-        type: Boolean,
-        default: false
     },
     expandAll: {
         type: Boolean,

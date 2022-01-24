@@ -37,12 +37,10 @@
                 <!-- 下拉选择框 -->
                 <el-select v-if="item.config.type === 3" clearable collapse-tags
                            v-model="formData[item.field]"
+                           :filterable="!!item.config.search"
                            :remote="typeof item.config.search === 'function'"
                            :remote-method="value => searchOptions(value, item)"
                            :multiple="item.config.multiple"
-                           :allow-create="item.config.create"
-                           :filterable="item.config.create"
-                           :default-first-option="item.config.create"
                            :placeholder="'请选择' + item.title"
                            :disabled="disabledItem[item.field]"
                            @change="formChange(item.field, formData[item.field])">
@@ -76,8 +74,9 @@
                                   @input="event.input"
                                   @focus="event.show(true, $event)"
                                   @blur="event.show(false, $event)"
-                                  @change="formChange(item.field, formData[item.field])"
-                                  suffix-icon="el-icon-caret-bottom">
+                                  @change="formChange(item.field, formData[item.field])">
+                            <i slot="suffix" class="el-input__icon el-icon-circle-close"
+                               @click="() => cleanForm(item.field)"></i>
                         </el-input>
                     </template>
                 </table-selector>
@@ -99,8 +98,10 @@
                                   :ref="item.field"
                                   @focus="event.show(true, $event)"
                                   @blur="event.show(false, $event)"
-                                  @change="formChange(item.field, formData[item.field])"
-                                  suffix-icon="el-icon-caret-bottom"></el-input>
+                                  @change="formChange(item.field, formData[item.field])">
+                            <i slot="suffix" class="el-input__icon el-icon-circle-close"
+                               @click="() => cleanForm(item.field)"></i>
+                        </el-input>
                     </template>
                 </tree-selector>
 
@@ -210,7 +211,7 @@ export default {
 
                     if (item.value === null) {
                         this.formData[i] = item.default()
-                        this.datePicker[i].value = item.default()
+                        // this.datePicker[i].value = item.default()
                         continue
                     }
 
@@ -220,7 +221,7 @@ export default {
 
                         if (start === 0 && end === 0) {
                             this.formData[i] = item.default()
-                            this.datePicker[i].value = item.default()
+                            // this.datePicker[i].value = item.default()
                         } else {
                             this.formData[i][0] = item.value[0] ? start : 0
                             this.formData[i][1] = item.value[1] ? end : 0
@@ -279,7 +280,12 @@ export default {
                         optionsData[item.field] = [31, 32, 33].indexOf(type) >= 0 ? [] : {}
                         item.config.data(options => optionsData[item.field] = options)
                     } else {
-                        optionsData[item.field] = this.optionsData[item.field] || item.config.data
+                        const options = this.optionsData[item.field]
+                        if (options && (Array.isArray(options) ? options : Object.keys(options)).length) {
+                            optionsData[item.field] = options
+                        } else {
+                            optionsData[item.field] = item.config.data
+                        }
                     }
                 }
 
@@ -644,6 +650,10 @@ export default {
 .el-icon-question {
     font-size: 18px;
     color: #6f6f6f;
+    cursor: pointer;
+}
+
+.el-icon-circle-close {
     cursor: pointer;
 }
 </style>

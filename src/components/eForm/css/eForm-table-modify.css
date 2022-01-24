@@ -20,10 +20,3 @@
     white-space: nowrap;
     overflow: hidden;
 }
-
-.search-table .el-table td > .cell,
-.search-table .el-table th > .cell {
-    width: auto;
-    white-space: nowrap;
-    display: inline-block;
-}

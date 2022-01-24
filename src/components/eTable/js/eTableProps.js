@@ -4,7 +4,15 @@ export default {
     totalPage: Number,
     exportPageUrl: String,
     exportAllUrl: String,
+    data: {
+        type: Array,
+        default: () => []
+    },
     operationMode: {
+        type: Boolean,
+        default: true
+    },
+    searchMode: {
         type: Boolean,
         default: true
     },
@@ -16,15 +24,29 @@ export default {
         type: Number,
         default: 10
     },
-    data: {
-        type: Array,
-        default: []
+    maxHeight: {
+        type: Number,
+        default: 600
+    },
+    widths: {
+        type: Object,
+        default: () => {
+            return {}
+        }
+    },
+    sortable: {
+        type: Boolean,
+        default: false
     },
     expandAll: {
         type: Boolean,
         default: false
     },
     autoReset: {
+        type: Boolean,
+        default: true
+    },
+    autoCalcHeight: {
         type: Boolean,
         default: true
     },
@@ -39,5 +61,17 @@ export default {
     expandLoader: {
         type: Function,
         default: () => null
+    },
+    rowClick: {
+        type: Function,
+        default: (row, col, event) => null
+    },
+    rowClassName: {
+        type: Function,
+        default: ({row, rowIndex}) => null
+    },
+    rowStyle: {
+        type: Function,
+        default: ({row, rowIndex}) => null
     }
 }

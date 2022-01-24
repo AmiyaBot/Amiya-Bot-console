@@ -1,21 +1,19 @@
 <template>
     <div class="eForm">
-        <formBuilder ref="form"
+        <formBuilder ref="form" @change="data => $emit('change', data)"
                      :size="size"
                      :inline="inline"
                      :label-width="labelWidth"
                      :build-data="buildData"
                      :display-filter="displayFilter"
                      :display-all="displayAll"
-                     :before-submit="beforeSubmit"
-                     :onchange="onchange"></formBuilder>
-        <el-form class="formBuilder">
+                     :label-position="labelPosition"
+                     :before-submit="beforeSubmit"></formBuilder>
+        <el-form class="formBuilder" :label-position="labelPosition">
             <slot name="item"></slot>
             <el-form-item :label="' '"
                           :label-width="labelWidth">
-                <div>
-                    <slot></slot>
-                </div>
+                <slot></slot>
             </el-form-item>
         </el-form>
     </div>
@@ -31,18 +29,13 @@ export default {
     components: {
         formBuilder
     },
-    computed: {
-        needInit () {
-            const {buildData, displayFilter, displayAll} = this
-            return {buildData, displayFilter, displayAll}
-        }
-    },
-    watch: {
-        needInit: function () {
-            this.$refs.form.init()
-        }
-    },
     methods: {
+        focus: function (field) {
+            this.$refs.form.$refs[field][0].focus()
+        },
+        select: function (field) {
+            this.$refs.form.$refs[field][0].select()
+        },
         getValue: function (field) {
             const data = JSON.parse(JSON.stringify(this.$refs.form.formData))
             const virtualData = JSON.parse(JSON.stringify(this.$refs.form.virtualData))
@@ -98,13 +91,20 @@ export default {
         }
     },
     mounted () {
-        this.reset()
+        this.$forceUpdate()
+    },
+    updated () {
+        this.$refs.form.init()
     }
 }
 </script>
 
 <style>
-.eForm .el-form-item__content > div:not(.listTable) {
-    width: 380px;
+.eForm .el-form-item__content > div:not(.listTable, .el-form-item__error) {
+    width: calc(100% - 50px);
+}
+
+.eForm .el-form-item {
+    margin-bottom: 10px;
 }
 </style>

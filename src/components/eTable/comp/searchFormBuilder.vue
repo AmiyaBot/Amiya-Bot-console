@@ -8,7 +8,9 @@
                              :inline="true"
                              :build-data="searchForm"
                              :display-all="false"
-                             :display-filter="searchFormDisplay">
+                             :display-filter="searchFormDisplay"
+                             form-type="Search"
+                             @search="$emit('search')">
                 </formBuilder>
             </div>
         </transition>
@@ -27,7 +29,7 @@
 </template>
 
 <script>
-import formBuilder from '@/components/eForm/comp/formBuilder'
+import formBuilder from '../../eForm/comp/formBuilder'
 import $ from 'jquery'
 
 export default {
@@ -71,7 +73,7 @@ export default {
             }, 0)
         },
         showText: function (item, t) {
-            const formatDate = this.lib.common.formatDate
+            const formatDate = this.etao.common.formatDate
             const value = this.$refs.form.formData[item.field]
             const type = item.config.type
             const field = item.field

@@ -7,7 +7,7 @@
             <div slot="reference">
                 <slot :show="show" :input="onInput"></slot>
             </div>
-            <div class="search-table" :class="uid()" :style="{ minWidth: minWidth + 'px' }">
+            <div class="search-table listTable" :class="uid()" :style="{ minWidth: minWidth + 'px' }">
                 <el-table ref="table"
                           :data="dataList"
                           :row-class-name="hoverRow"
@@ -29,9 +29,8 @@
 
 <script>
 import tableSelectorProps from '@/components/eForm/js/tableSelectorProps'
+import {calcMinWidth} from '@/components/eTable/js/builtin'
 import $ from 'jquery'
-
-// import {calcMinWidth} from '@/components/eTable/js/builtin'
 
 export default {
     name: 'tableSelector',
@@ -60,7 +59,9 @@ export default {
         dataList: {
             handler: function (data) {
                 this.$nextTick(() => {
-                    // this.$set(this, 'colWidth', calcMinWidth(this.$refs.table.$el))
+                    setTimeout(() => {
+                        this.$set(this, 'colWidth', calcMinWidth(this.$refs.table.$el, 100))
+                    }, 500)
                     this.$emit('dataChange', data)
                 })
             },
@@ -131,13 +132,18 @@ export default {
         },
         selectedRow: function (item) {
             if (item) {
+                let value, show
                 if (this.field in item) {
-                    const value = item[this.virtual && 'value' in this.virtual ? this.virtual.value : this.field]
-                    const show = item[this.virtual && 'show' in this.virtual ? this.virtual.show : this.field]
-
-                    this.bind[this.field] = show || value
-                    this.setVirtual(this.field, value)
+                    value = item[this.virtual && 'value' in this.virtual ? this.virtual.value : this.field]
+                    show = item[this.virtual && 'show' in this.virtual ? this.virtual.show : this.field]
+                } else if (this.virtual && ('value' in this.virtual || 'show' in this.virtual)) {
+                    value = 'value' in this.virtual ? item[this.virtual.value] : ''
+                    show = 'show' in this.virtual ? item[this.virtual.show] : ''
                 }
+
+                this.bind[this.field] = show || value
+                this.setVirtual(this.field, value)
+
                 if (this.selected) {
                     this.selected(JSON.parse(JSON.stringify(item)))
                 }

@@ -1,16 +1,17 @@
 <template>
     <div :class="uid()">
-        <el-form class="formBuilder" :model="formData" :rules="rules" :size="size" :inline="inline">
+        <el-form class="formBuilder" :label-position="labelPosition"
+                 :model="formData" :rules="rules" :size="size" :inline="inline" :validate-on-rule-change="false">
             <el-form-item v-for="(item, index) in buildData"
                           v-if="displayAll || (displayFilter.indexOf(item.title) >= 0 || displayFilter.indexOf(item.field) >= 0)"
+                          :class="item.className"
                           :key="item.field"
                           :prop="item.field"
-                          :label="item.title"
                           :label-width="labelWidth"
                           :style="{ display: item.config.block ? 'block' : '' }">
 
                 <!-- 输入框 -->
-                <el-input v-if="item.config.type == 1"
+                <el-input v-if="item.config.type === 1"
                           v-model="formData[item.field]"
                           :placeholder="'请输入' + item.title"
                           :disabled="disabledItem[item.field]"
@@ -22,7 +23,7 @@
                 </el-input>
 
                 <!-- 数字输入框 -->
-                <el-input-number v-if="item.config.type == 2"
+                <el-input-number v-if="item.config.type === 2"
                                  v-model="formData[item.field]"
                                  :placeholder="'请输入' + item.title"
                                  :disabled="disabledItem[item.field]"
@@ -34,8 +35,10 @@
                 </el-input-number>
 
                 <!-- 下拉选择框 -->
-                <el-select v-if="item.config.type == 3" clearable
+                <el-select v-if="item.config.type === 3" clearable collapse-tags
                            v-model="formData[item.field]"
+                           :remote="typeof item.config.search === 'function'"
+                           :remote-method="value => searchOptions(value, item)"
                            :multiple="item.config.multiple"
                            :allow-create="item.config.create"
                            :filterable="item.config.create"
@@ -51,7 +54,7 @@
                 </el-select>
 
                 <!-- 下拉表格选择框 -->
-                <table-selector v-if="item.config.type == 31"
+                <table-selector v-if="item.config.type === 31"
                                 :table-data="optionsData[item.field]"
                                 :table-field="item.config.table.fields"
                                 :search="item.config.table.search"
@@ -80,7 +83,7 @@
                 </table-selector>
 
                 <!-- 下拉树形选择框 -->
-                <tree-selector v-if="item.config.type == 32"
+                <tree-selector v-if="item.config.type === 32"
                                :tree="item.config.tree"
                                :tree-data="optionsData[item.field]"
                                :virtual="item.config.virtual"
@@ -101,9 +104,18 @@
                     </template>
                 </tree-selector>
 
+                <!-- 级联选择器 -->
+                <el-cascader v-if="item.config.type === 33" collapse-tags clearable
+                             v-model="formData[item.field]"
+                             :placeholder="'请选择' + item.title"
+                             :options="optionsData[item.field]"
+                             :props="item.config.props"
+                             :ref="item.field"
+                             @change="formChange(item.field, formData[item.field])"></el-cascader>
+
                 <!-- 日期选择器（包含"日期"、"日期时间"和两者的范围选择） -->
-                <el-date-picker v-if="item.config.type in datePickerType"
-                                v-model="datePicker[item.field]"
+                <el-date-picker v-if="item.config.type in datePickerType && item.field in datePicker"
+                                v-model="datePicker[item.field].value"
                                 :type="datePickerType[item.config.type]"
                                 :disabled="disabledItem[item.field]"
                                 @change="formChange(item.field, formData[item.field])"
@@ -114,7 +126,7 @@
                 </el-date-picker>
 
                 <!-- 单选框 -->
-                <el-radio-group v-if="item.config.type == 6"
+                <el-radio-group v-if="item.config.type === 6"
                                 v-model="formData[item.field]"
                                 :disabled="disabledItem[item.field]"
                                 @change="formChange(item.field, formData[item.field])">
@@ -125,7 +137,7 @@
                 </el-radio-group>
 
                 <!-- 多选框 -->
-                <el-checkbox-group v-if="item.config.type == 7"
+                <el-checkbox-group v-if="item.config.type === 7"
                                    v-model="formData[item.field]"
                                    :disabled="disabledItem[item.field]"
                                    @change="formChange(item.field, formData[item.field])">
@@ -136,16 +148,35 @@
                 </el-checkbox-group>
 
                 <!-- 切换按钮 -->
-                <el-switch v-if="item.config.type == 8"
+                <el-switch v-if="item.config.type === 8"
                            v-model="formData[item.field]"
                            :disabled="disabledItem[item.field]"
-                           active-color="#5F75ED"
+                           :active-color="item.config.activeColor"
+                           :active-text="item.config.activeText"
+                           :active-value="item.config.activeValue"
+                           :inactive-color="item.config.inactiveColor"
+                           :inactive-text="item.config.inactiveText"
+                           :inactive-value="item.config.inactiveValue"
                            @change="formChange(item.field, formData[item.field])">
                 </el-switch>
 
-                <el-tooltip v-if="item.config.tips" :content="item.config.tips" effect="dark" placement="top">
+                <el-tooltip v-if="item.config.tips && !item.config.labelTips"
+                            :content="item.config.tips"
+                            effect="dark"
+                            placement="top">
                     <span class="el-icon-question"></span>
                 </el-tooltip>
+
+                <template v-slot:label>
+                    <span>{{ item.title }}</span>
+                    <el-tooltip v-if="item.config.tips && item.config.labelTips"
+                                :content="item.config.tips"
+                                effect="dark"
+                                placement="top">
+                        <span class="el-icon-question"></span>
+                    </el-tooltip>
+                </template>
+
             </el-form-item>
             <el-form-item style="display: none">
                 <el-input></el-input>
@@ -170,14 +201,41 @@ export default {
     watch: {
         datePicker: {
             handler: function () {
+                function getTime (v) {
+                    return Math.ceil(new Date(v) / 1000)
+                }
+
                 for (let i in this.datePicker) {
                     let item = this.datePicker[i]
-                    if (Array.isArray(item)) {
-                        this.formData[i][0] = item[0] ? Math.ceil(new Date(item[0]) / 1000) : 0
-                        this.formData[i][1] = item[0] ? Math.ceil(new Date(item[1]) / 1000) : 0
-                    } else {
-                        this.formData[i] = item ? Math.ceil(new Date(item) / 1000) : 0
+
+                    if (item.value === null) {
+                        this.formData[i] = item.default()
+                        this.datePicker[i].value = item.default()
+                        continue
                     }
+
+                    if (Array.isArray(item.value)) {
+                        const start = getTime(item.value[0])
+                        const end = getTime(item.value[1])
+
+                        if (start === 0 && end === 0) {
+                            this.formData[i] = item.default()
+                            this.datePicker[i].value = item.default()
+                        } else {
+                            this.formData[i][0] = item.value[0] ? start : 0
+                            this.formData[i][1] = item.value[1] ? end : 0
+                        }
+                    } else {
+                        this.formData[i] = item.value ? getTime(item.value) : 0
+                    }
+                }
+            },
+            deep: true
+        },
+        formData: {
+            handler: function (value) {
+                if (this.ready) {
+                    this.$emit('change', value)
                 }
             },
             deep: true
@@ -201,6 +259,8 @@ export default {
                 input: {}
             }
 
+            this.ready = false
+
             for (let index in this.buildData) {
                 const item = this.buildData[index]
 
@@ -212,23 +272,28 @@ export default {
 
                 // 初始数据与类型
                 const initOptions = () => {
-                    if (item.config.lazy) {
-                        optionsData[item.field] = [31, 32].indexOf(type) >= 0 ? [] : {}
+                    if (type === 3) {
+                        this.searchOptions('', item)
+                    }
+                    if (typeof item.config.data === 'function') {
+                        optionsData[item.field] = [31, 32, 33].indexOf(type) >= 0 ? [] : {}
                         item.config.data(options => optionsData[item.field] = options)
                     } else {
-                        optionsData[item.field] = item.config.data
+                        optionsData[item.field] = this.optionsData[item.field] || item.config.data
                     }
                 }
 
                 let type = item.config.type
                 let value = item.config.default
 
-                if (item.field in this.formData && this.formData[item.field] !== undefined && this.formData[item.field] !== '') {
+                if (item.field in this.formData &&
+                    this.formData[item.field] !== undefined &&
+                    this.formData[item.field] !== '' && !(type === 8 && 'default' in item.config)) {
                     value = this.formData[item.field]
                 }
 
                 // 初始化校验规则
-                const trigger = type === 1 ? 'blur' : 'change'
+                const trigger = 'change'
 
                 rules[item.field] = []
 
@@ -299,20 +364,27 @@ export default {
                         break
                     case 31:
                     case 32:
-                        // 下拉表格、树形选择框
+                    case 33:
+                        // 下拉表格、树形选择框、级联选择器
                         initOptions()
                         formData[item.field] = value || ''
                         break
                     case 4:
                     case 41:
                         // 日期（3）和日期范围（31）选择器
-                        datePicker[item.field] = value ? this.newData(value) : ''
+                        datePicker[item.field] = {
+                            default: () => 0,
+                            value: value ? this.newData(value) : ''
+                        }
                         formData[item.field] = value || 0
                         break
                     case 5:
                     case 51:
                         // 日期时间（4）和日期时间范围（41）选择器
-                        datePicker[item.field] = value ? [this.newData(value[0]), this.newData(value[1])] : ['', '']
+                        datePicker[item.field] = {
+                            default: () => [0, 0],
+                            value: value ? [this.newData(value[0]), this.newData(value[1])] : ['', '']
+                        }
                         formData[item.field] = value || [0, 0]
                         break
                     case 6:
@@ -327,7 +399,7 @@ export default {
                         break
                     case 8:
                         // 切换按钮
-                        formData[item.field] = value || false
+                        formData[item.field] = value === undefined ? false : value
                 }
             }
 
@@ -342,16 +414,21 @@ export default {
             this.$nextTick(() => {
                 $(`.${this.uid()} .input-only`).off('keydown').keydown(e => {
                     if (e.keyCode === 13) {
-                        const index = parseInt(
-                            $(e.target)
-                                .closest('.input-only')[0]
-                                .className
-                                .match(/input-index-(\d+)/)[1]
-                        )
-                        this.autoJump(index)
+                        if (this.formType === 'Search') {
+                            this.$emit('search')
+                        } else {
+                            const index = parseInt(
+                                $(e.target)
+                                    .closest('.input-only')[0]
+                                    .className
+                                    .match(/input-index-(\d+)/)[1]
+                            )
+                            this.autoJump(index)
+                        }
                     }
                 })
                 this.reviewOptions()
+                this.ready = true
             })
         },
         autoJump: function (index) {
@@ -377,15 +454,22 @@ export default {
                 this.beforeSubmit(this.formData)
             }
         },
+        searchOptions: function (value, item) {
+            if (typeof item.config.search === 'function') {
+                item.config.search(value, options => this.optionsData[item.field] = options)
+            }
+        },
         formChange: function (field, value, type = 'change') {
             if (field in this.events[type]) {
+                if (value.constructor === Boolean) {
+                    value = value ? 1 : 0
+                }
                 this.events[type][field](
                     JSON.parse(
                         JSON.stringify(value)
                     )
                 )
             }
-            this.changeEvent()
         },
         setValue: function (field, value) {
             if (field.constructor === Object) {
@@ -395,11 +479,11 @@ export default {
                 return false
             }
 
-            const set = () => {
+            const set = (transBool = false) => {
                 if (field in this.virtualData) {
-                    this.virtualData[field] = value
+                    this.virtualData[field] = transBool ? !!value : value
                 } else {
-                    this.formData[field] = value
+                    this.formData[field] = transBool ? !!value : value
                 }
             }
 
@@ -421,11 +505,11 @@ export default {
                             continue
                         case 4:
                         case 41:
-                            this.datePicker[item.field] = value ? this.newData(value) : ''
+                            this.datePicker[item.field].value = value ? this.newData(value) : ''
                             break
                         case 5:
                         case 51:
-                            this.datePicker[item.field] = value ? [this.newData(value[0]), this.newData(value[1])] : ['', '']
+                            this.datePicker[item.field].value = value ? [this.newData(value[0]), this.newData(value[1])] : ['', '']
                             break
                         default:
                             set()
@@ -434,7 +518,6 @@ export default {
                     break
                 }
             }
-            this.changeEvent()
         },
         setOptions: function (field, data, review = true) {
             this.$set(this.optionsData, field, data)
@@ -507,11 +590,11 @@ export default {
                         break
                     case 4:
                     case 41:
-                        this.datePicker[item.field] = ''
+                        this.datePicker[item.field].value = ''
                         break
                     case 5:
                     case 51:
-                        this.datePicker[item.field] = ['', '']
+                        this.datePicker[item.field].value = ['', '']
                         break
                     case 6:
                     case 7:
@@ -522,16 +605,12 @@ export default {
                         }
                         break
                     case 8:
-                        this.formData[item.field] = false
+                        this.formData[item.field] = item.config.inactiveValue === undefined ? false : item.config.inactiveValue
                         break
                     default:
                         this.formData[item.field] = ''
                 }
             }
-            this.changeEvent()
-        },
-        changeEvent: function () {
-            this.onchange(JSON.parse(JSON.stringify(this.formData)))
         }
     },
     data () {
@@ -553,7 +632,8 @@ export default {
                 selected: {},
                 change: {},
                 input: {}
-            }
+            },
+            ready: false
         }
     }
 }

@@ -30,7 +30,7 @@ export default {
                 search.pageSize = this.currPageSize
             }
 
-            this.lib.requests.export(
+            this.etao.requests.export(
                 {
                     url: exportPage ? this.exportPageUrl : this.exportAllUrl,
                     data: search

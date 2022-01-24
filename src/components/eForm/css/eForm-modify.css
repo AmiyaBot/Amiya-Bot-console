@@ -9,7 +9,7 @@
 }
 
 .formBuilder .el-button {
-    padding: 12px 35px;
+    /*padding: 12px 35px;*/
 }
 
 .formBuilder .el-button:focus,
@@ -75,4 +75,17 @@
 
 .el-input.is-disabled .el-input__inner {
     color: #606266;
+}
+
+.el-form-item__error {
+    /*height: calc(100% - 6px);*/
+    /*padding: 0;*/
+    /*background: #fff;*/
+    /*top: 3px;*/
+    /*right: 85px;*/
+    /*left: unset;*/
+    /*display: flex;*/
+    /*align-items: center;*/
+    /*pointer-events: none;*/
+    display: none;
 }

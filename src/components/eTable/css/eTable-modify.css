@@ -2,12 +2,16 @@
     margin-bottom: 10px !important;
 }
 
-.listTable .cell .el-button {
+.listTable .cell > .el-button {
     padding: 4px 6px;
 }
 
 .listTable .cell > .el-button.el-button--text {
     text-decoration: underline;
+}
+
+.listTable .el-table td, .el-table th {
+    padding: 3px 0 !important;
 }
 
 .listTable .el-table .el-table__cell {
@@ -31,6 +35,15 @@
 .listTable .el-table td > .cell span,
 .listTable .el-table th > .cell span {
     display: inline-block;
+}
+
+.listTable .el-table__empty-block {
+    justify-content: flex-start;
+}
+
+.listTable .el-table__empty-text {
+    text-align: left;
+    padding-left: 10px;
 }
 
 .block .el-checkbox {

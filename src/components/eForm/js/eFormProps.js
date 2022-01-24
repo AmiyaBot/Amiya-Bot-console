@@ -27,8 +27,12 @@ export default {
         type: Function,
         default: () => null
     },
-    onchange: {
-        type: Function,
-        default: () => null
+    formType: {
+        type: String,
+        default: 'Form'
+    },
+    labelPosition: {
+        type: String,
+        default: 'left'
     }
 }

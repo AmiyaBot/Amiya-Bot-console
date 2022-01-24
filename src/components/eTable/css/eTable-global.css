@@ -1,3 +1,13 @@
+.exportButtonCon {
+    display: flex;
+    flex-direction: column;
+}
+
+.exportButtonCon .el-button {
+    margin-left: 0 !important;
+    margin-bottom: 5px !important;
+}
+
 .tableButton.operations {
     background-image: url(../../../assets/table/operations.svg);
     background-size: 14px;
@@ -41,4 +51,16 @@
 .tableButton.hide.onHide,
 .tableButton.hide:hover {
     background-image: url(../../../assets/table/hide-s.svg);
+}
+
+.tableButton.export {
+    background-image: url(../../../assets/table/export.svg);
+}
+
+.tableButton.export:hover {
+    background-image: url(../../../assets/table/export-s.svg);
+}
+
+.el-table--enable-row-transition .el-table__body td.el-table__cell {
+    background-color: #fff;
 }

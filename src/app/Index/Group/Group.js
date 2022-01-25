@@ -30,12 +30,6 @@ export const tableFields = [
         }
     },
     {
-        title: '30天内使用数量',
-        field: 'message_num',
-        sortable: true,
-        search: false
-    },
-    {
         title: '启用状态',
         field: 'active',
         custom: true,

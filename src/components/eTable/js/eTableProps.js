@@ -6,11 +6,11 @@ export default {
     exportAllUrl: String,
     remoteSortColumnField: {
         type: String,
-        default: 'orderByColumn'
+        default: 'orderByField'
     },
     remoteSortOrderField: {
         type: String,
-        default: 'isAsc'
+        default: 'orderBy'
     },
     data: {
         type: Array,

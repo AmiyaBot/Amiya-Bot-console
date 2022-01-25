@@ -10,14 +10,14 @@
             </template>
 
             <template v-slot:custom="{ item, field, value }">
-                <div v-if="['active', 'send_notice', 'send_weibo'].indexOf(field.field) >= 0">
+                <template v-if="['active', 'send_notice', 'send_weibo'].indexOf(field.field) >= 0">
                     <el-switch v-model="value"
                                active-color="#13ce66"
                                :active-value="1"
                                :inactive-value="0"
                                @change="changeGroupStatus(item, field.field, value)">
                     </el-switch>
-                </div>
+                </template>
             </template>
 
             <template v-slot:row="{ item }">

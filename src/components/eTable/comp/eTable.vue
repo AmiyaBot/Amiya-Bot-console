@@ -163,7 +163,7 @@ export default {
             const selected = []
             for (let page in this.selectedItems) {
                 for (let item of this.selectedItems[page]) {
-                    selected.push(this.etao.common.shallowCopy(item))
+                    selected.push(this.lib.common.shallowCopy(item))
                 }
             }
             return selected

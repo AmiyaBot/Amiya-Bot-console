@@ -73,7 +73,7 @@ export default {
             }, 0)
         },
         showText: function (item, t) {
-            const formatDate = this.etao.common.formatDate
+            const formatDate = this.lib.common.formatDate
             const value = this.$refs.form.formData[item.field]
             const type = item.config.type
             const field = item.field

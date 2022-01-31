@@ -21,22 +21,37 @@
             </template>
 
             <template v-slot:row="{ item }">
+                <!--<el-button type="text" @click="getGroupMessage(item)">查看群聊</el-button>-->
                 <el-button type="text" @click="getMemberList(item)">查看群成员</el-button>
                 <el-button type="text" @click="leaveGroup(item)">退出群</el-button>
             </template>
 
         </e-table>
+
+        <e-window :title="group.group_name" ref="groupMessage">
+            <div class="messageWindow">
+                <div v-for="(item, index) in groupMessage" :key="index">
+                    <div>[{{ item.create_time }}] {{ item.user_id }}</div>
+                    <div>{{ item.text }}{{ item.face }}</div>
+                    <div v-for="(img, i) in item.image" :key="i">
+                        <a :href="img">[图片]</a>
+                    </div>
+                </div>
+            </div>
+        </e-window>
     </div>
 </template>
 
 <script>
 import eTable from '@/components/eTable/comp/eTable'
+import eWindow from '@/components/eWindow/comp/eWindow'
 import {tableFields} from '@/app/Index/Group/Group'
 
 export default {
     name: 'GroupList',
     components: {
-        eTable
+        eTable,
+        eWindow
     },
     methods: {
         loadGroups: function (page = 1, pageSize = 10, search = {}) {
@@ -61,6 +76,24 @@ export default {
                     }
                     this.$set(this.table, 'data', res.data)
                     this.$set(this.table, 'total', res.count)
+                }
+            })
+        },
+        getGroupMessage: function (item) {
+            this.lib.requests.post({
+                url: '/message/getMessageByGroupId',
+                data: {
+                    group_id: item.group_id
+                },
+                success: res => {
+                    this.$set(this, 'group', item)
+                    this.$set(this, 'groupMessage', res.map(row => {
+                        row.create_time = this.lib.common.formatDate(row.create_time)
+                        row.image = row.image ? row.image.split(',') : []
+
+                        return row
+                    }))
+                    this.$refs.groupMessage.show()
                 }
             })
         },
@@ -108,8 +141,8 @@ export default {
                 }
             })
         },
-        pushNotice: function () {
-
+        formatDate: function (ts) {
+            return this.lib.common.formatDate(ts)
         }
     },
     data () {
@@ -119,6 +152,8 @@ export default {
                 data: [],
                 total: 0
             },
+            group: {},
+            groupMessage: [],
             notice: ''
         }
     },
@@ -129,5 +164,16 @@ export default {
 </script>
 
 <style scoped>
+.messageWindow {
+    height: 400px;
+    overflow: auto;
+}
 
+.messageWindow > div {
+    margin-bottom: 10px;
+}
+
+.messageWindow img {
+    width: 30%;
+}
 </style>

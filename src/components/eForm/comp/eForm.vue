@@ -100,7 +100,7 @@ export default {
 </script>
 
 <style>
-.eForm .el-form-item__content > div:not(.listTable, .el-form-item__error) {
+.eForm .el-form-item__content > div:not(.listTable, .el-form-item__error, .el-badge) {
     width: calc(100% - 50px);
 }
 

@@ -30,6 +30,11 @@ export const tableFields = [
         }
     },
     {
+        title: '活跃度',
+        field: 'message_num',
+        search: false
+    },
+    {
         title: '启用状态',
         field: 'active',
         custom: true,

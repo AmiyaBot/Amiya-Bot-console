@@ -1,26 +1,28 @@
 <template>
-    <div style="height: 100%">
+    <div class="shadow-box">
         <e-table :fields="table.fields" ref="table"
                  :data="table.data"
                  :total-page="table.total"
                  :list-loader="loadSetting">
 
             <template v-slot:top>
+                <!--
                 <el-button @click="exportData">导出所有数据</el-button>
                 <el-button @click="() => $refs.upload.upload()">导入数据</el-button>
+                -->
                 <el-button type="success" @click="() => $refs.ws.show()">白名单设置</el-button>
-                <el-button type="warning" @click="() => $refs.bs.show()">黑名单设置</el-button>
+                <el-button type="danger" @click="() => $refs.bs.show()">黑名单设置</el-button>
             </template>
 
             <template v-slot:custom="{ item, field, value }">
-                <div v-if="['is_global', 'is_active'].indexOf(field.field) >= 0">
+                <template v-if="['is_global', 'is_active'].indexOf(field.field) >= 0">
                     <el-switch v-model="value"
                                active-color="#13ce66"
                                :active-value="1"
                                :inactive-value="0"
                                @change="changeStatus(item, field.field, value)">
                     </el-switch>
-                </div>
+                </template>
             </template>
 
             <template v-slot:row="{ item }">
@@ -30,17 +32,9 @@
                         <el-button type="text" @click="deleteReplace(item)">
                             删除<span class="hard">本行</span>规则
                         </el-button>
-                        <el-button type="text" @click="deleteReplace(item,'group_all')">
-                            删除<span class="hard">该群全部</span>规则
-                        </el-button>
-                        <el-button type="text" @click="deleteReplace(item,'user_all')">
-                            删除<span class="hard">该用户全部</span>规则
-                        </el-button>
-                        <el-button type="text" @click="deleteReplace(item,'group_origin_all')">
-                            删除<span class="hard">该群同原字符</span>的规则
-                        </el-button>
-                        <el-button type="text" @click="deleteReplace(item, 'all')">
-                            删除<span class="hard">所有群同原字符</span>的规则
+                        <el-button type="text" v-for="(title, name) in rule" @click="deleteReplace(item, name)"
+                                   :key="name">
+                            删除<span class="hard">{{ title }}</span>规则
                         </el-button>
                     </div>
                 </el-popover>
@@ -50,30 +44,30 @@
 
         <e-window title="白名单设置" ref="ws" :on-close="() => $emit('save')">
             <el-alert title="不需要经过线上审核的单词" :closable="false"></el-alert>
-            <el-select v-model="data.replaceSetting.permissible" style="width: 100%;margin-top: 10px"
-                       multiple
-                       filterable
-                       allow-create
-                       default-first-option
-                       placeholder="请添加单词">
-                <el-option :disabled="true" label="输入单词，按回车确认" value="">
-                </el-option>
-            </el-select>
+            <el-input placeholder="输入单词，按回车确认" size="small" style="margin: 10px 0" v-model="replaceSetting.input"
+                      @change="value => this.addItem(value, 0)"></el-input>
+            <div class="wordList" v-if="replaceSetting.permissible.length">
+                <div class="wordItem" v-for="(item, index) in replaceSetting.permissible" :key="index">
+                    <span>{{ item.text }}</span>
+                    <span class="close" @click="delItem(replaceSetting.permissible, index)"></span>
+                </div>
+            </div>
+            <div v-else style="text-align: center">暂无白名单设置</div>
         </e-window>
         <e-window title="黑名单设置" ref="bs" :on-close="() => $emit('save')">
             <el-alert title="禁止使用为被替换词的单词" :closable="false"></el-alert>
-            <el-select v-model="data.replaceSetting.forbidden" style="width: 100%;margin-top: 10px"
-                       multiple
-                       filterable
-                       allow-create
-                       default-first-option
-                       placeholder="请添加单词">
-                <el-option :disabled="true" label="输入单词，按回车确认" value="">
-                </el-option>
-            </el-select>
+            <el-input placeholder="输入单词，按回车确认" size="small" style="margin: 10px 0" v-model="replaceSetting.input"
+                      @change="value => this.addItem(value, 1)"></el-input>
+            <div class="wordList" v-if="replaceSetting.forbidden.length">
+                <div class="wordItem" v-for="(item, index) in replaceSetting.forbidden" :key="index">
+                    <span>{{ item.text }}</span>
+                    <span class="close" @click="delItem(replaceSetting.forbidden, index)"></span>
+                </div>
+            </div>
+            <div v-else style="text-align: center">暂无黑名单设置</div>
         </e-window>
 
-        <e-upload url="/setting/importReplaceText" accept=".xlsx" :on-upload="() => $refs.table.loadList()"
+        <e-upload url="/replace/importReplaceText" accept=".xlsx" :on-upload="() => $refs.table.loadList()"
                   ref="upload"></e-upload>
     </div>
 </template>
@@ -84,8 +78,7 @@ import eWindow from '@/components/eWindow/comp/eWindow'
 import eUpload from '@/components/eUpload/comp/eUpload'
 
 export default {
-    name: 'SubSettingReplace',
-    props: ['data'],
+    name: 'ReplaceManager',
     components: {
         eTable,
         eWindow,
@@ -94,7 +87,7 @@ export default {
     methods: {
         loadSetting: function (page = 1, pageSize = 10, search = {}) {
             this.lib.requests.post({
-                url: '/setting/getReplaceTextByPages',
+                url: '/replace/getReplaceTextByPages',
                 data: {
                     page,
                     pageSize,
@@ -106,29 +99,49 @@ export default {
                 }
             })
         },
+        loadReplaceSetting: function () {
+            this.lib.requests.post({
+                url: '/replace/getTextReplaceSetting',
+                success: res => {
+                    const permissible = []
+                    const forbidden = []
+
+                    for (let item of res) {
+                        if (item['status'] === 0) {
+                            permissible.push(item)
+                        } else {
+                            forbidden.push(item)
+                        }
+                    }
+
+                    this.$set(this.replaceSetting, 'permissible', permissible)
+                    this.$set(this.replaceSetting, 'forbidden', forbidden)
+                }
+            })
+        },
         changeStatus: function (item, name, value) {
             let data = JSON.parse(JSON.stringify(item))
 
             data[name] = value
 
             this.lib.requests.post({
-                url: '/setting/changeReplaceTextStatus',
+                url: '/replace/changeReplaceTextStatus',
                 data: data,
                 success: res => {
                     this.$refs.table.loadList()
                 }
             })
         },
-        deleteReplace: function (item, extra = '') {
+        deleteReplace: function (item, name = '') {
             const data = JSON.parse(JSON.stringify(item))
 
-            if (extra) {
-                data[extra] = true
+            if (name) {
+                data[name] = true
             }
 
-            this.lib.message.confirm(`确定删除规则？`, '注意', () => {
+            this.lib.message.confirm(name === 'replace_all' ? data['replace'] : data['origin'], `确定删除${this.rule[name]}规则？`, () => {
                 this.lib.requests.post({
-                    url: '/setting/deleteReplaceText',
+                    url: '/replace/deleteReplaceText',
                     data: data,
                     success: res => {
                         this.$refs.table.loadList()
@@ -137,7 +150,40 @@ export default {
             })
         },
         exportData: function () {
-            location.href = 'http://' + window.serverHost + '/setting/exportReplaceText'
+            location.href = 'http://' + window.serverHost + '/replace/exportReplaceText'
+        },
+        addItem: function (text, status) {
+            if (!text) {
+                return
+            }
+            this.lib.requests.post({
+                url: '/replace/addReplaceSetting',
+                data: {
+                    text, status
+                },
+                success: res => {
+                    const item = {
+                        id: res,
+                        text: text,
+                        status: text
+                    }
+                    if (status) {
+                        this.replaceSetting.forbidden.push(item)
+                    } else {
+                        this.replaceSetting.permissible.push(item)
+                    }
+                    this.replaceSetting.input = ''
+                }
+            })
+        },
+        delItem: function (list, index) {
+            this.lib.requests.post({
+                url: '/replace/deleteReplaceSetting',
+                data: list[index],
+                success: res => {
+                    list.splice(index, 1)
+                }
+            })
         }
     },
     data () {
@@ -169,7 +215,7 @@ export default {
                     },
                     {
                         title: '替换字符',
-                        field: 'target',
+                        field: 'replace',
                         search: {
                             type: 1,
                             checked: true
@@ -210,11 +256,24 @@ export default {
                 ],
                 data: [],
                 total: 0
+            },
+            rule: {
+                group_all: '该群全部',
+                user_all: '该用户全部',
+                group_origin_all: '该群同原字符',
+                origin_all: '所有群同原字符',
+                replace_all: '所有群同替换字符'
+            },
+            replaceSetting: {
+                input: '',
+                permissible: [],
+                forbidden: []
             }
         }
     },
     mounted () {
         this.loadSetting()
+        this.loadReplaceSetting()
     }
 }
 </script>
@@ -239,5 +298,24 @@ export default {
 
 .delete-button > button:hover {
     text-decoration: underline;
+}
+
+.wordList {
+    display: flex;
+}
+
+.wordItem {
+    background: #f1f1f1;
+    border-radius: 4px;
+    margin-right: 10px;
+    padding: 2px 10px;
+    display: flex;
+}
+
+.wordItem .close {
+    background: url(../../../assets/icon/close-circle.svg) center / 15px no-repeat;
+    padding: 10px;
+    margin-left: 5px;
+    cursor: pointer;
 }
 </style>

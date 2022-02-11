@@ -33,7 +33,7 @@ export default class Requests {
             }
 
             const token = this.common.getData('token')
-            if (token) {
+            if (token && !options.noToken) {
                 headers.Authorization = 'Bearer ' + token
             }
 
@@ -105,7 +105,7 @@ export default class Requests {
         }
 
         form.append('file', file)
-        form.append('filename', filename)
+        // form.append('filename', filename)
         options.data = form
 
         this.httpRequests('post', options)

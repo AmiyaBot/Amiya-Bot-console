@@ -2,11 +2,11 @@
     margin-bottom: 10px !important;
 }
 
-.listTable .cell > .el-button {
+.listTable .cell .el-button {
     padding: 4px 6px;
 }
 
-.listTable .cell > .el-button.el-button--text {
+.listTable .cell .el-button.el-button--text {
     text-decoration: underline;
 }
 

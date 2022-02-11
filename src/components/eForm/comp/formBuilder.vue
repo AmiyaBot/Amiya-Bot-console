@@ -35,9 +35,9 @@
                 </el-input-number>
 
                 <!-- 下拉选择框 -->
-                <el-select v-if="item.config.type === 3" clearable collapse-tags
+                <el-select v-if="item.config.type === 3" clearable allow-create
                            v-model="formData[item.field]"
-                           :filterable="!!item.config.search"
+                           :filterable="!!item.config.search || !!item.config.multiple"
                            :remote="typeof item.config.search === 'function'"
                            :remote-method="value => searchOptions(value, item)"
                            :multiple="item.config.multiple"

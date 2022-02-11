@@ -3,10 +3,10 @@ import Router from 'vue-router'
 import Login from '@/app/Login'
 import Dashboard from '@/app/Index/Dashboard/Dashboard'
 import UserManager from '@/app/Index/User/UserManager'
-import GachaManager from '@/app/Index/Gacha/GachaManager'
 import GroupManager from '@/app/Index/Group/GroupManager'
+import GachaManager from '@/app/Index/Gacha/GachaManager'
+import ReplaceManager from '@/app/Index/Replace/ReplaceManager'
 import AdminManager from '@/app/Index/Admin/AdminManager'
-import FunctionSetting from '@/app/Index/Setting/FunctionSetting'
 import SourceManager from '@/app/Index/Source/SourceManager'
 
 Vue.use(Router)
@@ -39,14 +39,14 @@ export default new Router({
             component: GachaManager
         },
         {
+            path: '/replace',
+            name: 'ReplaceManager',
+            component: ReplaceManager
+        },
+        {
             path: '/admin',
             name: 'AdminManager',
             component: AdminManager
-        },
-        {
-            path: '/function',
-            name: 'FunctionSetting',
-            component: FunctionSetting
         },
         {
             path: '/source',

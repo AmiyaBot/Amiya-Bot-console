@@ -10,20 +10,20 @@
             </template>
 
             <template v-slot:custom="{ field, value }">
-                <div v-if="field.field === 'limit_pool'">
+                <template v-if="field.field === 'limit_pool'">
                     <span v-if="value === 0">普通卡池</span>
                     <span class="tag tag1" v-if="value === 1">限定卡池</span>
                     <span class="tag tag2" v-if="value === 2">联合寻访</span>
-                </div>
-                <div v-if="['pickup_6', 'pickup_5', 'pickup_4'].indexOf(field.field) >= 0">
+                </template>
+                <template v-if="['pickup_6', 'pickup_5', 'pickup_4'].indexOf(field.field) >= 0">
                     <span class="tag" v-for="(item, index) in value" :key="index">{{ item }}</span>
-                </div>
-                <div v-if="field.field === 'pickup_s'">
+                </template>
+                <template v-if="field.field === 'pickup_s'">
                     <span class="tag" :key="index"
                           v-for="(item, index) in pickupSList(value)">
                         {{ item }}
                     </span>
-                </div>
+                </template>
             </template>
 
             <template v-slot:row="{ item }">
@@ -34,17 +34,15 @@
         </e-table>
 
         <e-window :title="(form.type === 1 ? '修改' : '新增') + '卡池'" ref="window">
-            <eForm :build-data="form.fields" :onchange="formChange" ref="form">
+            <eForm :build-data="form.fields" ref="form">
                 <el-button type="primary" @click="submitManage()">提交</el-button>
-                <el-badge :value="spForm.spList.length" :hidden="!spForm.spList.length" class="item">
-                    <el-button @click="() => $refs.spOperator.show()">设置自定义干员</el-button>
-                </el-badge>
+                <el-button @click="setSpOperator">设置自定义干员</el-button>
             </eForm>
 
             <e-window title="设置自定义干员" ref="spOperator">
                 <el-alert title="为什么要设置自定义干员？" :closable="false">
                     <div class="alert">
-                        自定义干员为不存在列表内的干员，因此不具备干员ID（char_id），即使在对应星级的UP干员内设置，仍无法在抽卡时为其匹配
+                        自定义干员为不存在游戏内的干员或因为其他因素无法获取资源的干员，此类干员不具备干员ID（char_id），即使在对应星级的UP干员内设置，仍无法在抽卡时为其匹配
                         <span>星级</span>、<span>职业</span> 以及 <span>立绘</span> 等信息。
                     </div>
                 </el-alert>
@@ -82,7 +80,7 @@
                 </e-table>
             </e-window>
         </e-window>
-        <e-upload ref="upload" url="/upload/image" :on-upload="onUpload"></e-upload>
+        <e-upload ref="upload" url="/pool/uploadImage" :on-upload="onUpload"></e-upload>
     </div>
 </template>
 
@@ -171,17 +169,16 @@ export default {
                 }
                 this.$refs.form.setDisabled('pool_name', type === 1)
 
-                this.$set(this.spForm, 'spList', item['spList'] || [])
-                this.$nextTick(() => {
-                    this.formChange(this.$refs.form.getValue())
-                })
+                this.$set(this.spForm, 'spList', item['sp_list'] || [])
             })
         },
         delPool: function (item) {
             this.lib.message.confirm(`确定删除卡池【${item['pool_name']}】吗？`, '请确认', () => {
                 this.lib.requests.post({
                     url: '/pool/delPool',
-                    data: item,
+                    data: {
+                        pool_name: item['pool_name']
+                    },
                     successMessage: true,
                     success: res => {
                         this.$refs.table.loadList()
@@ -202,7 +199,7 @@ export default {
                 return
             }
 
-            data['spList'] = this.spForm.spList
+            data['sp_list'] = this.spForm.spList
 
             this.lib.requests.post({
                 url: url,
@@ -218,30 +215,32 @@ export default {
                 }
             })
         },
-        formChange: function (data) {
-            let names = []
-            for (let field of ['pickup_6', 'pickup_5', 'pickup_4']) {
-                for (let item of data[field]) {
-                    names.push(item)
-                }
+        setSpOperator: function () {
+            this.$refs.spOperator.show()
+            this.formChange()
+        },
+        formChange: function () {
+            let data = this.$refs.form.getValue()
+            let spList = []
+
+            let spListMap = {}
+            for (let item of this.spForm.spList) {
+                spListMap[item.operator_name] = this.lib.common.shallowCopy(item)
             }
 
-            let intersection = names.filter(v => !this.operatorsList.includes(v))
-            let spList = this.spForm.spList.filter(v => {
-                let index = intersection.indexOf(v.operator_name)
-                if (index >= 0) {
-                    intersection.splice(index, 1)
-                    return v
+            for (let field of ['pickup_6', 'pickup_5', 'pickup_4']) {
+                for (let item of data[field]) {
+                    if (item in spListMap) {
+                        spList.push(spListMap[item])
+                    } else {
+                        spList.push({
+                            operator_name: item,
+                            rarity: '',
+                            classes: '',
+                            image: ''
+                        })
+                    }
                 }
-            })
-
-            for (let item of intersection) {
-                spList.push({
-                    operator_name: item,
-                    rarity: '',
-                    classes: '',
-                    image: ''
-                })
             }
 
             this.$set(this.spForm, 'spList', spList)
@@ -253,7 +252,7 @@ export default {
             this.spForm.spList[index].image = path
         },
         showImage: function (item) {
-            window.open(`http://${window.serverHost}/images/${item.operator_name}.png`)
+            window.open(`http://${window.serverHost}/images?filename=${item.image}`)
         }
     },
     data () {

@@ -30,7 +30,7 @@ export default {
                     }
                 },
                 legend: {
-                    data: ['群聊', '主动呼叫', '回复']
+                    data: ['群聊天数量', '有效呼叫', '回复']
                 },
                 axisPointer: {
                     link: {xAxisIndex: 'all'}
@@ -80,7 +80,7 @@ export default {
                 color: ['#5f75ed', '#ffba31', '#56d47d'],
                 series: [
                     {
-                        name: '群聊',
+                        name: '群聊天数量',
                         type: 'line',
                         areaStyle: {
                             opacity: 0.8,
@@ -102,7 +102,7 @@ export default {
                         smooth: true
                     },
                     {
-                        name: '主动呼叫',
+                        name: '有效呼叫',
                         type: 'bar',
                         barMaxWidth: 10,
                         stack: 'count',

@@ -3,6 +3,7 @@ export const tableFields = [
         title: '用户ID',
         field: 'user_id',
         sortable: true,
+        custom: true,
         search: {
             type: 1,
             checked: true

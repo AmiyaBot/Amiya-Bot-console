@@ -27,6 +27,10 @@ export default class Common {
         localStorage.removeItem(name)
     }
 
+    shallowCopy (data) {
+        return JSON.parse(JSON.stringify(data))
+    }
+
     formatDate (time, format = 'y-m-d h:i:s') {
         if (time) {
             const mSec = time * (time.toString().length < 13 ? 1000 : 1)

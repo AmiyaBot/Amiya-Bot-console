@@ -48,6 +48,7 @@ export default {
                 this.lib.requests.post({
                     url: '/login',
                     data: this.form,
+                    noToken: true,
                     successMessage: true,
                     success: res => {
                         this.$router.push('/index')

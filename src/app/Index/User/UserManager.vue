@@ -14,14 +14,17 @@
             </template>
 
             <template v-slot:custom="{ field, value }">
-                <div v-if="field.field === 'sign_in'">
+                <template v-if="field.field === 'user_id'">
+                    {{ value['user_id'] }}
+                </template>
+                <template v-if="field.field === 'sign_in'">
                     <span class="tag" v-if="value">已签到</span>
                     <span v-else>未签到</span>
-                </div>
-                <div v-if="field.field === 'black'">
+                </template>
+                <template v-if="field.field === 'black'">
                     <span class="tag black" v-if="value">黑名单</span>
                     <span v-else>正常</span>
-                </div>
+                </template>
             </template>
 
             <template v-slot:row="{ item }">
@@ -58,12 +61,13 @@ export default {
             })
         },
         setBlackUser: function (item, status) {
-            const text = status ? `是否添加用户${item['user_id']}至黑名单` : `是否解除用户${item['user_id']}的黑名单`
+            const userId = item['user_id']['user_id']
+            const text = status ? `是否添加用户${userId}至黑名单` : `是否解除用户${userId}的黑名单`
             this.lib.message.confirm(text, '注意', () => {
                 this.lib.requests.post({
                     url: '/user/setBlackUser',
                     data: {
-                        user_id: item['user_id'],
+                        user_id: userId,
                         black: status
                     },
                     successMessage: true,
@@ -77,7 +81,7 @@ export default {
             let users = []
             if (Array.isArray(items)) {
                 if (items.length) {
-                    users = items.map(n => n['user_id'])
+                    users = items.map(n => n['user_id']['user_id'])
                 } else {
                     this.lib.message.alert('请至少选择一个用户')
                     return

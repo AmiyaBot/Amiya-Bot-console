@@ -139,7 +139,7 @@ export default {
                 data[name] = true
             }
 
-            this.lib.message.confirm(name === 'replace_all' ? data['replace'] : data['origin'], `确定删除${this.rule[name]}规则？`, () => {
+            this.lib.message.confirm(name === 'replace_all' ? data['replace'] : data['origin'], `确定删除${this.rule[name] || '本行'}规则？`, () => {
                 this.lib.requests.post({
                     url: '/replace/deleteReplaceText',
                     data: data,

@@ -89,7 +89,7 @@ export default {
                     break
                 case 'restart':
                     this.lib.message.confirm('确定重启', '注意', () => {
-                        this.lib.requests.post({url: '/restart'})
+                        this.lib.requests.post({url: '/bot/restart'})
                     })
                     break
             }
@@ -100,7 +100,7 @@ export default {
                 return false
             }
             this.lib.requests.post({
-                url: '/editPassword',
+                url: '/user/editPassword',
                 data: this.form,
                 successMessage: true,
                 success: res => {
@@ -110,12 +110,8 @@ export default {
         },
         logout: function () {
             this.lib.message.confirm('确定退出登录吗？', '退出登录', () => {
-                this.lib.requests.post({
-                    url: '/logout',
-                    success: res => {
-                        location.href = '/'
-                    }
-                })
+                this.lib.common.removeData('token')
+                location.href = '/'
             })
         },
         checkClientSize: function () {
@@ -134,9 +130,9 @@ export default {
                     {path: '/group', name: '群组管理'},
                     {path: '/user', name: '用户管理'},
                     {path: '/gacha', name: '卡池管理'},
-                    {path: '/replace', name: '词语替换'},
-                    {path: '/admin', name: '权限管理'},
-                    {path: '/source', name: '资源管理'}
+                    {path: '/replace', name: '词语替换'}
+                    // {path: '/admin', name: '权限管理'},
+                    // {path: '/source', name: '资源管理'}
                 ]
             },
             form: {

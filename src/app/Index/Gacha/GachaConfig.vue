@@ -81,7 +81,7 @@ export default {
         },
         submitManage: function () {
             const data = this.$refs.form.getValue()
-            const url = this.form.type === 1 ? '/operator/editConfig' : '/operator/addNewConfig'
+            const url = this.form.type === 1 ? '/operator/editConfig' : '/operator/addConfig'
 
             if (data['operator_name'] === '') {
                 this.lib.message.toast('干员名称不能为空', 'error')

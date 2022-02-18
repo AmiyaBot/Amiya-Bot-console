@@ -171,7 +171,7 @@ export const configTableFields = [
 export const configFormFields = [
     {
         title: 'ID',
-        field: 'conf_id',
+        field: 'id',
         config: {
             type: 1,
             disabled: true

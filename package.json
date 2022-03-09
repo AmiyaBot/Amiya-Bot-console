@@ -12,6 +12,7 @@
     },
     "dependencies": {
         "axios": "^0.21.1",
+        "compressing": "^1.5.1",
         "cos-nodejs-sdk-v5": "^2.11.6",
         "echarts": "^5.1.2",
         "element-ui": "^2.15.6",

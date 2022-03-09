@@ -9,6 +9,7 @@ const fs = require('fs')
 const path = require('path')
 const chalk = require('chalk')
 const webpack = require('webpack')
+const compressing = require('compressing')
 const config = require('../config')
 const webpackConfig = require('./webpack.prod.conf')
 const COS = require('./cos')
@@ -22,17 +23,20 @@ function createVersionFile (stats) {
 
     files.unshift(version)
 
-    fs.writeFileSync('.version', files.join('\n'), {flag: 'w+'})
+    fs.writeFileSync('version.txt', files.join('\n'), {flag: 'w+'})
 
     try {
         const cos = new COS()
 
-        cos.putFile('console/.version', '.version')
+        cos.putFile('console/version.txt', 'version.txt')
 
-        files.shift()
-        for (let item of files) {
-            cos.putFile(`console/${version}/${item}`, `dist/${item}`)
-        }
+        compressing.zip.compressDir('dist', 'dist.zip')
+            .then(() => {
+                cos.putFile(`console/${version}.zip`, 'dist.zip')
+            })
+            .catch(err => {
+                console.error(err)
+            })
     } catch (e) {
         console.log(e)
     }

@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'Harmony';
+    font-weight: normal;
+    font-style: normal;
+    src: url('https://cos.amiyabot.com/resource/HarmonyOS_Sans_SC.ttf');
+}
+
 * {
     box-sizing: border-box;
 }
@@ -11,7 +18,7 @@ html, body {
     height: 100vh;
     font-size: 14px;
     overflow: hidden;
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    font-family: 'Avenir', Helvetica, Arial, sans-serif, 'Harmony' !important;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }

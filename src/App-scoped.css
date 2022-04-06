@@ -8,7 +8,6 @@
 }
 
 .main-header > .title {
-    font-weight: bold;
     font-size: 20px;
     padding: 0 20px;
     position: relative;
@@ -37,7 +36,6 @@
     padding: 0 10px;
     color: #fff;
     font-size: 15px;
-    font-weight: bold;
     transition: all 300ms linear;
     cursor: pointer;
 }
@@ -65,7 +63,6 @@
 .user {
     color: #fff;
     font-size: 15px;
-    font-weight: bold;
 }
 
 .content {

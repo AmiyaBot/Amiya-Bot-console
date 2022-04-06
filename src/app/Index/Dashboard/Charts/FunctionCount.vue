@@ -23,7 +23,7 @@ export default {
             const option = {
                 title: {
                     text: '功能使用总量',
-                    subtext: '不含普通互动'
+                    subtext: '自该功能加入统计起'
                 },
                 legend: {
                     type: 'scroll',
@@ -59,7 +59,7 @@ export default {
 
             for (let item of data) {
                 option.series.data.push({
-                    name: functions[item['function_id']] || '未知',
+                    name: functions[item['function_id']] || item['function_id'],
                     value: item['use_num']
                 })
             }

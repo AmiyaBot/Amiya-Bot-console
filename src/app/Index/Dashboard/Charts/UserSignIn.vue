@@ -96,7 +96,7 @@ export default {
     },
     mounted () {
         this.chart = echarts.init(this.$refs.chart)
-        this.getUserSignData()
+        // this.getUserSignData()
     }
 }
 </script>

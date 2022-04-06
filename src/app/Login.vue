@@ -60,10 +60,10 @@ export default {
             }
         },
         toBotGitHub: function () {
-            window.open('https://github.com/vivien8261/Amiya-Bot')
+            window.open('https://github.com/AmiyaBot/Amiya-Bot')
         },
         toConsoleGitHub: function () {
-            window.open('https://github.com/vivien8261/Amiya-Bot-console')
+            window.open('https://github.com/AmiyaBot/Amiya-Bot-console')
         }
     },
     data () {

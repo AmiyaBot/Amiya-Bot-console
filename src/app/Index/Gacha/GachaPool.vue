@@ -284,7 +284,7 @@ export default {
 <style scoped>
 .tag {
     font-size: 13px;
-    padding: 3px 5px;
+    padding: 0 5px;
     margin-right: 5px;
     border-radius: 4px;
     background: #f1f1f1;

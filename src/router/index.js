@@ -7,7 +7,6 @@ import GroupManager from '@/app/Index/Group/GroupManager'
 import GachaManager from '@/app/Index/Gacha/GachaManager'
 import ReplaceManager from '@/app/Index/Replace/ReplaceManager'
 import AdminManager from '@/app/Index/Admin/AdminManager'
-import SourceManager from '@/app/Index/Source/SourceManager'
 
 Vue.use(Router)
 
@@ -47,11 +46,6 @@ export default new Router({
             path: '/admin',
             name: 'AdminManager',
             component: AdminManager
-        },
-        {
-            path: '/source',
-            name: 'SourceManager',
-            component: SourceManager
         }
     ]
 })

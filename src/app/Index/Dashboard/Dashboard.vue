@@ -48,27 +48,11 @@ export default {
         FunctionCount
     },
     methods: {
-        getTotalMessage: function () {
+        getRealTimeData: function () {
             this.lib.requests.post({
-                url: '/dashboard/getTotalMessage',
+                url: '/dashboard/getRealTimeData',
                 success: res => {
-                    this.cards.reply = res
-                }
-            })
-        },
-        getMessageSpeed: function () {
-            this.lib.requests.post({
-                url: '/dashboard/getMessageSpeed',
-                success: res => {
-                    this.cards.speed = res
-                }
-            })
-        },
-        getActiveUsers: function () {
-            this.lib.requests.post({
-                url: '/dashboard/getActiveUsers',
-                success: res => {
-                    this.cards.activeUsers = res
+                    this.$set(this, 'cards', res)
                 }
             })
         }
@@ -83,9 +67,7 @@ export default {
         }
     },
     mounted () {
-        this.getTotalMessage()
-        this.getMessageSpeed()
-        this.getActiveUsers()
+        this.getRealTimeData()
     }
 }
 </script>

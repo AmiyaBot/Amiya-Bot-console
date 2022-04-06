@@ -123,7 +123,7 @@ export default class Requests {
                 if ('access_token' in data) {
                     this.common.saveData('token', data['access_token'])
                     code = 200
-                    message = '登录成功'
+                    message = '登录成功，欢迎，' + data['admin']['role_id']['role_name']
                 }
 
                 switch (code) {
@@ -147,6 +147,9 @@ export default class Requests {
                         location.href = '/'
                     }, this.message.warning)
                 }
+                break
+            case 403:
+                this.message.notify(response.data.detail, '拒绝访问', this.message.warning)
                 break
             default:
                 this.message.notify(response.statusText, '请求异常', this.message.error)

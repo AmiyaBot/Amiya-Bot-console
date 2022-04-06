@@ -65,7 +65,9 @@ export default {
                     },
                     successMessage: true,
                     success: res => {
-                        this.$refs.table.loadList()
+                        this.lib.message.alert(`管理员 ${value} 初始密码：${res}`, '请复制密码后关闭', () => {
+                            this.$refs.table.loadList()
+                        }, 'success')
                     }
                 })
             })
@@ -84,7 +86,7 @@ export default {
             })
         },
         delAdmin: function (item) {
-            this.lib.message.confirm(`确定删除管理员【${item.user_id}】吗？将同步删除该管理员的行为记录`, '请确认', () => {
+            this.lib.message.confirm(`确定删除管理员【${item.user_id}】吗？`, '请确认', () => {
                 this.lib.requests.post({
                     url: '/admin/delAdmin',
                     data: {
@@ -111,8 +113,9 @@ export default {
                         }
                     },
                     {
-                        title: '密码',
-                        field: 'password',
+                        title: '角色',
+                        field: 'role_id',
+                        custom: value => value && value['role_name'],
                         search: false
                     },
                     {
@@ -155,7 +158,7 @@ export default {
     font-size: 13px;
     color: #fff;
     background: #3cb300;
-    padding: 3px 5px;
+    padding: 0 5px;
     border-radius: 4px;
 }
 </style>

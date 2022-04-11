@@ -15,10 +15,13 @@
             </number-card>
             <number-card :value="cards.speed + '/min'" color="56d47d">
                 <template>
-                    <span>实时</span>
-                    <span>消息接收速度</span>
+                    <span>瞬时</span>
+                    <span>消息吞吐量</span>
                 </template>
             </number-card>
+            <div style="font-size: 12px">
+                本页数据为缓存数据，缓存数据在有效期内将不会刷新。有效期约5分钟。
+            </div>
         </div>
         <div class="charts">
             <div class="left-side">

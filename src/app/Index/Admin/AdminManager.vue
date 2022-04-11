@@ -7,7 +7,7 @@
 <script>
 import eTabsSwitcher from '@/components/eTabsSwitcher/eTabsSwitcher'
 import AdminList from '@/app/Index/Admin/AdminList'
-import AdminTraceLog from '@/app/Index/Admin/AdminTraceLog'
+import AdminRoleList from '@/app/Index/Admin/AdminRoleList'
 
 export default {
     name: 'AdminManager',
@@ -18,7 +18,7 @@ export default {
         return {
             tabs: [
                 {name: '管理员列表', comp: AdminList},
-                {name: '管理员行为记录', comp: AdminTraceLog}
+                {name: '管理员角色管理', comp: AdminRoleList}
             ]
         }
     }

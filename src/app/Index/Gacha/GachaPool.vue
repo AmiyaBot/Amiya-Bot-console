@@ -225,7 +225,7 @@ export default {
 
             let spListMap = {}
             for (let item of this.spForm.spList) {
-                spListMap[item.operator_name] = this.lib.common.shallowCopy(item)
+                spListMap[item.operator_name] = this.lib.common.deepCopy(item)
             }
 
             for (let field of ['pickup_6', 'pickup_5', 'pickup_4']) {

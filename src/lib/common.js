@@ -27,7 +27,7 @@ export default class Common {
         localStorage.removeItem(name)
     }
 
-    shallowCopy (data) {
+    deepCopy (data) {
         return JSON.parse(JSON.stringify(data))
     }
 

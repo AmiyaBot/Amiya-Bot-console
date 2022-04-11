@@ -9,11 +9,21 @@
                 <el-button type="success" @click="addAdmin(null, 0)">注册管理员</el-button>
             </template>
 
-            <template v-slot:custom="{ field, value }">
-                <div v-if="field.field === 'active'">
+            <template v-slot:custom="{ field, value, item }">
+                <template v-if="field.field === 'active'">
                     <span class="tag" v-if="value">已启用</span>
                     <span v-else>未启用</span>
-                </div>
+                </template>
+                <template v-if="field.field === 'role_id'">
+                    <el-select v-model="value" placeholder="选择角色" size="mini" @change="value => setRole(item, value)">
+                        <el-option label="无配置角色" :value="0"></el-option>
+                        <el-option v-for="(item, index) in roles"
+                                   :key="index"
+                                   :label="item.role_name"
+                                   :value="item.id">
+                        </el-option>
+                    </el-select>
+                </template>
             </template>
 
             <template v-slot:row="{ item }">
@@ -48,9 +58,6 @@ export default {
                     search
                 },
                 success: res => {
-                    for (let item of res.data) {
-                        item.last_login = this.lib.common.formatDate(item.last_login)
-                    }
                     this.$set(this.table, 'data', res.data)
                     this.$set(this.table, 'total', res.count)
                 }
@@ -78,6 +85,19 @@ export default {
                 data: {
                     user_id: item.user_id,
                     active: status
+                },
+                successMessage: true,
+                success: res => {
+                    this.$refs.table.loadList()
+                }
+            })
+        },
+        setRole: function (item, value) {
+            this.lib.requests.post({
+                url: '/admin/setRole',
+                data: {
+                    user_id: item.user_id,
+                    role_id: value
                 },
                 successMessage: true,
                 success: res => {
@@ -115,12 +135,15 @@ export default {
                     {
                         title: '角色',
                         field: 'role_id',
-                        custom: value => value && value['role_name'],
+                        custom: true,
                         search: false
                     },
                     {
                         title: '最后登录时间',
                         field: 'last_login',
+                        custom: value => {
+                            return this.lib.common.formatDate(value)
+                        },
                         search: false
                     },
                     {
@@ -144,11 +167,20 @@ export default {
                 ],
                 data: [],
                 total: 0
-            }
+            },
+            roles: []
         }
     },
     mounted () {
         this.loadAdmin()
+
+        this.lib.requests.post({
+            url: '/role/getAllRoles',
+            successMessage: true,
+            success: res => {
+                this.$set(this, 'roles', res)
+            }
+        })
     }
 }
 </script>

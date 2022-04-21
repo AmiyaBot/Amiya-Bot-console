@@ -115,7 +115,7 @@ export default {
             })
         },
         checkClientSize: function () {
-            if (document.body.clientWidth < 1024 || document.body.clientHeight < 500) {
+            if (document.body.clientWidth < 360 || document.body.clientHeight < 500) {
                 this.show = false
                 return
             }

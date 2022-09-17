@@ -9,4 +9,5 @@
 > [Amiya-Bot](https://github.com/AmiyaBot/Amiya-Bot) 项目的系统控制台
 
 本项目不需要手动部署，Amiya-Bot 会在启动时自动下载更新并部署本项目<br>
-详情可阅读 Amiya-Bot 下的 [说明文档](https://www.amiyabot.com/docs/amiyaConsole.html)
+详情可阅读 Amiya-Bot 下的 [说明文档](https://www.amiyabot.com/docs/amiyaConsole.html)<br>
+已有针对 v6 开发中的新版本 [Amiya-Bot-console2](https://github.com/AmiyaBot/Amiya-Bot-console2)，敬请期待！
